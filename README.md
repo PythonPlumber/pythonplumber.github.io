@@ -32,5 +32,6 @@ Thank you for visiting my website!
 
 This project is licensed under the MIT License.
 
+## Thanks
 
 *Thanks for stopping by! 😄*
