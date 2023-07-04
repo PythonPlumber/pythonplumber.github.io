@@ -19,12 +19,10 @@ You can access my personal website by clicking on this link:
 <a href="pythonplumber.github.io">Website Link</a>
 
 
-## Guestbook
+## Contact
 
-Feel free to sign my guestbook and leave a message! I would love to hear from you.
+Feel free to my contact form and leave a message! I would love to hear from you.
 Contact
-
-Thank you for visiting my website!
 
 ## Author
 
