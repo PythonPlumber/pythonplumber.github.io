@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mario Python Plumber</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
-    /* Additional Styles for Cool Retro Theme */
+    /* CSS styles */
+
     body {
       background-color: #000;
       color: #fff;
@@ -20,6 +17,19 @@
     .hero {
       background-color: #000;
       padding: 80px 0;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      background: linear-gradient(45deg, #ff0000, #0000ff);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
     }
 
     .hero h1 {
@@ -29,6 +39,7 @@
       text-transform: uppercase;
       letter-spacing: 8px;
       font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .container {
@@ -57,10 +68,26 @@
       border: none;
       cursor: pointer;
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
 
-    .btn:hover {
-      background-color: #0000ff;
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 200%;
+      height: 200%;
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: rotate(45deg);
+      transition: transform 0.3s ease;
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      transform: rotate(0deg);
     }
 
     .footer {
@@ -71,35 +98,36 @@
     }
   </style>
 </head>
-
 <body>
-  <section class="hero">
-    <div class="container">
-      <h1>Mario Python Plumber</h1>
-      <p>Welcome to my website, Mario Python Plumber!</p>
-      <p>My name is ............., and I'm a Python developer with a passion for programming and a love for all things tech.
-        On this site, I'll be sharing my knowledge and experience with Python programming, as well as providing resources and
-        tools to help other developers learn and grow their skills. Whether you're a beginner just starting out with Python, or
-        an experienced developer looking to take your skills to the next level, I'm here to help.</p>
-      <p>In addition to my educational content, I'll also be sharing my own personal projects and experiments with Python,
-        giving you an inside look at my own development process and techniques. So if you're looking to learn Python, or just
-        interested in following along with my own programming journey, you've come to the right place. Welcome to Python
-        Plumber, and happy coding!</p>
-    </div>
-  </section>
+  <div class="hero">
+    <h1>Mario Python Plumber</h1>
+    <p>Welcome to my website, Mario Python Plumber! My name is ............., and I'm a Python developer with a passion for programming and a love for all things tech. On this site, I'll be sharing my knowledge and experience with Python programming, as well as providing resources and tools to help other developers learn and grow their skills. Whether you're a beginner just starting out with Python or an experienced developer looking to take your skills to the next level, I'm here to help. In addition to my educational content, I'll also be sharing my own personal projects and experiments with Python, giving you an inside look at my own development process and techniques. So if you're looking to learn Python or just interested in following along with my own programming journey, you've come to the right place. Welcome to Python Plumber, and happy coding!</p>
+    <a class="btn" href="#guestbook">Guest Book</a>
+    <a class="btn" href="#add-message">Add Message</a>
+    <a class="btn" href="#view-messages">View Messages</a>
+  </div>
 
-  <section class="cta">
-    <div class="container">
-      <a href="guestbook.html" class="btn">View Guestbook</a>
-      <a href="postmessage.html" class="btn">Post a Message</a>
-    </div>
-  </section>
+  <div class="container">
+    <h2>Contact</h2>
+    <form id="contact-form" action="https://formsubmit.co/mario.yellow.bea@proton.me" method="POST">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
 
-  <footer class="footer">
-    <div class="container">
-      &copy; 2023 Mario Python Plumber. All rights reserved.
-    </div>
-  </footer>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" rows="4" required></textarea>
+
+      <label for="github">GitHub Username:</label>
+      <input type="text" id="github" name="github" required>
+
+      <button type="submit" id="submit-button">Send Message</button>
+    </form>
+  </div>
+
+  <div class="footer">
+    &copy; 2023 Mario Python Plumber. All rights reserved.
+  </div>
 </body>
-
 </html>
