@@ -1,1 +1,43 @@
- <iframe src="https://www.ultraguest.com/view/1681647798" style="border: 0; width: 100%; height: 100%"></iframe> 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Webpage</title>
+  <style>
+    /* Styles for the iframe container */
+    #iframe-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    /* Styles for the dark theme */
+    .dark-theme {
+      background-color: #000000;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div id="iframe-container">
+    <iframe id="my-iframe" src="https://www.ultraguest.com/view/1681647798" style="border: 0; width: 100%; height: 100%"></iframe>
+  </div>
+
+  <script>
+    // Function to convert the iframe website to dark theme
+    function convertToDarkTheme() {
+      // Get the iframe element
+      var iframe = document.getElementById('my-iframe');
+
+      // Check if the iframe exists
+      if (iframe) {
+        // Add the dark-theme class to the iframe container
+        var iframeContainer = document.getElementById('iframe-container');
+        iframeContainer.classList.add('dark-theme');
+      }
+    }
+
+    // Call the function to convert the iframe to dark theme
+    convertToDarkTheme();
+  </script>
+</body>
+</html>
