@@ -134,6 +134,32 @@
         emailInput.setCustomValidity('Please enter a valid email address.');
       }
     });
+
+    // JavaScript code for GitHub username validation
+    const githubInput = document.getElementById('github');
+    const githubValidation = document.getElementById('github-validation');
+
+    githubInput.addEventListener('input', function(event) {
+      const username = event.target.value;
+      if (username.trim() !== '') {
+        fetch(`https://api.github.com/users/${username}`)
+          .then(response => {
+            if (response.ok) {
+              githubValidation.textContent = 'GitHub username is valid.';
+              githubValidation.style.color = 'green';
+            } else {
+              githubValidation.textContent = 'GitHub username does not exist.';
+              githubValidation.style.color = 'red';
+            }
+          })
+          .catch(error => {
+            githubValidation.textContent = 'Failed to validate GitHub username.';
+            githubValidation.style.color = 'red';
+          });
+      } else {
+        githubValidation.textContent = '';
+      }
+    });
   </script>
 </body>
 </html>
