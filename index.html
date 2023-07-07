@@ -162,13 +162,73 @@
     &copy; 2023 Mario Python Plumber. All rights reserved.
   </div>
   <script>
-    // JavaScript code to show/hide the loading animation with a 2-second delay
+
+    // JavaScript code to start and hide the loading animation after 5 seconds
     window.addEventListener('load', function() {
       const loadingOverlay = document.getElementById('loading-overlay');
+      const spinner = document.querySelector('.spinner');
+
+      // Show the loading overlay and start the spinner animation
       setTimeout(function() {
-        loadingOverlay.style.display = 'display'; // Hide the loading overlay
-      }, 2000); // 2-second delay (2000 milliseconds)
+        loadingOverlay.style.display = 'flex';
+        spinner.style.animation = 'spinner-rotate 1s linear infinite';
+      }, 3000); // 3-second delay (3000 milliseconds)
+
+      // Hide the loading overlay after a delay
+      setTimeout(function() {
+        loadingOverlay.style.display = 'none';
+      }, 6000); // 6-second delay (6000 milliseconds)
     });
+
+    // JavaScript code for email validity checking
+    const emailInput = document.getElementById('email');
+    const emailValidation = document.getElementById('email-validation');
+
+    emailInput.addEventListener('input', function(event) {
+      const email = event.target.value;
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (regex.test(email)) {
+        emailValidation.textContent = 'Email is valid.';
+        emailValidation.style.color = 'green';
+      } else {
+        emailValidation.textContent = 'Please enter a valid email address.';
+        emailValidation.style.color = 'red';
+      }
+    });
+
+    // JavaScript code for GitHub username validation
+    const githubInput = document.getElementById('github');
+    const githubValidation = document.getElementById('github-validation');
+
+    githubInput.addEventListener('input', function(event) {
+      const username = event.target.value;
+      if (username.trim() !== '') {
+        fetch(`https://api.github.com/users/${username}`)
+          .then(response => {
+            if (response.ok) {
+              githubValidation.textContent = 'GitHub username is valid.';
+              githubValidation.style.color = 'green';
+            } else {
+              githubValidation.textContent = 'GitHub username does not exist.';
+              githubValidation.style.color = 'red';
+            }
+          })
+          .catch(error => {
+            githubValidation.textContent = 'Failed to validate GitHub username.';
+            githubValidation.style.color = 'red';
+          });
+      } else {
+        githubValidation.textContent = '';
+      }
+    });
+  </script>
+</body>
+
+</html>
+
+In this updated code, I added two setTimeout functions to control the timing of showing and hiding the loading animation. The loading overlay and spinner animation will
+
     
     // JavaScript code for email validity checking
     const emailInput = document.getElementById('email');
