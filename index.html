@@ -161,10 +161,12 @@
     &copy; 2023 Mario Python Plumber. All rights reserved.
   </div>
   <script>
-    // JavaScript code to show/hide the loading animation
-    window.addEventListener('DOMContentLoaded', function() {
+    // JavaScript code to show/hide the loading animation with a 2-second delay
+    window.addEventListener('load', function() {
       const loadingOverlay = document.getElementById('loading-overlay');
-      loadingOverlay.style.display = 'none'; // Hide the loading overlay
+      setTimeout(function() {
+        loadingOverlay.style.display = 'none'; // Hide the loading overlay
+      }, 2000); // 2-second delay (2000 milliseconds)
     });
     
     // JavaScript code for email validity checking
