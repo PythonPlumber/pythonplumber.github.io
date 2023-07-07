@@ -6,9 +6,9 @@
 
   ## Features
 
-  - Portfolio: Explore my portfolio of projects and see my skills in action.
-  - About Me: Learn more about my background, experience, and passions.
-  - Contact: Get in touch with me to discuss collaborations, opportunities, or just to say hello!
+  **Portfolio**: Explore my portfolio of projects and see my skills in action.
+  **About Me**: Learn more about my background, experience, and passions.
+  **Contact**: Get in touch with me to discuss collaborations, opportunities, or just to say hello!
 
   Feel free to browse around and get to know me better. Don't forget to reach out if you have any questions or would like to connect. Thanks for visiting!
 
