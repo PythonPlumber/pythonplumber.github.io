@@ -92,6 +92,7 @@
       font-size: 14px;
     }
 
+
     #loading-overlay {
       position: fixed;
       top: 0;
@@ -99,6 +100,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px); /* Add backdrop-filter to apply the blur effect */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -111,7 +113,6 @@
       background-image: url('https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif');
       background-repeat: no-repeat;
       background-size: contain;
-      animation: spinner-rotate 1s linear infinite;
     }
 
     @keyframes spinner-rotate {
