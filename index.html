@@ -297,6 +297,12 @@
         githubValidation.textContent = '';
       }
     });
+
+    // JavaScript code to hide scroll-down animation when user starts scrolling
+    window.addEventListener('scroll', function() {
+      const scrollAnimation = document.querySelector('.scroll-down');
+      scrollAnimation.style.display = 'none';
+    });
   </script>
 </body>
 
