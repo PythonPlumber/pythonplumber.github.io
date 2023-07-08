@@ -163,6 +163,42 @@
       background-repeat: no-repeat;
       background-size: contain;
     }
+
+.mouse {
+	width: 50px;
+	height: 90px;
+	border: 3px solid #333;
+	border-radius: 60px;
+	position: relative;
+	&::before {
+		content: '';
+		width: 12px;
+		height: 12px;
+		position: absolute;
+		top: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #333;
+		border-radius: 50%;
+		opacity: 1;
+		animation: wheel 2s infinite;
+		-webkit-animation: wheel 2s infinite;
+	}
+}
+
+@keyframes wheel {
+	to {
+		opacity: 0;
+		top: 60px;
+	}
+}
+
+@-webkit-keyframes wheel {
+	to {
+		opacity: 0;
+		top: 60px;
+	}
+}
   </style>
 </head>
 <body>
@@ -173,6 +209,7 @@
   <div class="hero">
     <h1>Mario Python Plumber</h1>
     <p>Welcome to the whimsical world of Mario Python Plumber! Join Mario on a code-filled adventure to defeat Bowser using the power of Python programming. Prepare for a wild ride as you navigate through jumping turtles, flying mushrooms, and quirky programming challenges. Together, we'll save Princess Python and discover the hidden gems of the Python universe. Get ready to laugh, encounter unexpected glitches, and embrace the joy of coding. Grab your keyboard, don your plumber's hat, and let's dive into the magical realm of Python pipe dreams. With Mario's determination and Python's versatility, we'll conquer every coding obstacle with a smile. So, jump in and get ready for a gaming experience that's as fun as it is educational! Happy coding</p>
+    <div class="mouse"></div>
   </div>
 
   <div class="about-me">
