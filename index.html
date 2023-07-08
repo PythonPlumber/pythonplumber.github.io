@@ -114,7 +114,29 @@
       background-repeat: no-repeat;
       background-size: contain;
     }
-    
+
+    .my-info {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 40px;
+    }
+
+    .my-info img {
+      width: 200px;
+      margin-right: 20px;
+      opacity: 0;
+      animation: fade-in 1.5s ease-in-out forwards;
+    }
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 <body>
@@ -126,7 +148,24 @@
     <h1>Mario Python Plumber</h1>
     <p>Welcome to the whimsical world of Mario Python Plumber! Join Mario on a code-filled adventure to defeat Bowser using the power of Python programming. Prepare for a wild ride as you navigate through jumping turtles, flying mushrooms, and quirky programming challenges. Together, we'll save Princess Python and discover the hidden gems of the Python universe. Get ready to laugh, encounter unexpected glitches, and embrace the joy of coding. Grab your keyboard, don your plumber's hat, and let's dive into the magical realm of Python pipe dreams. With Mario's determination and Python's versatility, we'll conquer every coding obstacle with a smile. So, jump in and get ready for a gaming experience that's as fun as it is educational! Happy coding</p>
   </div>
-
+  
+  <div class="my-info">
+    <img src="https://github.com/PythonPlumber/pythonplumber.github.io/blob/c75a88c887febceae7017ab137a283e7ba1210c5/img/13678511_5141092-removebg-preview.png" alt="3D Illustration" width="200">
+    <div>
+      <h2>About Me</h2>
+      <p>I am the Pseudo-Scientific Mario Magician, blending Python sorcery and Linux wizardry in the Mushroom Kingdom.</p>
+      <h3>Contact Me</h3>
+      <ul>
+      <li>🌍 Location: Sri Lanka</li>
+      <li>💻 Using: Linux</li>
+      <li>🚀 Role: Teenage Developer</li>
+      <li>✉️ Email: pythonplumber@example.com</li>
+      <li>GitHub: <a href="https://github.com/PythonPlumber">PythonPlumber</a></li>
+      <li>Website: <a href="https://pythonplumber.eu.org">pythonplumber.eu.org</a></li>
+      </ul>
+    </div>
+  </div>
+  
   <div class="container">
     <h2>Contact</h2>
     <div class="form-container">
