@@ -147,35 +147,18 @@
       margin-top: 30px;
       color: #fff;
     }
-
-    .projects .languages {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .projects .languages span {
-      margin-right: 10px;
-      font-size: 14px;
-      color: #999;
-    }
-
-    .projects .languages span:last-child {
-      margin-right: 0;
-    }
   </style>
 </head>
-
 <body>
   <div id="loading-overlay">
     <div class="spinner"></div>
   </div>
-
+  
   <div class="projects">
     <h2>Projects</h2>
     <div class="repo-list" id="repo-list"></div>
   </div>
-  
+
   <div class="footer">
     &copy; 2023 Mario Python Plumber. All rights reserved.
   </div>
@@ -186,48 +169,22 @@ const fetchRepositories = async () => {
     const response = await fetch('https://api.github.com/users/PythonPlumber/repos');
     const data = await response.json();
     const repoList = document.getElementById('repo-list');
-    const languagesContainer = document.getElementById('languages');
 
-    // Filter repositories with the "PPWR" tag
+    // Filter repositories with the "ppwr" tag
     const filteredRepos = data.filter(repo => repo.topics.includes('ppwr'));
 
-    // Sort languages by usage count
-    const languages = filteredRepos.reduce((acc, repo) => {
-      const language = repo.language || 'Unknown';
-      acc[language] = (acc[language] || 0) + 1;
-      return acc;
-    }, {});
-
-    // Sort languages by usage count in descending order
-    const sortedLanguages = Object.entries(languages)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 2)
-      .map(([language]) => language);
-
     // Generate HTML for each repository
-    const repoHTML = filteredRepos
-      .map(repo => `
-        <div class="repo-item">
-          <h3 class="repo-name">${repo.name}</h3>
-          <p class="repo-description">${repo.description}</p>
-          <span class="repo-language">${repo.language}</span>
-          <a class="repo-link" href="${repo.html_url}" target="_blank">View Repo</a>
-        </div>
-      `)
-      .join('');
+    const repoHTML = filteredRepos.map(repo => `
+      <div class="repo-item">
+        <h3 class="repo-name">${repo.name}</h3>
+        <p class="repo-description">${repo.description}</p>
+        <span class="repo-language">${repo.language}</span>
+        <a class="repo-link" href="${repo.html_url}" target="_blank">View Repo</a>
+      </div>
+    `).join('');
 
     // Append the HTML to the repo list container
     repoList.innerHTML = repoHTML;
-
-    // Generate HTML for languages
-    const languagesHTML = sortedLanguages
-      .map(language => `
-        <span>${language}</span>
-      `)
-      .join('');
-
-    // Append the HTML to the languages container
-    languagesContainer.innerHTML = languagesHTML;
   } catch (error) {
     const repoList = document.getElementById('repo-list');
     repoList.innerHTML = '<p class="loading-message">Failed to fetch repositories.</p>';
