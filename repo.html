@@ -193,6 +193,22 @@ fetch('https://api.github.com/users/PythonPlumber/repos')
     repoList.innerHTML = '<p class="loading-message">Failed to fetch repositories.</p>';
   });
 
+    // JavaScript code to start and hide the loading animation after 5 seconds
+    window.addEventListener('load', function() {
+      const loadingOverlay = document.getElementById('loading-overlay');
+      const spinner = document.querySelector('.spinner');
+
+      // Show the loading overlay and start the spinner animation
+      setTimeout(function() {
+        loadingOverlay.style.display = 'flex';
+        spinner.style.animation = 'spinner-rotate 1s linear infinite';
+      }, 1700); // 1.7-second delay (1700 milliseconds)
+
+      // Hide the loading overlay after a delay
+      setTimeout(function() {
+        loadingOverlay.style.display = 'none';
+      }, 4000); // 4-second delay (4000 milliseconds)
+    });
   </script>
 </body>
 
