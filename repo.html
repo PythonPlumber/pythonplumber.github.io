@@ -15,88 +15,113 @@
       margin: 0;
       padding: 0;
     }
-.projects {
-  background-color: #000;
-  color: #fff;
-  padding: 80px 0;
-  position: relative;
-}
 
-.projects::before {
-  content: "";
-  background: linear-gradient(45deg, #ff0000, #0000ff);
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  opacity: 0.5;
-}
+    .hero {
+      background-color: #000;
+      padding: 80px 0;
+      position: relative;
+      margin-bottom: 10px;
+    }
 
-.projects h2 {
-  font-size: 48px;
-  margin-bottom: 20px;
-  color: #ff0000;
-  text-transform: uppercase;
-  letter-spacing: 8px;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
+    .hero::before {
+      content: "";
+      background: linear-gradient(45deg, #ff0000, #0000ff);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
+    }
 
-.projects .repo-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-}
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #ff0000;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
 
-.projects .repo-item {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 8px;
-}
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-.projects .repo-name {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
+    .hero p {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
-.projects .repo-description {
-  font-size: 16px;
-  line-height: 1.4;
-  margin-bottom: 10px;
-}
+    .about-me {
+      background-color: #000;
+      padding: 80px 0;
+      position: relative;
+      margin-top: 10px;
+    }
 
-.projects .repo-language {
-  font-size: 14px;
-  color: #999;
-}
+    .about-me::before {
+      content: "";
+      background: linear-gradient(45deg, #ff0000, #0000ff);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
+    }
 
-.projects .repo-link {
-  display: inline-block;
-  margin-top: 10px;
-  text-decoration: none;
-  color: #ff0000;
-}
+    .about-me h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #ff0000;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
 
-.projects .repo-link:hover {
-  text-decoration: underline;
-}
+    .about-me p {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
-.projects .loading-message {
-  font-size: 20px;
-  text-align: center;
-  margin-top: 30px;
-  color: #fff;
-}
+    .form-container {
+      background-color: #333;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
 
-@media screen and (max-width: 768px) {
-  .projects .repo-list {
-    grid-template-columns: 1fr;
-  }
-}
+    .form-container label {
+      display: block;
+      text-align: left;
+      margin-bottom: 10px;
+    }
 
+    .form-container input,
+    .form-container textarea {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      background-color: #555;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .form-container input[type="submit"] {
+      background-color: #ff0000;
+      color: #fff;
+      cursor: pointer;
+    }
 
     .footer {
       background-color: #000;
@@ -150,7 +175,103 @@
         transform: translate(-50%, 20px);
       }
     }
-  </style>
+
+    .projects {
+      background-color: #000;
+      color: #fff;
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .projects::before {
+      content: "";
+      background: linear-gradient(45deg, #ff0000, #0000ff);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    .projects h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #ff0000;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .projects .repo-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      justify-items: center;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .projects .repo-item {
+      background-color: #333;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .projects .repo-name {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .projects .repo-description {
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .projects .repo-language {
+      font-size: 14px;
+      color: #999;
+    }
+
+    .projects .repo-link {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #ff0000;
+    }
+
+    .projects .repo-link:hover {
+      text-decoration: underline;
+    }
+
+.projects .loading-message {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 30px;
+  color: #fff;
+}
+
+.projects .languages {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.projects .languages span {
+  margin-right: 10px;
+  font-size: 14px;
+  color: #999;
+}
+
+.projects .languages span:last-child {
+  margin-right: 0;
+}
+
+</style>
 </head>
 <body>
   <div id="loading-overlay">
@@ -159,6 +280,7 @@
   
 <div class="projects">
   <h2>Projects</h2>
+  <div class="languages" id="languages"></div>
   <div class="repo-list" id="repo-list"></div>
 </div>
 
@@ -171,9 +293,23 @@ fetch('https://api.github.com/users/PythonPlumber/repos')
   .then(response => response.json())
   .then(data => {
     const repoList = document.getElementById('repo-list');
+    const languagesContainer = document.getElementById('languages');
 
     // Filter repositories with the "PPWR" tag
     const filteredRepos = data.filter(repo => repo.topics.includes('ppwr'));
+
+    // Sort languages by usage count
+    const languages = filteredRepos.reduce((acc, repo) => {
+      const language = repo.language || 'Unknown';
+      acc[language] = (acc[language] || 0) + 1;
+      return acc;
+    }, {});
+
+    // Sort languages by usage count in descending order
+    const sortedLanguages = Object.entries(languages)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 2)
+      .map(([language]) => language);
 
     // Generate HTML for each repository
     const repoHTML = filteredRepos.map(repo => `
@@ -187,6 +323,14 @@ fetch('https://api.github.com/users/PythonPlumber/repos')
 
     // Append the HTML to the repo list container
     repoList.innerHTML = repoHTML;
+
+    // Generate HTML for languages
+    const languagesHTML = sortedLanguages.map(language => `
+      <span>${language}</span>
+    `).join('');
+
+    // Append the HTML to the languages container
+    languagesContainer.innerHTML = languagesHTML;
   })
   .catch(error => {
     const repoList = document.getElementById('repo-list');
