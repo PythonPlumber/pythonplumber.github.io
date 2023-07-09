@@ -141,42 +141,41 @@
       text-decoration: underline;
     }
 
-.projects .loading-message {
-  font-size: 20px;
-  text-align: center;
-  margin-top: 30px;
-  color: #fff;
-}
+    .projects .loading-message {
+      font-size: 20px;
+      text-align: center;
+      margin-top: 30px;
+      color: #fff;
+    }
 
-.projects .languages {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
+    .projects .languages {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
 
-.projects .languages span {
-  margin-right: 10px;
-  font-size: 14px;
-  color: #999;
-}
+    .projects .languages span {
+      margin-right: 10px;
+      font-size: 14px;
+      color: #999;
+    }
 
-.projects .languages span:last-child {
-  margin-right: 0;
-}
-
-</style>
+    .projects .languages span:last-child {
+      margin-right: 0;
+    }
+  </style>
 </head>
+
 <body>
   <div id="loading-overlay">
     <div class="spinner"></div>
   </div>
-  
-<div class="projects">
-  <h2>Projects</h2>
-  <div class="languages" id="languages"></div>
-  <div class="repo-list" id="repo-list"></div>
-</div>
 
+  <div class="projects">
+    <h2>Projects</h2>
+    <div class="repo-list" id="repo-list"></div>
+  </div>
+  
   <div class="footer">
     &copy; 2023 Mario Python Plumber. All rights reserved.
   </div>
@@ -230,7 +229,7 @@ fetch('https://api.github.com/users/PythonPlumber/repos')
     repoList.innerHTML = '<p class="loading-message">Failed to fetch repositories.</p>';
   });
 
-    // JavaScript code to start and hide the loading animation after 5 seconds
+    // JavaScript code to start and hide the loading animation after 3 seconds
     window.addEventListener('load', function() {
       const loadingOverlay = document.getElementById('loading-overlay');
       const spinner = document.querySelector('.spinner');
@@ -239,12 +238,12 @@ fetch('https://api.github.com/users/PythonPlumber/repos')
       setTimeout(function() {
         loadingOverlay.style.display = 'flex';
         spinner.style.animation = 'spinner-rotate 1s linear infinite';
-      }, 1700); // 1.7-second delay (1700 milliseconds)
+      }, 1100); // 1.1-second delay (1100 milliseconds)
 
       // Hide the loading overlay after a delay
       setTimeout(function() {
         loadingOverlay.style.display = 'none';
-      }, 4000); // 4-second delay (4000 milliseconds)
+      }, 3000); // 3-second delay (3000 milliseconds)
     });
   </script>
 </body>
