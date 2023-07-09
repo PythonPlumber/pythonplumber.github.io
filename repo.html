@@ -173,7 +173,7 @@ fetch('https://api.github.com/users/PythonPlumber/repos')
     const repoList = document.getElementById('repo-list');
 
     // Filter repositories with the "PPWR" tag
-    const filteredRepos = data.filter(repo => repo.topics.includes('PPWR'));
+    const filteredRepos = data.filter(repo => repo.topics.includes('ppwr'));
 
     // Generate HTML for each repository
     const repoHTML = filteredRepos.map(repo => `
