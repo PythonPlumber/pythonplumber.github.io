@@ -3,6 +3,7 @@
   <h1>My Personal Website</h1>
 
   Welcome to my personal website! This is the place where I showcase my work, share my thoughts, and connect with the world. Here, you'll find resources related to my areas of interest.
+  https://img.shields.io/website.svg?down_color=red&down_message=down&up_color=green&up_message=up&url=http%3A%2F%2Fpythonplumber.eu.org
 
   ## Features
 
