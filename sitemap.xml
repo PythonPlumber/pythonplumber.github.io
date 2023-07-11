@@ -4,13 +4,13 @@
     <loc>https://pythonplumber.eu.org/</loc>
     <lastmod>2023-07-11</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>1.00</priority>
   </url>
   <url>
     <loc>https://pythonplumber.eu.org/repo</loc>
     <lastmod>2023-07-11</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.80</priority>
   </url>
   <!-- Add more URL entries for other pages on your website -->
 </urlset>
