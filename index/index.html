@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>File Index</title>
+</head>
+<body>
+  <h1>File Index</h1>
+  <ul id="file-list"></ul>
+
+  <script>
+    const fileList = document.getElementById('file-list');
+
+    // Function to fetch the repository's file list using the GitHub API
+    async function fetchFileList() {
+      try {
+        const response = await fetch('https://api.github.com/repos/{username}/{repository}/contents/index');
+        const files = await response.json();
+
+        // Iterate over the files and create list items for each file
+        files.forEach(file => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = file.html_url;
+          link.textContent = file.name;
+          listItem.appendChild(link);
+          fileList.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error('Error fetching file list:', error);
+      }
+    }
+
+    // Call the function to fetch the file list
+    fetchFileList();
+  </script>
+</body>
+</html>
