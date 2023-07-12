@@ -12,5 +12,10 @@
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
-  <!-- Add more URL entries for other pages on your website -->
+  <url>
+    <loc>https://pythonplumber.eu.org/index/index</loc>
+    <lastmod>2023-07-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
 </urlset>
