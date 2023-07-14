@@ -1,3 +1,7 @@
+<!--Title:Introduction to Django -->
+<!--md_file_name:blog5.md-->
+<!--short_discription: Django is a high-level web framework for Python that provides developers with a robust toolkit to build secure and scalable web applications.-->
+
 # Introduction to Django: A High-level Web Framework for Python
 
 Django is a high-level web framework for Python that provides developers with a robust toolkit to build secure and scalable web applications. With its batteries-included approach and emphasis on best practices, Django has become one of the most popular web frameworks. In this blog post, we'll explore the key features of Django and why it is a great choice for web development.
