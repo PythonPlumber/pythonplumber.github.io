@@ -5,8 +5,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #111;
-            color: #fff;
+            background-color: #222;
+            color: #ddd;
             font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 0;
@@ -15,7 +15,7 @@
         h1 {
             font-size: 48px;
             margin-bottom: 20px;
-            color: #ff58c1;
+            color: #ff0000;
             text-transform: uppercase;
             letter-spacing: 8px;
             font-weight: bold;
@@ -30,7 +30,7 @@
         }
         .blog-box {
             width: 400px;
-            background-color: #222;
+            background-color: #333;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             padding: 20px;
@@ -44,12 +44,12 @@
         .blog-box h2 {
             font-size: 24px;
             margin-top: 0;
-            color: #ff58c1;
+            color: #ff0000;
             margin-bottom: 10px;
         }
         .blog-box .date-created {
             font-style: italic;
-            color: #777;
+            color: #888;
             margin-bottom: 10px;
         }
         .blog-box .excerpt {
@@ -60,14 +60,14 @@
         }
         .blog-box .read-more {
             display: inline-block;
-            color: #ff58c1;
+            color: #ff0000;
             text-decoration: none;
         }
         .pagination {
             margin-top: 20px;
         }
         .pagination button {
-            background-color: #ff58c1;
+            background-color: #ff0000;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -76,10 +76,10 @@
             cursor: pointer;
         }
         .pagination button:hover {
-            background-color: #ff3784;
+            background-color: #cc0000;
         }
         .pagination button:disabled {
-            background-color: #ccc;
+            background-color: #888;
             cursor: not-allowed;
         }
     </style>
@@ -90,7 +90,6 @@
     <div class="pagination" id="pagination"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         var blogFiles = [
             { file: 'blogsmd/blog1.md' },
@@ -173,11 +172,9 @@
 
         // Function to open the Markdown content as HTML in a new tab
         function openMarkdownPage(markdown) {
-            var html = marked(markdown);
-
-            var win = window.open('', '_blank');
-            win.document.write('<html><head><title>Blog Content</title></head><body>' + html + '</body></html>');
-            win.document.close();
+            var md = window.open('', '_blank');
+            md.document.write('<html><head><title>Blog Content</title></head><body><pre><code>' + markdown + '</code></pre></body></html>');
+            md.document.close();
         }
 
         // Function to generate the pagination buttons
