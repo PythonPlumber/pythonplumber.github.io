@@ -121,6 +121,9 @@
 
                         var blogBox = document.createElement('div');
                         blogBox.classList.add('blog-box');
+                        blogBox.addEventListener('click', function() {
+                            window.open(link.href, '_blank');
+                        });
                         blogBox.appendChild(details);
 
                         blogList.appendChild(blogBox);
