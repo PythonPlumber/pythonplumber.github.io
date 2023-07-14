@@ -82,64 +82,6 @@
             background-color: #888;
             cursor: not-allowed;
         }
-        .markdown-content {
-            text-align: left;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
-            color: #333;
-            font-family: 'Courier New', monospace;
-        }
-        .markdown-content h1,
-        .markdown-content h2,
-        .markdown-content h3,
-        .markdown-content h4,
-        .markdown-content h5,
-        .markdown-content h6 {
-            margin-top: 0;
-            margin-bottom: 16px;
-        }
-        .markdown-content p {
-            margin-bottom: 16px;
-        }
-        .markdown-content a {
-            color: #ff0000;
-            text-decoration: none;
-        }
-        .markdown-content a:hover {
-            text-decoration: underline;
-        }
-        .markdown-content pre {
-            background-color: #f5f5f5;
-            color: #333;
-            padding: 10px;
-            overflow-x: auto;
-        }
-        .markdown-content code {
-            font-family: 'Courier New', monospace;
-        }
-        .markdown-content img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 16px;
-        }
-        .markdown-content ul,
-        .markdown-content ol {
-            margin-left: 24px;
-            margin-bottom: 16px;
-        }
-        .markdown-content li {
-            margin-bottom: 8px;
-        }
-        .markdown-page {
-            background-color: #222;
-            color: #ddd;
-            font-family: 'Roboto', sans-serif;
-            text-align: left;
-            margin: 0;
-            padding: 20px;
-        }
     </style>
 </head>
 <body>
@@ -228,28 +170,37 @@
             return excerpt;
         }
 
-        // Function to open the Markdown content as HTML in a new tab
+        // Function to open the Markdown content in an iframe using the Docsify web API
         function openMarkdownPage(file) {
-            fetch(file)
-                .then(response => response.text())
-                .then(markdown => {
-                    var md = window.open('', '_blank');
-                    md.document.write(`
-                        <html>
-                        <head>
-                            <title>Blog Content</title>
-                            <style>
-                                ${getMarkdownPageStyles()}
-                            </style>
-                        </head>
-                        <body>
-                            <div class="markdown-page">${marked(markdown)}</div>
-                        </body>
-                        </html>
-                    `);
-                    md.document.close();
-                })
-                .catch(error => console.error(error));
+            var apiUrl = 'https://docsify-this.net';
+            var url = `${apiUrl}?basePath=https://raw.githubusercontent.com/PythonPlumber/pythonplumber.github.io/main/${file}`;
+
+            var iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.style.width = '100%';
+            iframe.style.height = '500px';
+            iframe.style.border = 'none';
+
+            var modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+
+            modal.appendChild(iframe);
+            document.body.appendChild(modal);
+
+            // Close the modal on outside click
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
         }
 
         // Function to generate the pagination buttons
@@ -296,70 +247,6 @@
             if (currentPage === totalPages) {
                 nextButton.disabled = true;
             }
-        }
-
-        // Function to get the CSS styles for the Markdown content page
-        function getMarkdownPageStyles() {
-            return `
-                body {
-                    background-color: #222;
-                    color: #ddd;
-                    font-family: 'Roboto', sans-serif;
-                    text-align: left;
-                    margin: 0;
-                    padding: 20px;
-                }
-                .markdown-page {
-                    text-align: left;
-                    padding: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    background-color: #fff;
-                    color: #333;
-                    font-family: 'Courier New', monospace;
-                }
-                .markdown-page h1,
-                .markdown-page h2,
-                .markdown-page h3,
-                .markdown-page h4,
-                .markdown-page h5,
-                .markdown-page h6 {
-                    margin-top: 0;
-                    margin-bottom: 16px;
-                }
-                .markdown-page p {
-                    margin-bottom: 16px;
-                }
-                .markdown-page a {
-                    color: #ff0000;
-                    text-decoration: none;
-                }
-                .markdown-page a:hover {
-                    text-decoration: underline;
-                }
-                .markdown-page pre {
-                    background-color: #f5f5f5;
-                    color: #333;
-                    padding: 10px;
-                    overflow-x: auto;
-                }
-                .markdown-page code {
-                    font-family: 'Courier New', monospace;
-                }
-                .markdown-page img {
-                    max-width: 100%;
-                    height: auto;
-                    margin-bottom: 16px;
-                }
-                .markdown-page ul,
-                .markdown-page ol {
-                    margin-left: 24px;
-                    margin-bottom: 16px;
-                }
-                .markdown-page li {
-                    margin-bottom: 8px;
-                }
-            `;
         }
 
         // Generate the blog list on page load
