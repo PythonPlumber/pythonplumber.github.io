@@ -5,8 +5,8 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #333;
+            color: #fff;
             font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 0;
@@ -30,11 +30,12 @@
         }
         .blog-box {
             width: 400px;
-            background-color: #fff;
+            background-color: #222;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             padding: 20px;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         .blog-box:hover {
             transform: translateY(-5px);
@@ -53,6 +54,7 @@
         }
         .blog-box .excerpt {
             margin-bottom: 20px;
+            color: #ccc;
         }
         .blog-box .read-more {
             display: inline-block;
@@ -68,11 +70,11 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
         var blogFiles = [
-            { file: 'blogsmd/blog1.md' },
-            { file: 'blogsmd/blog2.md' },
-            { file: 'blogsmd/blog3.md' },
-            { file: 'blogsmd/blog4.md' },
-            // Add more blog file paths here
+            { title: 'Blog 1', file: 'blogsmd/blog1.md' },
+            { title: 'Blog 2', file: 'blogsmd/blog2.md' },
+            { title: 'Blog 3', file: 'blogsmd/blog3.md' },
+            { title: 'Blog 4', file: 'blogsmd/blog4.md' },
+            // Add more blog file paths and titles here
         ];
 
         // Function to generate the blog list
@@ -105,8 +107,11 @@
 
                         var readMoreElement = document.createElement('a');
                         readMoreElement.className = 'read-more';
-                        readMoreElement.href = blog.file;
+                        readMoreElement.href = 'javascript:void(0)';
                         readMoreElement.textContent = 'Read More';
+                        readMoreElement.addEventListener('click', function() {
+                            openMarkdownPage(markdown);
+                        });
 
                         blogBox.appendChild(titleElement);
                         blogBox.appendChild(dateCreatedElement);
@@ -149,6 +154,13 @@
             }
 
             return trimmedContent;
+        }
+
+        // Function to open the Markdown content in a new page
+        function openMarkdownPage(markdown) {
+            var win = window.open('', '_blank');
+            win.document.write('<html><head><title>Blog Content</title></head><body>' + markdown + '</body></html>');
+            win.document.close();
         }
 
         // Generate the blog list on page load
