@@ -1,3 +1,6 @@
+<!--Title:Welcome to My website -->
+<!--short_discription: Feel free to browse around and get to know me better.-->
+
   ## Features
 
   **Portfolio**: Explore my portfolio of projects and see my skills in action.<br>
