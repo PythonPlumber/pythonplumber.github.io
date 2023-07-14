@@ -85,7 +85,7 @@
     </style>
 </head>
 <body>
-    <h1>Blog Main Page</h1>
+    <h1>My Blogs</h1>
     <div class="blog-list" id="blogList"></div>
     <div class="pagination" id="pagination"></div>
 
@@ -115,19 +115,27 @@
                 });
         }
 
-        // Example blog files
-        var blogFiles = [
-            { file: 'blogsmd/blog1.md' },
-            { file: 'blogsmd/blog2.md' },
-            { file: 'blogsmd/blog3.md' },
-            { file: 'blogsmd/blog4.md' },
-            // Add more blog file paths here
-        ];
+        // Function to extract the title and short description from the Markdown content
+        function extractTitleAndDescription(markdown) {
+            var lines = markdown.split('\n');
+            var metadata = {};
 
-        var itemsPerPage = 4;
-        var currentPage = 1;
-        var totalPages = Math.ceil(blogFiles.length / itemsPerPage);
-        var fileCreationDates = {};
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+
+                if (line.startsWith('<!--') && line.endsWith('-->')) {
+                    var metadataLine = line.slice(4, -3).trim();
+
+                    if (metadataLine.startsWith('Title:')) {
+                        metadata.title = metadataLine.slice(6).trim();
+                    } else if (metadataLine.startsWith('short_description:')) {
+                        metadata.description = metadataLine.slice(19).trim();
+                    }
+                }
+            }
+
+            return metadata;
+        }
 
         // Function to generate the blog list for the current page
         function generateBlogList() {
@@ -143,9 +151,9 @@
                 fetch(blog.file)
                     .then(response => response.text())
                     .then(markdown => {
-                        var title = getTitleFromMarkdown(markdown);
-                        var excerpt = getExcerptFromMarkdown(markdown, 40);
-                        var creationDate = fileCreationDates[blog.file];
+                        var metadata = extractTitleAndDescription(markdown);
+                        var title = metadata.title || 'Untitled';
+                        var description = metadata.description || '';
 
                         var blogBox = document.createElement('div');
                         blogBox.className = 'blog-box';
@@ -155,11 +163,11 @@
 
                         var dateCreatedElement = document.createElement('p');
                         dateCreatedElement.className = 'date-created';
-                        dateCreatedElement.textContent = 'Date Created: ' + formatDate(creationDate);
+                        dateCreatedElement.textContent = 'Date Created: ' + getDateCreated(blog.file);
 
-                        var excerptElement = document.createElement('div');
-                        excerptElement.className = 'excerpt';
-                        excerptElement.textContent = excerpt;
+                        var descriptionElement = document.createElement('div');
+                        descriptionElement.className = 'excerpt';
+                        descriptionElement.textContent = description;
 
                         var readMoreElement = document.createElement('a');
                         readMoreElement.className = 'read-more';
@@ -171,7 +179,7 @@
 
                         blogBox.appendChild(titleElement);
                         blogBox.appendChild(dateCreatedElement);
-                        blogBox.appendChild(excerptElement);
+                        blogBox.appendChild(descriptionElement);
                         blogBox.appendChild(readMoreElement);
 
                         blogList.appendChild(blogBox);
@@ -182,31 +190,11 @@
             generatePagination();
         }
 
-        // Function to extract the title from the first word of the Markdown content
-        function getTitleFromMarkdown(markdown) {
-            var firstWord = markdown.trim().split(' ')[0];
-            return firstWord || 'Untitled';
-        }
-
-        // Function to extract an excerpt from the markdown content
-        function getExcerptFromMarkdown(markdown, maxLength) {
-            var content = markdown.replace(/#+\s+.+/g, ''); // Remove headings
-            content = content.replace(/!\[.*?\]\(.*?\)/g, ''); // Remove images
-            content = content.replace(/\[(.*?)\]\(.*?\)/g, '$1'); // Remove links
-            var trimmedContent = content.trim();
-
-            if (trimmedContent.length > maxLength) {
-                return trimmedContent.substr(0, maxLength) + '...';
-            }
-
-            return trimmedContent;
-        }
-
-        // Function to format the date string to a desired format
-        function formatDate(dateString) {
-            var options = { year: 'numeric', month: 'long', day: 'numeric' };
-            var date = new Date(dateString);
-            return date.toLocaleDateString(undefined, options);
+        // Function to extract the date created from the GitHub file path
+        function getDateCreated(filePath) {
+            var fileName = filePath.split('/').pop(); // Extract the file name from the file path
+            var dateCreated = fileName.split('.')[0]; // Assumes the date is the first part before the file extension
+            return dateCreated;
         }
 
         // Function to open the Markdown content as HTML in a new tab
