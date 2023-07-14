@@ -1,5 +1,3 @@
-  Welcome to my personal website! This is the place where I showcase my work, share my thoughts, and connect with the world. Here, you'll find resources related to my areas of interest.
-
   ## Features
 
   **Portfolio**: Explore my portfolio of projects and see my skills in action.<br>
