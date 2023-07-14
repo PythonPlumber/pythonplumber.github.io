@@ -234,7 +234,6 @@
                 .then(response => response.text())
                 .then(markdown => {
                     var md = window.open('', '_blank');
-                    md.document.open();
                     md.document.write(`
                         <html>
                         <head>
@@ -244,9 +243,7 @@
                             </style>
                         </head>
                         <body>
-                            <div class="markdown-page">
-                                ${marked(markdown)}
-                            </div>
+                            <div class="markdown-page">${marked(markdown)}</div>
                         </body>
                         </html>
                     `);
@@ -313,12 +310,13 @@
                     padding: 20px;
                 }
                 .markdown-page {
-                    background-color: #222;
-                    color: #ddd;
-                    font-family: 'Roboto', sans-serif;
                     text-align: left;
-                    margin: 0;
                     padding: 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    color: #333;
+                    font-family: 'Courier New', monospace;
                 }
                 .markdown-page h1,
                 .markdown-page h2,
@@ -328,15 +326,9 @@
                 .markdown-page h6 {
                     margin-top: 0;
                     margin-bottom: 16px;
-                    color: #ff0000;
-                    text-transform: uppercase;
-                    letter-spacing: 2px;
-                    font-weight: bold;
-                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
                 }
                 .markdown-page p {
                     margin-bottom: 16px;
-                    line-height: 1.5;
                 }
                 .markdown-page a {
                     color: #ff0000;
