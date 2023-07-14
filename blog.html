@@ -2,8 +2,17 @@
 <html>
 <head>
     <title>Blog Main Page</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <style>
+    <meta name="description" content="A man who love GNU/Linux penguin lives in sri lanka! ">
+    <meta name="keywords" content="python, plumber, my web, github, zly, github.com/PythonPlumber, Python Plumber, python plumber">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="author" content="Python Plumber">
+    <link rel="canonical" href="https://pythonplumber.eu.org/" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/img/cropped.jpg">
+    <link rel="icon" href="/img/512.gif" type="image/gif" >
+     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">    <style>
         body {
             background-color: #222;
             color: #ddd;
@@ -112,9 +121,37 @@
             font-size: 24px;
             cursor: pointer;
         }
+
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 100px;
+      height: 100px;
+      background-image: url('https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif');
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
     </style>
 </head>
 <body>
+
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+    
     <h1>Blog Main Page</h1>
     <div class="blog-list" id="blogList"></div>
     <div class="pagination" id="pagination"></div>
