@@ -82,6 +82,36 @@
             background-color: #888;
             cursor: not-allowed;
         }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            height: 80%;
+            max-height: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            overflow: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -92,10 +122,10 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         var blogFiles = [
-            { file: 'blogsmd/blog1.md', fileName: 'blog1.md' },
-            { file: 'blogsmd/blog2.md', fileName: 'blog2.md' },
-            { file: 'blogsmd/blog3.md', fileName: 'blog3.md' },
-            { file: 'blogsmd/blog4.md', fileName: 'blog4.md' },
+            { file: 'blogsmd/blog1.md' },
+            { file: 'blogsmd/blog2.md' },
+            { file: 'blogsmd/blog3.md' },
+            { file: 'blogsmd/blog4.md' },
             // Add more blog file paths here
         ];
 
@@ -103,11 +133,18 @@
         var currentPage = 1;
         var totalPages = Math.ceil(blogFiles.length / itemsPerPage);
 
-        // Function to extract the title from the Markdown content
-        function getTitleFromMarkdown(markdown) {
+        // Function to extract the title and file name from the Markdown content
+        function extractMetadataFromMarkdown(markdown) {
             var titleRegex = /<!--Title:(.*?)-->/;
-            var match = markdown.match(titleRegex);
-            return match ? match[1].trim() : 'Untitled';
+            var fileRegex = /<!--md_file_name:(.*?)-->/;
+
+            var titleMatch = markdown.match(titleRegex);
+            var fileMatch = markdown.match(fileRegex);
+
+            var title = titleMatch ? titleMatch[1].trim() : 'Untitled';
+            var file = fileMatch ? fileMatch[1].trim() : '';
+
+            return { title, file };
         }
 
         // Function to extract the excerpt from the Markdown content
@@ -137,7 +174,7 @@
                 fetch(blog.file)
                     .then(response => response.text())
                     .then(markdown => {
-                        var title = getTitleFromMarkdown(markdown);
+                        var { title, file } = extractMetadataFromMarkdown(markdown);
                         var excerpt = getExcerptFromMarkdown(markdown, 40);
 
                         var blogBox = document.createElement('div');
@@ -155,7 +192,7 @@
                         readMoreLink.href = 'javascript:void(0)';
                         readMoreLink.textContent = 'Read More';
                         readMoreLink.addEventListener('click', function() {
-                            openMarkdownPage(blog.file, blog.fileName);
+                            openMarkdownPage(file);
                         });
 
                         blogBox.appendChild(titleElement);
@@ -171,7 +208,7 @@
         }
 
         // Function to open the Markdown content in an iframe using the Docsify web API
-        function openMarkdownPage(file, fileName) {
+        function openMarkdownPage(file) {
             var apiUrl = 'https://docsify-this.net';
             var url = `${apiUrl}?basePath=https://raw.githubusercontent.com/PythonPlumber/pythonplumber.github.io/main/${file}`;
 
@@ -183,7 +220,7 @@
 
             var closeButton = document.createElement('span');
             closeButton.className = 'modal-close';
-            closeButton.textContent = '×';
+            closeButton.innerHTML = '&times;';
             closeButton.addEventListener('click', function() {
                 document.body.removeChild(modal);
             });
