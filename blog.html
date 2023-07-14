@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Main Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.css">
+    <style>
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ff0000;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        details > *:not(summary) {
+            margin-left: 10px;
+        }
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            border: none;
+            cursor: pointer;
+        }
+        .pagination button:hover {
+            background-color: #ddd;
+        }
+        .pagination button.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blog Main Page</h1>
+    <div id="blogList"></div>
+    <div class="pagination"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script>
+        var blogsPerPage = 6;
+        var currentPage = 1;
+        var blogFiles = [
+            'blogsmd/blog1.md',
+            'blogsmd/blog2.md',
+            'blogsmd/blog3.md',
+            'blogsmd/blog4.md',
+            'blogsmd/blog5.md',
+            'blogsmd/blog6.md',
+            'blogsmd/blog7.md',
+            'blogsmd/blog8.md',
+            'blogsmd/blog9.md',
+            'blogsmd/blog10.md',
+            'blogsmd/blog11.md',
+            'blogsmd/blog12.md'
+            // Add more blog file paths here
+        ];
+
+        // Function to generate the blog list
+        function generateBlogList() {
+            var startIndex = (currentPage - 1) * blogsPerPage;
+            var endIndex = startIndex + blogsPerPage;
+            var blogsToShow = blogFiles.slice(startIndex, endIndex);
+
+            var blogList = document.getElementById('blogList');
+            blogList.innerHTML = '';
+
+            blogsToShow.forEach(file => {
+                var title = file.split('/').pop().replace('.md', ''); // Extract the title from the file name
+
+                fetch(file)
+                    .then(response => response.text())
+                    .then(markdown => {
+                        var md = new markdownit();
+                        var html = md.render(markdown);
+
+                        var details = document.createElement('details');
+                        var summary = document.createElement('summary');
+                        var link = document.createElement('a');
+                        link.href = 'blog.html?file=' + file; // Replace with the appropriate link structure
+                        link.innerHTML = title;
+
+                        summary.appendChild(link);
+                        details.appendChild(summary);
+                        details.innerHTML += html;
+
+                        blogList.appendChild(details);
+                    })
+                    .catch(error => console.error(error));
+            });
+
+            generatePagination();
+        }
+
+        // Function to generate pagination
+        function generatePagination() {
+            var totalPages = Math.ceil(blogFiles.length / blogsPerPage);
+            var paginationContainer = document.querySelector('.pagination');
+            paginationContainer.innerHTML = '';
+
+            var prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    generateBlogList();
+                }
+            });
+            paginationContainer.appendChild(prevButton);
+
+            for (var i = 1; i <= totalPages; i++) {
+                var link = document.createElement('button');
+                link.textContent = i;
+                link.disabled = currentPage === i;
+                link.addEventListener('click', function () {
+                    currentPage = parseInt(this.textContent);
+                    generateBlogList();
+                });
+                paginationContainer.appendChild(link);
+            }
+
+            var nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', function () {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    generateBlogList();
+                }
+            });
+            paginationContainer.appendChild(nextButton);
+        }
+
+        // Generate the blog list on page load
+        window.addEventListener('load', generateBlogList);
+    </script>
+</body>
+</html>
