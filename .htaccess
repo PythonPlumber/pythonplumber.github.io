@@ -1,2 +1,11 @@
-RewriteEngine on
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+
+# Redirect www to non-www
+RewriteCond %{HTTP_HOST} ^www\.pythonplumber\.eu\.org$ [NC]
+RewriteRule ^(.*)$ https://pythonplumber.eu.org/$1 [R=301,L]
+
+# Rewrite URLs without file extension to corresponding .html files
+RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^([^\.]+)$ $1.html [NC,L]
