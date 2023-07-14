@@ -47,11 +47,16 @@
             pointer-events: none;
             opacity: 0.5;
         }
+        .blog-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
         .blog-box {
-            margin-bottom: 20px;
             padding: 20px;
             border: 1px solid #fff;
-            display: inline-block;
             width: 400px;
             text-align: left;
         }
@@ -67,7 +72,7 @@
 </head>
 <body>
     <h1>Blog Main Page</h1>
-    <div id="blogList"></div>
+    <div id="blogList" class="blog-list"></div>
     <div class="pagination"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
