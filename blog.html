@@ -322,6 +322,12 @@
 
         // Generate the blog list on page load
         window.addEventListener('load', generateBlogList);
+
+    // JavaScript code to hide scroll-down animation when user starts scrolling
+    window.addEventListener('scroll', function() {
+      const scrollAnimation = document.querySelector('.scroll-down');
+      scrollAnimation.style.display = 'none';
+    });
     </script>
 </body>
 </html>
