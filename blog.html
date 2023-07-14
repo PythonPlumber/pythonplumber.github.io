@@ -3,58 +3,115 @@
 <head>
     <title>Blog Main Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Courier New', monospace;
+            background-color: #f4f4f4;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
         }
         h1 {
-            font-size: 48px;
+            font-size: 36px;
             margin-bottom: 20px;
             color: #ff0000;
             text-transform: uppercase;
-            letter-spacing: 8px;
+            letter-spacing: 4px;
             font-weight: bold;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-        .blog-box {
-            margin-bottom: 20px;
+        .blog-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
             padding: 20px;
-            border: 1px solid #fff;
+        }
+        .blog-box {
+            width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .blog-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         .blog-box h2 {
             font-size: 24px;
             margin-top: 0;
             color: #ff0000;
+            margin-bottom: 10px;
+        }
+        .blog-box .date-created {
+            font-style: italic;
+            color: #777;
+            margin-bottom: 10px;
         }
         .blog-box p {
-            color: #fff;
+            color: #555;
+            line-height: 1.5;
+        }
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            border: none;
+            cursor: pointer;
+        }
+        .pagination button:hover {
+            background-color: #ddd;
+        }
+        .pagination button.disabled {
+            pointer-events: none;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
     <h1>Blog Main Page</h1>
-    <div id="blogList"></div>
+    <div class="blog-list" id="blogList"></div>
+    <div class="pagination"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
+        var blogsPerPage = 4;
+        var currentPage = 1;
         var blogFiles = [
             'blogsmd/blog1.md',
             'blogsmd/blog2.md',
             'blogsmd/blog3.md',
-            // Add more blog file paths in the desired order
+            'blogsmd/blog4.md',
+            'blogsmd/blog5.md',
+            'blogsmd/blog6.md',
+            'blogsmd/blog7.md',
+            'blogsmd/blog8.md',
+            'blogsmd/blog9.md',
+            'blogsmd/blog10.md',
+            'blogsmd/blog11.md',
+            'blogsmd/blog12.md'
+            // Add more blog file paths here
         ];
 
         // Function to generate the blog list
         function generateBlogList() {
+            var startIndex = (currentPage - 1) * blogsPerPage;
+            var endIndex = startIndex + blogsPerPage;
+            var blogsToShow = blogFiles.slice(startIndex, endIndex);
+
             var blogList = document.getElementById('blogList');
             blogList.innerHTML = '';
 
-            blogFiles.forEach(file => {
+            blogsToShow.forEach(file => {
                 fetch(file)
                     .then(response => response.text())
                     .then(markdown => {
@@ -62,6 +119,7 @@
                         var html = md.render(markdown);
 
                         var title = getTitleFromHTML(html); // Extract the title from the rendered HTML
+                        var dateCreated = getDateCreatedFromHTML(html); // Extract the date created from the rendered HTML
 
                         var blogBox = document.createElement('div');
                         blogBox.className = 'blog-box';
@@ -69,16 +127,23 @@
                         var titleElement = document.createElement('h2');
                         titleElement.textContent = title;
 
+                        var dateCreatedElement = document.createElement('p');
+                        dateCreatedElement.className = 'date-created';
+                        dateCreatedElement.textContent = 'Date Created: ' + dateCreated;
+
                         var contentElement = document.createElement('div');
                         contentElement.innerHTML = html;
 
                         blogBox.appendChild(titleElement);
+                        blogBox.appendChild(dateCreatedElement);
                         blogBox.appendChild(contentElement);
 
                         blogList.appendChild(blogBox);
                     })
                     .catch(error => console.error(error));
             });
+
+            generatePagination();
         }
 
         // Function to extract the title from the rendered HTML
@@ -87,6 +152,54 @@
             temp.innerHTML = html;
             var titleElement = temp.querySelector('h1, h2, h3, h4, h5, h6');
             return titleElement ? titleElement.textContent : 'Untitled';
+        }
+
+        // Function to extract the date created from the rendered HTML
+        function getDateCreatedFromHTML(html) {
+            var temp = document.createElement('div');
+            temp.innerHTML = html;
+            var dateCreatedElement = temp.querySelector('.date-created');
+            return dateCreatedElement ? dateCreatedElement.textContent : 'Unknown';
+        }
+
+        // Function to generate pagination
+        function generatePagination() {
+            var totalPages = Math.ceil(blogFiles.length / blogsPerPage);
+            var paginationContainer = document.querySelector('.pagination');
+            paginationContainer.innerHTML = '';
+
+            var prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    generateBlogList();
+                }
+            });
+            paginationContainer.appendChild(prevButton);
+
+            for (var i = 1; i <= totalPages; i++) {
+                var link = document.createElement('button');
+                link.textContent = i;
+                link.disabled = currentPage === i;
+                link.addEventListener('click', function () {
+                    currentPage = parseInt(this.textContent);
+                    generateBlogList();
+                });
+                paginationContainer.appendChild(link);
+            }
+
+            var nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', function () {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    generateBlogList();
+                }
+            });
+            paginationContainer.appendChild(nextButton);
         }
 
         // Generate the blog list on page load
