@@ -51,6 +51,14 @@
             color: #777;
             margin-bottom: 10px;
         }
+        .blog-box .excerpt {
+            margin-bottom: 20px;
+        }
+        .blog-box .read-more {
+            display: inline-block;
+            color: #ff0000;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -60,11 +68,11 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
         var blogFiles = [
-            'blogsmd/blog1.md',
-            'blogsmd/blog2.md',
-            'blogsmd/blog3.md',
-            'blogsmd/blog4.md',
-            // Add more blog file paths here
+            { title: 'Blog 1', file: 'blogsmd/blog1.md' },
+            { title: 'Blog 2', file: 'blogsmd/blog2.md' },
+            { title: 'Blog 3', file: 'blogsmd/blog3.md' },
+            { title: 'Blog 4', file: 'blogsmd/blog4.md' },
+            // Add more blog file paths and titles here
         ];
 
         // Function to generate the blog list
@@ -72,37 +80,42 @@
             var blogList = document.getElementById('blogList');
             blogList.innerHTML = '';
 
-            blogFiles.forEach(file => {
-                fetch(file)
+            blogFiles.forEach(blog => {
+                fetch(blog.file)
                     .then(response => response.text())
                     .then(markdown => {
-                        var title = getTitleFromMarkdown(markdown);
-                        var dateCreated = getDateCreated(file);
+                        var md = new markdownit();
+                        var html = md.render(markdown);
+                        var excerpt = getExcerptFromHTML(html);
 
                         var blogBox = document.createElement('div');
                         blogBox.className = 'blog-box';
 
                         var titleElement = document.createElement('h2');
-                        titleElement.textContent = title;
+                        titleElement.textContent = blog.title;
 
                         var dateCreatedElement = document.createElement('p');
                         dateCreatedElement.className = 'date-created';
-                        dateCreatedElement.textContent = 'Date Created: ' + dateCreated;
+                        dateCreatedElement.textContent = 'Date Created: ' + getDateCreated(blog.file);
+
+                        var excerptElement = document.createElement('div');
+                        excerptElement.className = 'excerpt';
+                        excerptElement.innerHTML = excerpt;
+
+                        var readMoreElement = document.createElement('a');
+                        readMoreElement.className = 'read-more';
+                        readMoreElement.href = blog.file;
+                        readMoreElement.textContent = 'Read More';
 
                         blogBox.appendChild(titleElement);
                         blogBox.appendChild(dateCreatedElement);
+                        blogBox.appendChild(excerptElement);
+                        blogBox.appendChild(readMoreElement);
 
                         blogList.appendChild(blogBox);
                     })
                     .catch(error => console.error(error));
             });
-        }
-
-        // Function to extract the blog name from the Markdown file
-        function getTitleFromMarkdown(markdown) {
-            var lines = markdown.split('\n');
-            var firstLine = lines[0].trim();
-            return firstLine || 'Untitled';
         }
 
         // Function to extract the date created from the file path
@@ -112,6 +125,21 @@
             var fileName = file.split('/').pop(); // Extracts the file name from the path
             var dateCreated = fileName.split('.')[0]; // Assumes the date is the first part before the file extension
             return dateCreated;
+        }
+
+        // Function to generate an excerpt from the rendered HTML
+        function getExcerptFromHTML(html, maxLength = 150) {
+            var temp = document.createElement('div');
+            temp.innerHTML = html;
+
+            var content = temp.textContent || temp.innerText || '';
+            var trimmedContent = content.trim();
+
+            if (trimmedContent.length > maxLength) {
+                return trimmedContent.substr(0, maxLength) + '...';
+            }
+
+            return trimmedContent;
         }
 
         // Generate the blog list on page load
