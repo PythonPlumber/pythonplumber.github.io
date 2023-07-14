@@ -172,37 +172,26 @@
             var currentBlogs = blogFiles.slice(startIndex, endIndex);
 
             currentBlogs.forEach(blog => {
-                fetch(blog.file)
-                    .then(response => response.text())
-                    .then(markdown => {
-                        var title = getTitleFromMarkdown(markdown);
-                        var excerpt = getExcerptFromMarkdown(markdown, 40);
+                var blogBox = document.createElement('div');
+                blogBox.className = 'blog-box';
 
-                        var blogBox = document.createElement('div');
-                        blogBox.className = 'blog-box';
+                var titleElement = document.createElement('h2');
+                titleElement.textContent = blog.title;
 
-                        var titleElement = document.createElement('h2');
-                        titleElement.textContent = title;
+                var excerptElement = document.createElement('div');
+                excerptElement.className = 'excerpt';
+                excerptElement.textContent = blog.excerpt;
 
-                        var excerptElement = document.createElement('div');
-                        excerptElement.className = 'excerpt';
-                        excerptElement.textContent = excerpt;
+                var readMoreLink = document.createElement('a');
+                readMoreLink.className = 'read-more';
+                readMoreLink.href = getBlogURL(blog.file);
+                readMoreLink.textContent = 'Read More';
 
-                        var readMoreLink = document.createElement('a');
-                        readMoreLink.className = 'read-more';
-                        readMoreLink.href = 'javascript:void(0)';
-                        readMoreLink.textContent = 'Read More';
-                        readMoreLink.addEventListener('click', function() {
-                            openMarkdownPage(blog.file);
-                        });
+                blogBox.appendChild(titleElement);
+                blogBox.appendChild(excerptElement);
+                blogBox.appendChild(readMoreLink);
 
-                        blogBox.appendChild(titleElement);
-                        blogBox.appendChild(excerptElement);
-                        blogBox.appendChild(readMoreLink);
-
-                        blogList.appendChild(blogBox);
-                    })
-                    .catch(error => console.error(error));
+                blogList.appendChild(blogBox);
             });
 
             generatePagination();
@@ -226,30 +215,6 @@
             }
 
             return excerpt;
-        }
-
-        // Function to open the Markdown content as HTML in a new tab
-        function openMarkdownPage(file) {
-            fetch(file)
-                .then(response => response.text())
-                .then(markdown => {
-                    var md = window.open('', '_blank');
-                    md.document.write(`
-                        <html>
-                        <head>
-                            <title>Blog Content</title>
-                            <style>
-                                ${getMarkdownPageStyles()}
-                            </style>
-                        </head>
-                        <body>
-                            <div class="markdown-page">${marked(markdown)}</div>
-                        </body>
-                        </html>
-                    `);
-                    md.document.close();
-                })
-                .catch(error => console.error(error));
         }
 
         // Function to generate the pagination buttons
@@ -298,68 +263,9 @@
             }
         }
 
-        // Function to get the CSS styles for the Markdown content page
-        function getMarkdownPageStyles() {
-            return `
-                body {
-                    background-color: #222;
-                    color: #ddd;
-                    font-family: 'Roboto', sans-serif;
-                    text-align: left;
-                    margin: 0;
-                    padding: 20px;
-                }
-                .markdown-page {
-                    text-align: left;
-                    padding: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    background-color: #fff;
-                    color: #333;
-                    font-family: 'Courier New', monospace;
-                }
-                .markdown-page h1,
-                .markdown-page h2,
-                .markdown-page h3,
-                .markdown-page h4,
-                .markdown-page h5,
-                .markdown-page h6 {
-                    margin-top: 0;
-                    margin-bottom: 16px;
-                }
-                .markdown-page p {
-                    margin-bottom: 16px;
-                }
-                .markdown-page a {
-                    color: #ff0000;
-                    text-decoration: none;
-                }
-                .markdown-page a:hover {
-                    text-decoration: underline;
-                }
-                .markdown-page pre {
-                    background-color: #f5f5f5;
-                    color: #333;
-                    padding: 10px;
-                    overflow-x: auto;
-                }
-                .markdown-page code {
-                    font-family: 'Courier New', monospace;
-                }
-                .markdown-page img {
-                    max-width: 100%;
-                    height: auto;
-                    margin-bottom: 16px;
-                }
-                .markdown-page ul,
-                .markdown-page ol {
-                    margin-left: 24px;
-                    margin-bottom: 16px;
-                }
-                .markdown-page li {
-                    margin-bottom: 8px;
-                }
-            `;
+        // Function to get the URL for the blog page with the specified file
+        function getBlogURL(file) {
+            return `https://pythonplumber.eu.org/blog.html?file=${encodeURIComponent(file)}`;
         }
 
         // Generate the blog list on page load
