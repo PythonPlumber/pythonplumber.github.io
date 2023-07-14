@@ -219,31 +219,31 @@
 
             return excerpt;
         }
-      // Function to open the Markdown content as HTML in a new tab
-      function openMarkdownPage(file) {
-          fetch(file)
-              .then(response => response.text())
-              .then(markdown => {
-                  var md = window.open('', '_blank');
-                  md.document.open();
-                  md.document.write(`
-                      <html>
-                      <head>
-                          <title>Blog Content</title>
-                          <style>
-                              ${getMarkdownPageStyles()}
-                          </style>
-                      </head>
-                     <body>
-                          <div class="markdown-content">${marked(markdown)}</div>
-                    </body>
-                    </html>
-                  `);
-               md.document.close();
-             })
-              .catch(error => console.error(error));
-      }
 
+        // Function to open the Markdown content as HTML in a new tab
+        function openMarkdownPage(file) {
+            fetch(file)
+                .then(response => response.text())
+                .then(markdown => {
+                    var md = window.open('', '_blank');
+                    md.document.open();
+                    md.document.write(`
+                        <html>
+                        <head>
+                            <title>Blog Content</title>
+                            <style>
+                                ${getMarkdownPageStyles()}
+                            </style>
+                        </head>
+                        <body>
+                            <div class="markdown-content">${marked(markdown)}</div>
+                        </body>
+                        </html>
+                    `);
+                    md.document.close();
+                })
+                .catch(error => console.error(error));
+        }
 
         // Function to generate the pagination buttons
         function generatePagination() {
