@@ -5,7 +5,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #333;
+            background-color: #1a1333;
             color: #fff;
             font-family: 'Roboto', sans-serif;
             text-align: center;
@@ -15,7 +15,7 @@
         h1 {
             font-size: 36px;
             margin-bottom: 20px;
-            color: #ff0000;
+            color: #ff58c1;
             text-transform: uppercase;
             letter-spacing: 4px;
             font-weight: bold;
@@ -30,7 +30,7 @@
         }
         .blog-box {
             width: 400px;
-            background-color: #222;
+            background-color: #301c57;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             padding: 20px;
@@ -44,21 +44,23 @@
         .blog-box h2 {
             font-size: 24px;
             margin-top: 0;
-            color: #ff0000;
+            color: #ff58c1;
             margin-bottom: 10px;
         }
         .blog-box .date-created {
             font-style: italic;
-            color: #777;
+            color: #999;
             margin-bottom: 10px;
         }
         .blog-box .excerpt {
             margin-bottom: 20px;
             color: #ccc;
+            text-align: left;
+            font-family: monospace;
         }
         .blog-box .read-more {
             display: inline-block;
-            color: #ff0000;
+            color: #ff58c1;
             text-decoration: none;
         }
     </style>
@@ -70,11 +72,11 @@
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
         var blogFiles = [
-            { title: 'Blog 1', file: 'blogsmd/blog1.md' },
-            { title: 'Blog 2', file: 'blogsmd/blog2.md' },
-            { title: 'Blog 3', file: 'blogsmd/blog3.md' },
-            { title: 'Blog 4', file: 'blogsmd/blog4.md' },
-            // Add more blog file paths and titles here
+            { file: 'blogsmd/blog1.md' },
+            { file: 'blogsmd/blog2.md' },
+            { file: 'blogsmd/blog3.md' },
+            { file: 'blogsmd/blog4.md' },
+            // Add more blog file paths here
         ];
 
         // Function to generate the blog list
@@ -88,8 +90,8 @@
                     .then(markdown => {
                         var md = new markdownit();
                         var html = md.render(markdown);
-                        var title = getTitleFromMarkdown(html);
-                        var excerpt = getExcerptFromHTML(html);
+                        var title = getTitleFromMarkdown(markdown);
+                        var excerpt = getExcerptFromHTML(html, 40);
 
                         var blogBox = document.createElement('div');
                         blogBox.className = 'blog-box';
@@ -103,7 +105,7 @@
 
                         var excerptElement = document.createElement('div');
                         excerptElement.className = 'excerpt';
-                        excerptElement.innerHTML = excerpt;
+                        excerptElement.textContent = excerpt;
 
                         var readMoreElement = document.createElement('a');
                         readMoreElement.className = 'read-more';
@@ -124,12 +126,10 @@
             });
         }
 
-        // Function to extract the title from the rendered HTML
-        function getTitleFromMarkdown(html) {
-            var temp = document.createElement('div');
-            temp.innerHTML = html;
-            var titleElement = temp.querySelector('h1, h2, h3, h4, h5, h6');
-            return titleElement ? titleElement.textContent : 'Untitled';
+        // Function to extract the title from the first word of the Markdown content
+        function getTitleFromMarkdown(markdown) {
+            var firstWord = markdown.trim().split(' ')[0];
+            return firstWord || 'Untitled';
         }
 
         // Function to extract the date created from the file path
@@ -142,7 +142,7 @@
         }
 
         // Function to generate an excerpt from the rendered HTML
-        function getExcerptFromHTML(html, maxLength = 150) {
+        function getExcerptFromHTML(html, maxLength) {
             var temp = document.createElement('div');
             temp.innerHTML = html;
 
