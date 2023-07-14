@@ -47,6 +47,19 @@
             pointer-events: none;
             opacity: 0.5;
         }
+        .blog-box {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #fff;
+        }
+        .blog-box h2 {
+            font-size: 24px;
+            margin-top: 0;
+            color: #ff0000;
+        }
+        .blog-box p {
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -60,17 +73,6 @@
         var currentPage = 1;
         var blogFiles = [
             'blogsmd/blog1.md',
-            'blogsmd/blog2.md',
-            'blogsmd/blog3.md',
-            'blogsmd/blog4.md',
-            'blogsmd/blog5.md',
-            'blogsmd/blog6.md',
-            'blogsmd/blog7.md',
-            'blogsmd/blog8.md',
-            'blogsmd/blog9.md',
-            'blogsmd/blog10.md',
-            'blogsmd/blog11.md',
-            'blogsmd/blog12.md'
             // Add more blog file paths here
         ];
 
@@ -84,13 +86,13 @@
             blogList.innerHTML = '';
 
             blogsToShow.forEach(file => {
-                var title = file.split('/').pop().replace('.md', ''); // Extract the title from the file name
-
                 fetch(file)
                     .then(response => response.text())
                     .then(markdown => {
                         var md = new markdownit();
                         var html = md.render(markdown);
+
+                        var title = getTitleFromHTML(html); // Extract the title from the rendered HTML
 
                         var details = document.createElement('details');
                         var summary = document.createElement('summary');
@@ -108,6 +110,14 @@
             });
 
             generatePagination();
+        }
+
+        // Function to extract the title from the rendered HTML
+        function getTitleFromHTML(html) {
+            var temp = document.createElement('div');
+            temp.innerHTML = html;
+            var titleElement = temp.querySelector('h1, h2, h3, h4, h5, h6');
+            return titleElement ? titleElement.textContent : 'Untitled';
         }
 
         // Function to generate pagination
