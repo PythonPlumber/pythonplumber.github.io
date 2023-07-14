@@ -89,8 +89,33 @@
     <div class="blog-list" id="blogList"></div>
     <div class="pagination" id="pagination"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
     <script>
+        // Example GitHub repository and folder path
+        var repoOwner = 'PythonPlumber';
+        var repoName = 'pythonplumber.github.io';
+        var folderPath = 'blogsmd';
+
+        // Function to fetch the creation dates of files in the GitHub repository folder
+        function fetchFileCreationDates() {
+            var apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
+
+            return fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        return data.reduce((dates, file) => {
+                            var fileName = file.name;
+                            var creationDate = file.created_at;
+                            dates[fileName] = creationDate;
+                            return dates;
+                        }, {});
+                    } else {
+                        throw new Error('Unable to retrieve folder contents');
+                    }
+                });
+        }
+
+        // Example blog files
         var blogFiles = [
             { file: 'blogsmd/blog1.md' },
             { file: 'blogsmd/blog2.md' },
@@ -102,6 +127,7 @@
         var itemsPerPage = 4;
         var currentPage = 1;
         var totalPages = Math.ceil(blogFiles.length / itemsPerPage);
+        var fileCreationDates = {};
 
         // Function to generate the blog list for the current page
         function generateBlogList() {
@@ -119,12 +145,17 @@
                     .then(markdown => {
                         var title = getTitleFromMarkdown(markdown);
                         var excerpt = getExcerptFromMarkdown(markdown, 40);
+                        var creationDate = fileCreationDates[blog.file];
 
                         var blogBox = document.createElement('div');
                         blogBox.className = 'blog-box';
 
                         var titleElement = document.createElement('h2');
                         titleElement.textContent = title;
+
+                        var dateCreatedElement = document.createElement('p');
+                        dateCreatedElement.className = 'date-created';
+                        dateCreatedElement.textContent = 'Date Created: ' + formatDate(creationDate);
 
                         var excerptElement = document.createElement('div');
                         excerptElement.className = 'excerpt';
@@ -139,6 +170,7 @@
                         });
 
                         blogBox.appendChild(titleElement);
+                        blogBox.appendChild(dateCreatedElement);
                         blogBox.appendChild(excerptElement);
                         blogBox.appendChild(readMoreElement);
 
@@ -168,6 +200,13 @@
             }
 
             return trimmedContent;
+        }
+
+        // Function to format the date string to a desired format
+        function formatDate(dateString) {
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            var date = new Date(dateString);
+            return date.toLocaleDateString(undefined, options);
         }
 
         // Function to open the Markdown content as HTML in a new tab
@@ -224,7 +263,14 @@
         }
 
         // Generate the blog list on page load
-        window.addEventListener('load', generateBlogList);
+        window.addEventListener('load', function() {
+            fetchFileCreationDates()
+                .then(dates => {
+                    fileCreationDates = dates;
+                    generateBlogList();
+                })
+                .catch(error => console.error(error));
+        });
     </script>
 </body>
 </html>
