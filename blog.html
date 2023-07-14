@@ -51,6 +51,9 @@
             margin-bottom: 20px;
             padding: 20px;
             border: 1px solid #fff;
+            display: inline-block;
+            width: 400px;
+            text-align: left;
         }
         .blog-box h2 {
             font-size: 24px;
@@ -73,6 +76,17 @@
         var currentPage = 1;
         var blogFiles = [
             'blogsmd/blog1.md',
+            'blogsmd/blog2.md',
+            'blogsmd/blog3.md',
+            'blogsmd/blog4.md',
+            'blogsmd/blog5.md',
+            'blogsmd/blog6.md',
+            'blogsmd/blog7.md',
+            'blogsmd/blog8.md',
+            'blogsmd/blog9.md',
+            'blogsmd/blog10.md',
+            'blogsmd/blog11.md',
+            'blogsmd/blog12.md'
             // Add more blog file paths here
         ];
 
@@ -104,7 +118,11 @@
                         details.appendChild(summary);
                         details.innerHTML += html;
 
-                        blogList.appendChild(details);
+                        var blogBox = document.createElement('div');
+                        blogBox.classList.add('blog-box');
+                        blogBox.appendChild(details);
+
+                        blogList.appendChild(blogBox);
                     })
                     .catch(error => console.error(error));
             });
