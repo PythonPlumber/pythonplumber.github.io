@@ -82,6 +82,36 @@
             background-color: #888;
             cursor: not-allowed;
         }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            height: 80%;
+            max-height: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            overflow: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -175,32 +205,29 @@
             var apiUrl = 'https://docsify-this.net';
             var url = `${apiUrl}?basePath=https://raw.githubusercontent.com/PythonPlumber/pythonplumber.github.io/main/${file}`;
 
+            var modal = document.createElement('div');
+            modal.className = 'modal';
+
+            var modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+
+            var closeButton = document.createElement('span');
+            closeButton.className = 'modal-close';
+            closeButton.textContent = '×';
+            closeButton.addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+
             var iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.style.width = '100%';
-            iframe.style.height = '500px';
+            iframe.style.height = '100%';
             iframe.style.border = 'none';
 
-            var modal = document.createElement('div');
-            modal.style.position = 'fixed';
-            modal.style.top = '0';
-            modal.style.left = '0';
-            modal.style.width = '100%';
-            modal.style.height = '100%';
-            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            modal.style.display = 'flex';
-            modal.style.justifyContent = 'center';
-            modal.style.alignItems = 'center';
-
-            modal.appendChild(iframe);
+            modalContent.appendChild(closeButton);
+            modalContent.appendChild(iframe);
+            modal.appendChild(modalContent);
             document.body.appendChild(modal);
-
-            // Close the modal on outside click
-            modal.addEventListener('click', function(event) {
-                if (event.target === modal) {
-                    document.body.removeChild(modal);
-                }
-            });
         }
 
         // Function to generate the pagination buttons
