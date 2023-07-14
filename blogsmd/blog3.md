@@ -1,3 +1,7 @@
+<!--Title:Introduction to Flask -->
+<!--md_file_name:blog3.md-->
+<!--short_discription: Flask is a lightweight and flexible web framework for Python that simplifies the process of building web applications.-->
+
 # Introduction to Flask: A Lightweight Web Framework for Python
 
 Flask is a lightweight and flexible web framework for Python that simplifies the process of building web applications. With its minimalistic design and powerful features, Flask has gained significant popularity among developers. In this blog post, we'll explore the key aspects of Flask and why it is an excellent choice for web development.
