@@ -132,6 +132,14 @@
         .markdown-content li {
             margin-bottom: 8px;
         }
+        .markdown-page {
+            background-color: #222;
+            color: #ddd;
+            font-family: 'Roboto', sans-serif;
+            text-align: left;
+            margin: 0;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -236,7 +244,9 @@
                             </style>
                         </head>
                         <body>
-                            <div class="markdown-content">${marked(markdown)}</div>
+                            <div class="markdown-page">
+                                ${marked(markdown)}
+                            </div>
                         </body>
                         </html>
                     `);
@@ -302,54 +312,59 @@
                     margin: 0;
                     padding: 20px;
                 }
-                .markdown-content {
+                .markdown-page {
+                    background-color: #222;
+                    color: #ddd;
+                    font-family: 'Roboto', sans-serif;
                     text-align: left;
+                    margin: 0;
                     padding: 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 8px;
-                    background-color: #fff;
-                    color: #333;
-                    font-family: 'Courier New', monospace;
                 }
-                .markdown-content h1,
-                .markdown-content h2,
-                .markdown-content h3,
-                .markdown-content h4,
-                .markdown-content h5,
-                .markdown-content h6 {
+                .markdown-page h1,
+                .markdown-page h2,
+                .markdown-page h3,
+                .markdown-page h4,
+                .markdown-page h5,
+                .markdown-page h6 {
                     margin-top: 0;
                     margin-bottom: 16px;
+                    color: #ff0000;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
                 }
-                .markdown-content p {
+                .markdown-page p {
                     margin-bottom: 16px;
+                    line-height: 1.5;
                 }
-                .markdown-content a {
+                .markdown-page a {
                     color: #ff0000;
                     text-decoration: none;
                 }
-                .markdown-content a:hover {
+                .markdown-page a:hover {
                     text-decoration: underline;
                 }
-                .markdown-content pre {
+                .markdown-page pre {
                     background-color: #f5f5f5;
                     color: #333;
                     padding: 10px;
                     overflow-x: auto;
                 }
-                .markdown-content code {
+                .markdown-page code {
                     font-family: 'Courier New', monospace;
                 }
-                .markdown-content img {
+                .markdown-page img {
                     max-width: 100%;
                     height: auto;
                     margin-bottom: 16px;
                 }
-                .markdown-content ul,
-                .markdown-content ol {
+                .markdown-page ul,
+                .markdown-page ol {
                     margin-left: 24px;
                     margin-bottom: 16px;
                 }
-                .markdown-content li {
+                .markdown-page li {
                     margin-bottom: 8px;
                 }
             `;
