@@ -90,6 +90,7 @@
     <div class="pagination" id="pagination"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         var blogFiles = [
             { file: 'blogsmd/blog1.md' },
@@ -117,20 +118,14 @@
                 fetch(blog.file)
                     .then(response => response.text())
                     .then(markdown => {
-                        var md = new markdownit();
-                        var html = md.render(markdown);
                         var title = getTitleFromMarkdown(markdown);
-                        var excerpt = getExcerptFromHTML(html, 40);
+                        var excerpt = getExcerptFromMarkdown(markdown, 40);
 
                         var blogBox = document.createElement('div');
                         blogBox.className = 'blog-box';
 
                         var titleElement = document.createElement('h2');
                         titleElement.textContent = title;
-
-                        var dateCreatedElement = document.createElement('p');
-                        dateCreatedElement.className = 'date-created';
-                        dateCreatedElement.textContent = 'Date Created: ' + getDateCreated(blog.file);
 
                         var excerptElement = document.createElement('div');
                         excerptElement.className = 'excerpt';
@@ -145,7 +140,6 @@
                         });
 
                         blogBox.appendChild(titleElement);
-                        blogBox.appendChild(dateCreatedElement);
                         blogBox.appendChild(excerptElement);
                         blogBox.appendChild(readMoreElement);
 
@@ -163,21 +157,11 @@
             return firstWord || 'Untitled';
         }
 
-        // Function to extract the date created from the file path
-        function getDateCreated(file) {
-            // Extract the date from the file name or path
-            // Modify this function based on your file naming convention
-            var fileName = file.split('/').pop(); // Extracts the file name from the path
-            var dateCreated = fileName.split('.')[0]; // Assumes the date is the first part before the file extension
-            return dateCreated;
-        }
-
-        // Function to generate an excerpt from the rendered HTML
-        function getExcerptFromHTML(html, maxLength) {
-            var temp = document.createElement('div');
-            temp.innerHTML = html;
-
-            var content = temp.textContent || temp.innerText || '';
+        // Function to extract an excerpt from the markdown content
+        function getExcerptFromMarkdown(markdown, maxLength) {
+            var content = markdown.replace(/#+\s+.+/g, ''); // Remove headings
+            content = content.replace(/!\[.*?\]\(.*?\)/g, ''); // Remove images
+            content = content.replace(/\[(.*?)\]\(.*?\)/g, '$1'); // Remove links
             var trimmedContent = content.trim();
 
             if (trimmedContent.length > maxLength) {
@@ -187,10 +171,12 @@
             return trimmedContent;
         }
 
-        // Function to open the Markdown content in a new page
+        // Function to open the Markdown content as HTML in a new tab
         function openMarkdownPage(markdown) {
+            var html = marked(markdown);
+
             var win = window.open('', '_blank');
-            win.document.write('<html><head><title>Blog Content</title></head><body>' + markdown + '</body></html>');
+            win.document.write('<html><head><title>Blog Content</title></head><body>' + html + '</body></html>');
             win.document.close();
         }
 
