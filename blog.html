@@ -190,7 +190,9 @@
 
         var currentBlogs = blogFiles.slice(startIndex, endIndex);
 
-        currentBlogs.forEach(blog => {
+        currentBlogs.forEach((blog, index) => {
+            var fileIndex = startIndex + index;
+
             fetch('blogsmd/' + blog)
                 .then(response => response.text())
                 .then(markdown => {
