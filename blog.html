@@ -163,171 +163,161 @@
     &copy; 2023 Mario Python Plumber. All rights reserved.
   </div>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        var blogFiles = [
-            { file: 'blogsmd/blog1.md' },
-            { file: 'blogsmd/blog2.md' },
-            { file: 'blogsmd/blog3.md' },
-            { file: 'blogsmd/blog4.md' },
-            { file: 'blogsmd/blog5.md' },
-        ];
+<script>
+    var blogFiles = [
+        'blog1.md',
+        'blog2.md',
+        'blog3.md',
+        'blog4.md',
+        'blog5.md',
+    ];
 
-        var itemsPerPage = 4;
-        var currentPage = 1;
-        var totalPages = Math.ceil(blogFiles.length / itemsPerPage);
+    var itemsPerPage = 4;
+    var currentPage = 1;
+    var totalPages = Math.ceil(blogFiles.length / itemsPerPage);
 
-        // Function to extract the title and file name from the Markdown content
-        function extractMetadataFromMarkdown(markdown) {
-            var titleRegex = /<!--Title:(.*?)-->/;
-            var fileRegex = /<!--md_file_name:(.*?)-->/;
+    // Function to extract the excerpt from the Markdown content
+    function getExcerptFromMarkdown(markdown, maxLength) {
+        var excerptRegex = /<!--short_discription:(.*?)-->/;
+        var match = markdown.match(excerptRegex);
+        var excerpt = match ? match[1].trim() : '';
 
-            var titleMatch = markdown.match(titleRegex);
-            var fileMatch = markdown.match(fileRegex);
-
-            var title = titleMatch ? titleMatch[1].trim() : 'Untitled';
-            var file = fileMatch ? fileMatch[1].trim() : '';
-
-            return { title, file };
+        if (excerpt.length > maxLength) {
+            excerpt = excerpt.substr(0, maxLength) + '...';
         }
 
-        // Function to extract the excerpt from the Markdown content
-        function getExcerptFromMarkdown(markdown, maxLength) {
-            var excerptRegex = /<!--short_discription:(.*?)-->/;
-            var match = markdown.match(excerptRegex);
-            var excerpt = match ? match[1].trim() : '';
+        return excerpt;
+    }
 
-            if (excerpt.length > maxLength) {
-                excerpt = excerpt.substr(0, maxLength) + '...';
+    // Function to generate the blog list for the current page
+    function generateBlogList() {
+        var blogList = document.getElementById('blogList');
+        blogList.innerHTML = '';
+
+        var startIndex = (currentPage - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        var currentBlogs = blogFiles.slice(startIndex, endIndex);
+
+        currentBlogs.forEach(blog => {
+            fetch('blogsmd/' + blog)
+                .then(response => response.text())
+                .then(markdown => {
+                    var title = blog.replace('.md', '');
+                    var excerpt = getExcerptFromMarkdown(markdown, 40);
+
+                    var blogBox = document.createElement('div');
+                    blogBox.className = 'blog-box';
+
+                    var titleElement = document.createElement('h2');
+                    titleElement.textContent = title;
+
+                    var excerptElement = document.createElement('div');
+                    excerptElement.className = 'excerpt';
+                    excerptElement.textContent = excerpt;
+
+                    var readMoreLink = document.createElement('a');
+                    readMoreLink.className = 'read-more';
+                    readMoreLink.href = 'javascript:void(0)';
+                    readMoreLink.textContent = 'Read More';
+                    readMoreLink.addEventListener('click', function() {
+                        openMarkdownPage('blogsmd/' + blog);
+                    });
+
+                    blogBox.appendChild(titleElement);
+                    blogBox.appendChild(excerptElement);
+                    blogBox.appendChild(readMoreLink);
+
+                    blogList.appendChild(blogBox);
+                })
+                .catch(error => console.error(error));
+        });
+
+        generatePagination();
+    }
+
+    // Function to open the Markdown content in an iframe using the Docsify web API
+    function openMarkdownPage(file) {
+        var apiUrl = 'https://docsify-this.net';
+        var url = `${apiUrl}?basePath=https://raw.githubusercontent.com/PythonPlumber/pythonplumber.github.io/main/${file}`;
+
+        var modal = document.createElement('div');
+        modal.className = 'modal';
+
+        var modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+
+        var closeButton = document.createElement('span');
+        closeButton.className = 'modal-close';
+        closeButton.innerHTML = '&times;';
+        closeButton.addEventListener('click', function() {
+            document.body.removeChild(modal);
+        });
+
+        var titleElement = document.createElement('h2');
+        titleElement.textContent = file.replace('blogsmd/', '').replace('.md', '');
+
+        var iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+
+        modalContent.appendChild(closeButton);
+        modalContent.appendChild(titleElement);
+        modalContent.appendChild(iframe);
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+    }
+
+    // Function to generate the pagination buttons
+    function generatePagination() {
+        var pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+
+        var previousButton = document.createElement('button');
+        previousButton.textContent = 'Previous';
+        previousButton.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                generateBlogList();
             }
+        });
+        pagination.appendChild(previousButton);
 
-            return excerpt;
+        for (var i = 1; i <= totalPages; i++) {
+            var pageButton = document.createElement('button');
+            pageButton.textContent = i;
+            pageButton.addEventListener('click', function() {
+                currentPage = parseInt(this.textContent);
+                generateBlogList();
+            });
+            pagination.appendChild(pageButton);
         }
 
-        // Function to generate the blog list for the current page
-        function generateBlogList() {
-            var blogList = document.getElementById('blogList');
-            blogList.innerHTML = '';
-
-            var startIndex = (currentPage - 1) * itemsPerPage;
-            var endIndex = startIndex + itemsPerPage;
-
-            var currentBlogs = blogFiles.slice(startIndex, endIndex);
-
-            currentBlogs.forEach(blog => {
-                fetch(blog.file)
-                    .then(response => response.text())
-                    .then(markdown => {
-                        var { title, file } = extractMetadataFromMarkdown(markdown);
-                        var excerpt = getExcerptFromMarkdown(markdown, 40);
-
-                        var blogBox = document.createElement('div');
-                        blogBox.className = 'blog-box';
-
-                        var titleElement = document.createElement('h2');
-                        titleElement.textContent = title;
-
-                        var excerptElement = document.createElement('div');
-                        excerptElement.className = 'excerpt';
-                        excerptElement.textContent = excerpt;
-
-                        var readMoreLink = document.createElement('a');
-                        readMoreLink.className = 'read-more';
-                        readMoreLink.href = 'javascript:void(0)';
-                        readMoreLink.textContent = 'Read More';
-                        readMoreLink.addEventListener('click', function() {
-                            openMarkdownPage(file);
-                        });
-
-                        blogBox.appendChild(titleElement);
-                        blogBox.appendChild(excerptElement);
-                        blogBox.appendChild(readMoreLink);
-
-                        blogList.appendChild(blogBox);
-                    })
-                    .catch(error => console.error(error));
-            });
-
-            generatePagination();
-        }
-
-        // Function to open the Markdown content in an iframe using the Docsify web API
-        function openMarkdownPage(file) {
-            var apiUrl = 'https://docsify-this.net';
-            var url = `${apiUrl}?basePath=https://raw.githubusercontent.com/PythonPlumber/pythonplumber.github.io/main/${file}`;
-
-            var modal = document.createElement('div');
-            modal.className = 'modal';
-
-            var modalContent = document.createElement('div');
-            modalContent.className = 'modal-content';
-
-            var closeButton = document.createElement('span');
-            closeButton.className = 'modal-close';
-            closeButton.innerHTML = '&times;';
-            closeButton.addEventListener('click', function() {
-                document.body.removeChild(modal);
-            });
-
-            var iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.style.width = '100%';
-            iframe.style.height = '100%';
-            iframe.style.border = 'none';
-
-            modalContent.appendChild(closeButton);
-            modalContent.appendChild(iframe);
-            modal.appendChild(modalContent);
-            document.body.appendChild(modal);
-        }
-
-        // Function to generate the pagination buttons
-        function generatePagination() {
-            var pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            var previousButton = document.createElement('button');
-            previousButton.textContent = 'Previous';
-            previousButton.addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    generateBlogList();
-                }
-            });
-            pagination.appendChild(previousButton);
-
-            for (var i = 1; i <= totalPages; i++) {
-                var pageButton = document.createElement('button');
-                pageButton.textContent = i;
-                pageButton.addEventListener('click', function() {
-                    currentPage = parseInt(this.textContent);
-                    generateBlogList();
-                });
-                pagination.appendChild(pageButton);
+        var nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                generateBlogList();
             }
+        });
+        pagination.appendChild(nextButton);
 
-            var nextButton = document.createElement('button');
-            nextButton.textContent = 'Next';
-            nextButton.addEventListener('click', function() {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    generateBlogList();
-                }
-            });
-            pagination.appendChild(nextButton);
-
-            // Disable previous button on first page
-            if (currentPage === 1) {
-                previousButton.disabled = true;
-            }
-
-            // Disable next button on last page
-            if (currentPage === totalPages) {
-                nextButton.disabled = true;
-            }
+        // Disable previous button on first page
+        if (currentPage === 1) {
+            previousButton.disabled = true;
         }
 
-        // Generate the blog list on page load
-        window.addEventListener('load', generateBlogList);
-    </script>
+        // Disable next button on last page
+        if (currentPage === totalPages) {
+            nextButton.disabled = true;
+        }
+    }
+
+    // Generate the blog list on page load
+    window.addEventListener('load', generateBlogList);
+</script>
 </body>
 </html>
