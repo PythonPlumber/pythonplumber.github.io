@@ -153,6 +153,20 @@
     var currentPage = 1;
     var totalPages = Math.ceil(blogFiles.length / itemsPerPage);
 
+    // Function to extract the title and file name from the Markdown content
+    function extractMetadataFromMarkdown(markdown) {
+        var titleRegex = /<!--Title:(.*?)-->/;
+        var fileRegex = /<!--md_file_name:(.*?)-->/;
+
+        var titleMatch = markdown.match(titleRegex);
+        var fileMatch = markdown.match(fileRegex);
+
+        var title = titleMatch ? titleMatch[1].trim() : 'Untitled';
+        var file = fileMatch ? fileMatch[1].trim() : '';
+
+        return { title, file };
+    }
+
     // Function to extract the excerpt from the Markdown content
     function getExcerptFromMarkdown(markdown, maxLength) {
         var excerptRegex = /<!--short_discription:(.*?)-->/;
@@ -180,7 +194,7 @@
             fetch('blogsmd/' + blog)
                 .then(response => response.text())
                 .then(markdown => {
-                    var title = blog.replace('.md', '');
+                    var { title, file } = extractMetadataFromMarkdown(markdown);
                     var excerpt = getExcerptFromMarkdown(markdown, 40);
 
                     var blogBox = document.createElement('div');
@@ -198,7 +212,7 @@
                     readMoreLink.href = 'javascript:void(0)';
                     readMoreLink.textContent = 'Read More';
                     readMoreLink.addEventListener('click', function() {
-                        openMarkdownPage('blogsmd/' + blog);
+                        openMarkdownPage(file);
                     });
 
                     blogBox.appendChild(titleElement);
@@ -232,7 +246,7 @@
         });
 
         var titleElement = document.createElement('h2');
-        titleElement.textContent = file.replace('blogsmd/', '').replace('.md', '');
+        titleElement.textContent = file.replace('.md', '');
 
         var iframe = document.createElement('iframe');
         iframe.src = url;
