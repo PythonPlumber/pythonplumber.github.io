@@ -428,6 +428,8 @@
       padding: 16px;
       display: grid;
       gap: 16px;
+      width: 100%;
+      min-width: 0;
     }
 
     .feed-viewport {
@@ -436,6 +438,8 @@
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-soft);
       background: rgba(5, 10, 8, 0.6);
+      width: 100%;
+      min-width: 0;
     }
 
     .feed-item {
@@ -448,6 +452,7 @@
       gap: 8px;
       text-align: left;
       overflow-wrap: anywhere;
+      min-width: 0;
     }
 
     .feed-title {
@@ -585,7 +590,8 @@
       .navbar {
         gap: 14px;
         padding: 14px 12px;
-        align-items: flex-start;
+        align-items: stretch;
+        flex-direction: column;
       }
 
       .navbar a {
@@ -595,9 +601,10 @@
 
       .nav-group {
         justify-content: flex-start;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        padding-bottom: 6px;
+        overflow: visible;
+        flex-wrap: wrap;
+        row-gap: 8px;
+        padding-bottom: 0;
       }
 
       .hero {
@@ -1984,23 +1991,30 @@
     if (form) {
       setCaptcha();
       form.addEventListener('submit', function(event) {
-        event.preventDefault();
         if (hpInput && hpInput.value.trim()) {
+          event.preventDefault();
           setStatus('Submission blocked.', 'error');
           return;
         }
         const rateLimitMessage = checkRateLimit();
         if (rateLimitMessage) {
+          event.preventDefault();
           setStatus(rateLimitMessage, 'error');
           return;
         }
         const isValid = runValidation();
         if (!isValid) {
+          event.preventDefault();
           setStatus('Please fix the highlighted fields.', 'error');
           return;
         }
         if (submitButton) submitButton.disabled = true;
         setStatus('Sending message...', '');
+        if (form.action.includes('formsubmit.co')) {
+          recordSubmission();
+          return;
+        }
+        event.preventDefault();
         fetch(form.action, {
           method: 'POST',
           body: new FormData(form),
