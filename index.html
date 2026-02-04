@@ -252,6 +252,7 @@
     .grid {
       display: grid;
       gap: 20px;
+      width: 100%;
     }
 
     .grid-2 {
@@ -272,6 +273,7 @@
       display: grid;
       gap: 10px;
       overflow-wrap: anywhere;
+      min-width: 0;
     }
 
     .card-title {
@@ -391,6 +393,7 @@
       display: grid;
       gap: 16px;
       grid-template-columns: repeat(1, minmax(0, 1fr));
+      width: 100%;
     }
 
     .stat-card {
@@ -402,6 +405,7 @@
       display: grid;
       gap: 8px;
       min-height: 120px;
+      min-width: 0;
     }
 
     .stat-label {
@@ -483,6 +487,7 @@
       gap: 18px;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     @container (min-width: 720px) {
@@ -580,11 +585,19 @@
       .navbar {
         gap: 14px;
         padding: 14px 12px;
+        align-items: flex-start;
       }
 
       .navbar a {
         font-size: 0.78rem;
         letter-spacing: 0.1em;
+      }
+
+      .nav-group {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 6px;
       }
 
       .hero {
@@ -803,13 +816,14 @@
         0 8px 32px rgba(0, 255, 136, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
       padding: 24px;
-      margin: 16px 0;
+      margin: 0;
       position: relative;
       overflow: hidden;
       transform: perspective(1000px) rotateX(0deg);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
       overflow-wrap: anywhere;
+      min-width: 0;
     }
 
     .glass-card::before {
@@ -893,14 +907,13 @@
       .form-container {
         padding: 24px;
         border-radius: 12px;
-        margin: 0 16px;
+        margin: 0 auto;
         transform: perspective(800px) rotateX(0.5deg);
       }
 
       .glass-card {
         padding: 20px;
         border-radius: 12px;
-        margin: 12px 16px;
       }
 
       .floating-glass {
@@ -939,13 +952,12 @@
       .form-container {
         padding: 20px;
         border-radius: 10px;
-        margin: 0 12px;
+        margin: 0 auto;
       }
 
       .glass-card {
         padding: 16px;
         border-radius: 10px;
-        margin: 8px 12px;
       }
 
       .glass-card h3 {
@@ -1091,6 +1103,10 @@
         inset 0 -1px 0 rgba(0, 0, 0, 0.5);
       padding: 32px;
       margin-top: 32px;
+      width: 100%;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
       transform: perspective(1000px) rotateX(1deg);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -1153,6 +1169,7 @@
       padding: 8px 12px;
       position: relative;
       transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
     .navbar a::after {
@@ -1204,11 +1221,16 @@
   border: 1px solid rgba(156, 232, 194, 0.5);
   background-color: rgba(5, 15, 10, 0.95);
   color: #e4e4e4;
-  margin-bottom: 18px;
+  margin-bottom: 0;
   font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.form-container form {
+  display: grid;
+  gap: 14px;
 }
 
 .form-container input:focus,
