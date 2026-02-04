@@ -271,6 +271,7 @@
       box-shadow: var(--glass-shadow);
       display: grid;
       gap: 10px;
+      overflow-wrap: anywhere;
     }
 
     .card-title {
@@ -442,6 +443,7 @@
       display: grid;
       gap: 8px;
       text-align: left;
+      overflow-wrap: anywhere;
     }
 
     .feed-title {
@@ -651,6 +653,7 @@
     }
 
     /* Advanced 3D UI Container with Glass Effects */
+    #threejs-container,
     #threejs-ui-container {
       position: absolute;
       top: 0;
@@ -806,6 +809,7 @@
       transform: perspective(1000px) rotateX(0deg);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
+      overflow-wrap: anywhere;
     }
 
     .glass-card::before {
@@ -833,7 +837,7 @@
     }
 
     .glass-card h3 {
-      color: #b4ffd0;
+      color: var(--text-secondary);
       font-size: 20px;
       margin-bottom: 12px;
       position: relative;
@@ -841,7 +845,7 @@
     }
 
     .glass-card p {
-      color: #d4d4d4;
+      color: var(--text-primary);
       line-height: 1.6;
       position: relative;
       z-index: 2;
@@ -1274,7 +1278,7 @@
 }
 
 .social-links a {
-  color: #e4e4e4;
+  color: var(--text-primary);
   text-decoration: none;
   font-size: 0.95rem;
 }
@@ -1353,12 +1357,41 @@
       z-index: 9999;
     }
 
-    .spinner {
-      width: 100px;
-      height: 100px;
-      background-image: url('https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif');
-      background-repeat: no-repeat;
-      background-size: contain;
+    .loader-shell {
+      width: min(220px, 70vw);
+      display: grid;
+      gap: 16px;
+      align-items: center;
+      justify-items: center;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(144, 238, 144, 0.2);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.35);
+    }
+
+    .loader-canvas {
+      width: 140px;
+      height: 140px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .loader-fallback {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 8px solid rgba(0, 255, 136, 0.15);
+      border-top-color: rgba(0, 255, 136, 0.85);
+      animation: loader-spin 1s linear infinite;
+      display: none;
+    }
+
+    .loader-text {
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
     }
 
     .scroll-down {
@@ -1385,6 +1418,12 @@
       }
     }
 
+    @keyframes loader-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     .hero,
     .about-me,
     .social-links,
@@ -1407,11 +1446,16 @@
   </nav>
 
   <div id="loading-overlay">
-    <div class="spinner"></div>
+    <div class="loader-shell" role="status" aria-live="polite">
+      <div class="loader-canvas" id="loader-canvas"></div>
+      <div class="loader-fallback" id="loader-fallback"></div>
+      <div class="loader-text" id="loader-text">Loading 0%</div>
+    </div>
   </div>
   
   <main class="page" id="main">
     <section class="hero section" id="hero">
+      <div id="threejs-container"></div>
       <div id="threejs-ui-container"></div>
       <div class="hero-content">
         <h1>Mario Python Plumber</h1>
@@ -1514,21 +1558,34 @@
       <div class="form-container">
         <form id="contact-form" action="https://formsubmit.co/mario.yellow.bea@proton.me" method="POST">
           <label for="name">Name:</label>
-          <input class="input" type="text" id="name" name="name" required>
+          <input class="input" type="text" id="name" name="name" maxlength="60" autocomplete="name" required>
+          <span class="field-error" id="name-error"></span>
 
           <label for="email">Email:</label>
-          <input class="input" type="email" id="email" name="email" required>
-          <span id="email-validation"></span>
+          <input class="input" type="email" id="email" name="email" maxlength="120" autocomplete="email" required>
+          <span class="field-error" id="email-error"></span>
+
+          <label for="phone">Phone:</label>
+          <input class="input" type="tel" id="phone" name="phone" maxlength="20" autocomplete="tel" required>
+          <span class="field-error" id="phone-error"></span>
 
           <label for="github">GitHub Username:</label>
-          <input class="input" type="text" id="github" name="github" required>
-          <span id="github-validation"></span>
+          <input class="input" type="text" id="github" name="github" maxlength="60" autocomplete="username">
+          <span class="field-error" id="github-error"></span>
           
           <label for="message">Message:</label>
-          <textarea class="input" id="message" name="message" rows="4" required></textarea>
+          <textarea class="input" id="message" name="message" rows="4" maxlength="800" required></textarea>
+          <span class="field-error" id="message-error"></span>
+
+          <label for="captcha">Verification:</label>
+          <input class="input" type="text" id="captcha" name="captcha" maxlength="20" autocomplete="off" required>
+          <span class="field-error" id="captcha-error"></span>
+
+          <input class="input hp-field" type="text" id="website" name="website" autocomplete="off" tabindex="-1" aria-hidden="true">
           
           <input type="submit" id="submit-button" value="Send Message">
         </form>
+        <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
       </div>
     </section>
   </main>
@@ -1854,98 +1911,6 @@
     }, { passive: true });
   </script>
   
-  <!-- Initialize 3D UI -->
-  <script type="module">
-    import ThreeJSUI from './threejs_ui.js';
-        const container = document.getElementById('threejs-ui-container');
-        const ui = new ThreeJSUI(container, '/img/dp.png');
-
-        // Advanced Glass UI Integration with Three.js
-        document.addEventListener('DOMContentLoaded', function() {
-          // Connect glass cards with 3D interactions
-          const glassCards = document.querySelectorAll('.glass-card');
-          glassCards.forEach((card, index) => {
-            card.addEventListener('mouseenter', function() {
-              // Trigger 3D particle effects
-              if (window.threeJSUI && window.threeJSUI.createGlassCardParticles) {
-                const rect = card.getBoundingClientRect();
-                const x = (rect.left + rect.width / 2) / window.innerWidth * 2 - 1;
-                const y = -(rect.top + rect.height / 2) / window.innerHeight * 2 + 1;
-                window.threeJSUI.createGlassCardParticles(x, y, index);
-              }
-            });
-
-            card.addEventListener('click', function() {
-              // Enhanced 3D interaction with particle burst
-              this.style.transform = 'perspective(1000px) rotateX(-4deg) translateY(-12px) scale(1.02)';
-              
-              // Create particle burst on click
-              if (window.threeJSUI && window.threeJSUI.createGlassCardParticles) {
-                const rect = this.getBoundingClientRect();
-                const x = (rect.left + rect.width / 2) / window.innerWidth * 2 - 1;
-                const y = -(rect.top + rect.height / 2) / window.innerHeight * 2 + 1;
-                // Create multiple particle bursts for dramatic effect
-                for (let i = 0; i < 3; i++) {
-                  setTimeout(() => {
-                    window.threeJSUI.createGlassCardParticles(x + (Math.random() - 0.5) * 0.2, y + (Math.random() - 0.5) * 0.2, index);
-                  }, i * 100);
-                }
-              }
-              
-              setTimeout(() => {
-                this.style.transform = 'perspective(1000px) rotateX(-2deg) translateY(-8px)';
-              }, 300);
-            });
-          });
-
-          // Parallax scrolling with 3D elements
-          let ticking = false;
-          function updateParallax() {
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * -0.5;
-            
-            // Update glass elements
-            const hero = document.querySelector('.hero');
-            const about = document.querySelector('.about-me');
-            
-            if (hero) {
-              hero.style.transform = `perspective(1000px) rotateX(2deg) translateY(${rate * 0.1}px)`;
-            }
-            
-            if (about) {
-              about.style.transform = `perspective(1000px) rotateX(-1deg) translateY(${rate * 0.05}px)`;
-            }
-
-            ticking = false;
-          }
-
-          function requestTick() {
-            if (!ticking) {
-              requestAnimationFrame(updateParallax);
-              ticking = true;
-            }
-          }
-
-          window.addEventListener('scroll', requestTick);
-
-          // Enhanced form interactions
-          const formInputs = document.querySelectorAll('.form-container input, .form-container textarea');
-          formInputs.forEach(input => {
-            input.addEventListener('focus', function() {
-              this.parentElement.style.transform = 'perspective(1000px) rotateX(0deg) scale(1.03)';
-              this.parentElement.style.boxShadow = '0 0 80px rgba(0, 255, 136, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.4)';
-            });
-
-            input.addEventListener('blur', function() {
-              this.parentElement.style.transform = 'perspective(1000px) rotateX(1deg)';
-              this.parentElement.style.boxShadow = '0 0 56px rgba(0, 255, 136, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.5)';
-            });
-          });
-
-          // Make Three.js UI globally accessible
-          window.threeJSUI = ui;
-        });
-  </script>
 </body>
 
 </html>
