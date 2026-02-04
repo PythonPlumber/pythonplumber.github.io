@@ -17,17 +17,34 @@
   <link rel="icon" href="https://fonts.gstatic.com/s/e/notoemoji/latest/1f970/512.gif" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+:root {
+  --surface-0: #050505;
+  --surface-1: rgba(0, 0, 0, 0.8);
+  --accent: #0aff88;
+  --accent-soft: #b4ffd0;
+  --text-primary: #e4e4e4;
+  --text-muted: #c4c4c4;
+  --radius-md: 12px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --content-max: 1100px;
+}
 body {
-  background-color: #050505;
-  color: #e4e4e4;
+  background-color: var(--surface-0);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
 
 .page {
-  max-width: 1200px;
+  max-width: var(--content-max);
   margin: 0 auto;
   padding: clamp(24px, 4vw, 48px);
   display: grid;
@@ -41,14 +58,19 @@ body {
 }
 
 .page-header a {
-  color: #b4ffd0;
+  color: var(--accent-soft);
   text-decoration: none;
   font-size: 0.8rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   border: 1px solid rgba(144, 238, 144, 0.35);
   border-radius: 999px;
-  padding: 6px 16px;
+  padding: 10px 18px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
   box-shadow: 0 0 16px rgba(0, 255, 136, 0.3);
 }
 
@@ -109,7 +131,7 @@ body {
 
 .projects {
   background-color: rgba(0, 0, 0, 0.75);
-  color: #e4e4e4;
+  color: var(--text-primary);
   padding: 80px 0;
   position: relative;
 }
@@ -130,29 +152,26 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: clamp(1.8rem, 2vw + 1.2rem, 2.6rem);
   margin-bottom: 24px;
-  color: #b4ffd0;
+  color: var(--accent-soft);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-weight: 700;
 }
 
 .projects .repo-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2.6vw, 24px);
   margin-top: 30px;
 }
 
 .projects .repo-item {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--surface-1);
   backdrop-filter: blur(18px);
-  padding: 22px;
-  border-radius: 12px;
+  padding: clamp(18px, 3vw, 24px);
+  border-radius: var(--radius-md);
   text-align: center;
-  width: min(100%, 360px);
-  flex: 1 1 280px;
+  width: 100%;
   overflow: hidden;
   border: 1px solid rgba(144, 238, 144, 0.22);
   box-shadow: 0 0 32px rgba(0, 255, 136, 0.26);
@@ -178,18 +197,23 @@ body {
 
 .projects .repo-language {
   font-size: 14px;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .projects .repo-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 12px;
   text-decoration: none;
-  color: #0aff88;
+  color: var(--accent);
   text-shadow: none;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.75rem;
+  min-height: 44px;
+  padding: 0 10px;
+  touch-action: manipulation;
 }
 
 .projects .repo-link:hover {
@@ -204,21 +228,48 @@ body {
   color: #fff;
 }
 
-@media (max-width: 640px) {
+.projects .repo-item:focus-within {
+  box-shadow: 0 0 0 3px rgba(10, 255, 136, 0.4);
+  border-color: rgba(0, 255, 136, 0.64);
+}
+.page-header a:focus-visible,
+.projects .repo-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(10, 255, 136, 0.4);
+}
+@media (min-width: 320px) {
   .page {
     padding: 24px 16px;
   }
-
   .projects {
     padding: 64px 0;
   }
-
-  .projects .repo-item {
-    padding: 18px;
+}
+@media (min-width: 768px) {
+  :root {
+    --content-max: 1180px;
   }
-
-  .projects .repo-name {
-    font-size: 20px;
+  .page {
+    padding: 32px 24px;
+  }
+  .projects .repo-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --content-max: 1240px;
+  }
+  .projects .repo-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1440px) {
+  :root {
+    --content-max: 1320px;
+  }
+  .projects .repo-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
   </style>

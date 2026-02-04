@@ -1,7 +1,9 @@
-const CACHE_NAME = 'pythonplumber-cache-v1';
+const CACHE_NAME = 'pythonplumber-cache-v2';
 const CORE_ASSETS = [
   '/',
   '/index.html',
+  '/blog.html',
+  '/repo.html',
   '/style.css',
   '/threejs_scene.js',
   '/threejs_ui.js',

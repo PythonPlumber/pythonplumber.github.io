@@ -16,16 +16,37 @@
     <link rel="icon" href="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a5/512.webp" type="image/webp"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --surface-0: #050505;
+            --surface-1: rgba(0, 0, 0, 0.8);
+            --surface-2: rgba(0, 0, 0, 0.92);
+            --accent: #0aff88;
+            --accent-soft: #b4ffd0;
+            --text-primary: #e4e4e4;
+            --text-muted: #c4c4c4;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --space-1: 8px;
+            --space-2: 12px;
+            --space-3: 16px;
+            --space-4: 24px;
+            --space-5: 32px;
+            --content-max: 1100px;
+        }
         body {
-            background-color: #000;
-            color: #E0E0E0;
+            background-color: var(--surface-0);
+            color: var(--text-primary);
             font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
         }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
         .page {
-            max-width: 1200px;
+            max-width: var(--content-max);
             margin: 0 auto;
             padding: clamp(24px, 4vw, 48px);
             display: grid;
@@ -37,14 +58,19 @@
             justify-items: center;
         }
         .page-header a {
-            color: #b4ffd0;
+            color: var(--accent-soft);
             text-decoration: none;
             font-size: 0.8rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             border: 1px solid rgba(144, 238, 144, 0.35);
             border-radius: 999px;
-            padding: 6px 16px;
+            padding: 10px 18px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
             box-shadow: 0 0 16px rgba(0, 255, 136, 0.3);
         }
         h1 {
@@ -54,24 +80,22 @@
             font-weight: 700;
             font-size: clamp(1.8rem, 2vw + 1.2rem, 2.6rem);
             margin-bottom: 24px;
-            color: #b4ffd0;
+            color: var(--accent-soft);
         }
         .blog-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(16px, 2.6vw, 24px);
             padding: 0;
         }
         .blog-box {
-            width: min(100%, 420px);
-            flex: 1 1 280px;
-            background-color: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            background-color: var(--surface-1);
             backdrop-filter: blur(18px);
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             border: 1px solid rgba(144, 238, 144, 0.22);
             box-shadow: 0 0 32px rgba(0, 255, 136, 0.26);
-            padding: 22px;
+            padding: clamp(18px, 3vw, 24px);
             transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
             cursor: pointer;
         }
@@ -83,7 +107,7 @@
         .blog-box h2 {
             font-size: 21px;
             margin-top: 0;
-            color: #b4ffd0;
+            color: var(--accent-soft);
             margin-bottom: 10px;
             letter-spacing: 0.08em;
             text-transform: uppercase;
@@ -95,13 +119,13 @@
         }
         .blog-box .excerpt {
             margin-bottom: 20px;
-            color: #ccc;
+            color: var(--text-muted);
             text-align: left;
             font-family: 'Roboto', sans-serif;
         }
         .blog-box .read-more {
             display: inline-block;
-            color: #0aff88;
+            color: var(--accent);
             text-decoration: none;
             letter-spacing: 0.1em;
             text-transform: uppercase;
@@ -115,17 +139,19 @@
             gap: 8px;
         }
         .pagination button {
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: var(--surface-1);
             color: #d4f7e4;
             border: 1px solid rgba(0, 255, 136, 0.5);
             border-radius: 999px;
-            padding: 7px 14px;
+            padding: 10px 16px;
+            min-height: 44px;
             margin: 0 4px;
             cursor: pointer;
             box-shadow: 0 0 16px rgba(0, 255, 136, 0.4);
             font-size: 0.78rem;
             letter-spacing: 0.12em;
             text-transform: uppercase;
+            touch-action: manipulation;
         }
         .pagination button:hover {
             background-color: rgba(0, 255, 136, 0.92);
@@ -154,13 +180,13 @@
             max-width: min(800px, 90vw);
             height: 80%;
             max-height: min(600px, 90vh);
-            background-color: rgba(0, 0, 0, 0.92);
+            background-color: var(--surface-2);
             border-radius: 14px;
             padding: 22px;
             overflow: auto;
             border: 1px solid rgba(0, 255, 136, 0.38);
             box-shadow: 0 0 36px rgba(0, 255, 136, 0.7);
-            color: #e4e4e4;
+            color: var(--text-primary);
         }
         .modal-close {
             position: absolute;
@@ -177,20 +203,48 @@
       font-size: 14px;
     }
 
-    @media (max-width: 640px) {
-        .page {
-            padding: 24px 16px;
+        .blog-box:focus-within {
+            box-shadow: 0 0 0 3px rgba(10, 255, 136, 0.4);
+            border-color: rgba(0, 255, 136, 0.64);
         }
-        .blog-box {
-            padding: 18px;
+        .page-header a:focus-visible,
+        .pagination button:focus-visible,
+        .blog-box .read-more:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(10, 255, 136, 0.4);
         }
-        .blog-box h2 {
-            font-size: 18px;
+        @media (min-width: 320px) {
+            .page {
+                padding: 24px 16px;
+            }
         }
-        .blog-box .excerpt {
-            font-size: 0.92rem;
+        @media (min-width: 768px) {
+            :root {
+                --content-max: 1180px;
+            }
+            .page {
+                padding: 32px 24px;
+            }
+            .blog-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
-    }
+        @media (min-width: 1024px) {
+            :root {
+                --content-max: 1240px;
+            }
+            .blog-list {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        @media (min-width: 1440px) {
+            :root {
+                --content-max: 1320px;
+            }
+            .blog-list {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
     </style>
 </head>
 <body>

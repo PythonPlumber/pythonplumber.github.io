@@ -1,3 +1,9 @@
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     body {
       background-color: #050505;
       color: #e4e4e4;
@@ -5,6 +11,11 @@
       text-align: center;
       margin: 0;
       padding: 0;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
     }
 
     .hero {

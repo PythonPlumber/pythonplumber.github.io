@@ -147,6 +147,11 @@
       font-size: var(--font-scale-0);
     }
 
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
     h1,
     h2 {
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -250,11 +255,11 @@
     }
 
     .grid-2 {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     }
 
     .grid-3 {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
 
     .card {
@@ -285,6 +290,7 @@
       justify-content: center;
       gap: 8px;
       padding: 12px 22px;
+      min-height: 44px;
       border-radius: 999px;
       font-weight: 600;
       text-decoration: none;
@@ -293,6 +299,7 @@
       border: 1px solid transparent;
       cursor: pointer;
       font-size: 0.72rem;
+      touch-action: manipulation;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
 
@@ -320,11 +327,13 @@
       border: 1px solid var(--border-soft);
       color: var(--text-secondary);
       padding: 8px 14px;
+      min-height: 44px;
       border-radius: 999px;
       font-size: 0.72rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .theme-toggle:focus-visible {
@@ -495,6 +504,63 @@
 
       .stat-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 320px) {
+      .page {
+        padding-top: 96px;
+      }
+
+      .navbar a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 8px 12px;
+        border-radius: 999px;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+    }
+
+    @media (min-width: 768px) {
+      :root {
+        --content-max: 1100px;
+        --page-padding: clamp(20px, 3vw, 48px);
+      }
+
+      .hero-actions {
+        width: auto;
+      }
+
+      .hero-actions .btn {
+        width: auto;
+      }
+
+      .navbar a {
+        font-size: 0.85rem;
+        padding: 8px 14px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      :root {
+        --content-max: 1200px;
+        --page-padding: clamp(24px, 3vw, 56px);
+      }
+    }
+
+    @media (min-width: 1440px) {
+      :root {
+        --content-max: 1320px;
+        --page-padding: clamp(32px, 3vw, 64px);
       }
     }
 
@@ -1080,7 +1146,7 @@
       font-size: 0.95rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 6px 10px;
+      padding: 8px 12px;
       position: relative;
       transition: color 0.2s ease;
     }
@@ -1107,6 +1173,13 @@
 
     .navbar a.active::after {
       width: 100%;
+    }
+
+    .navbar a:focus-visible,
+    .repo-button:focus-visible,
+    .blog-button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(10, 255, 136, 0.4);
     }
 
 .form-container label {
@@ -1210,15 +1283,19 @@
   background: transparent;
   border: 1px solid rgba(0, 255, 136, 0.8);
   border-radius: 999px;
-  padding: 8px 18px;
+  padding: 10px 20px;
+  min-height: 44px;
   color: #b4ffd0;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-align: center;
   box-shadow: 0 0 20px rgba(0, 255, 136, 0.45);
+  touch-action: manipulation;
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -1231,7 +1308,8 @@
 
 .blog-button {
   display: inline-block;
-  padding: 7px 16px;
+  padding: 10px 18px;
+  min-height: 44px;
   background: rgba(0, 0, 0, 0.9);
   border-radius: 999px;
   color: #b4ffd0;
@@ -1241,6 +1319,7 @@
   text-transform: uppercase;
   border: 1px solid rgba(0, 255, 136, 0.6);
   box-shadow: 0 0 18px rgba(0, 255, 136, 0.38);
+  touch-action: manipulation;
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -1335,12 +1414,6 @@
     <section class="hero section" id="hero">
       <div id="threejs-ui-container"></div>
       <div class="hero-content">
-        <div class="section-tags">
-          <span class="chip">Enterprise UI</span>
-          <span class="chip">Accessible</span>
-          <span class="chip">Realtime</span>
-          <span class="chip">3D</span>
-        </div>
         <h1>Mario Python Plumber</h1>
         <p>PythonPlumber is my portfolio showcasing projects, experiments, and real-time builds. Explore my latest work, browse the blog, and reach out for collaborations.</p>
         <div class="hero-actions">
@@ -1359,19 +1432,19 @@
       </div>
       <div class="grid grid-2">
         <div class="glass-card threejs-interactive">
-          <h3>🌍 Location</h3>
+          <h3>Location</h3>
           <p>Sri Lanka - Crafting code from the beautiful island nation</p>
         </div>
         <div class="glass-card threejs-interactive">
-          <h3>💻 Technology Stack</h3>
+          <h3>Technology Stack</h3>
           <p>Linux enthusiast passionate about open-source development</p>
         </div>
         <div class="glass-card threejs-interactive">
-          <h3>🚀 Role</h3>
+          <h3>Role</h3>
           <p>Teenage Programmer exploring the endless possibilities of code</p>
         </div>
         <div class="glass-card threejs-interactive">
-          <h3>✉️ Contact</h3>
+          <h3>Contact</h3>
           <p>Email: mario.yellow.bea@proton.me</p>
           <p>GitHub: PythonPlumber</p>
           <p>Website: pythonplumber.eu.org</p>
