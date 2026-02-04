@@ -13,23 +13,26 @@
   <meta name="language" content="English">
   <meta name="author" content="Python Plumber">
   <link rel="canonical" href="https://pythonplumber.eu.org/" />
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" href="https://fonts.gstatic.com/s/e/notoemoji/latest/1f970/512.gif" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
 body {
-  background-color: #000;
-  color: #fff;
-  font-family: 'Courier New', monospace;
+  background-color: #050505;
+  color: #e4e4e4;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
 }
 
 .footer {
-  background-color: #000;
-  color: #fff;
-  padding: 20px;
-  font-size: 14px;
+  background-color: #020402;
+  color: #7a7a7a;
+  padding: 18px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 #loading-overlay {
@@ -79,32 +82,32 @@ body {
 }
 
 .projects {
-  background-color: #000;
-  color: #fff;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #e4e4e4;
   padding: 80px 0;
   position: relative;
 }
 
 .projects::before {
   content: "";
-  background: linear-gradient(45deg, #ff0000, #0000ff);
+  background: radial-gradient(circle at 100% 0%, rgba(0, 255, 136, 0.22), transparent 60%);
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .projects h2 {
-  font-size: 48px;
-  margin-bottom: 20px;
-  color: #ff0000;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: #b4ffd0;
   text-transform: uppercase;
-  letter-spacing: 8px;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.16em;
+  font-weight: 700;
 }
 
 .projects .repo-list {
@@ -117,12 +120,22 @@ body {
 }
 
 .projects .repo-item {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(18px);
+  padding: 22px;
+  border-radius: 12px;
   text-align: center;
   width: 340px;
-  overflow: hidden; /* Add this line to prevent text overflow */
+  overflow: hidden;
+  border: 1px solid rgba(144, 238, 144, 0.22);
+  box-shadow: 0 0 32px rgba(0, 255, 136, 0.26);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.projects .repo-item:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 0 36px rgba(0, 255, 136, 0.4);
+  border-color: rgba(0, 255, 136, 0.64);
 }
 
 .projects .repo-name {
@@ -143,13 +156,18 @@ body {
 
 .projects .repo-link {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 12px;
   text-decoration: none;
-  color: #ff0000;
+  color: #0aff88;
+  text-shadow: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
 }
 
 .projects .repo-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  filter: brightness(1.1);
 }
 
 .projects .loading-message {
@@ -181,8 +199,8 @@ const fetchRepositories = async () => {
     const data = await response.json();
     const repoList = document.getElementById('repo-list');
 
-    // Filter repositories with the "ppwr" tag
-    const filteredRepos = data.filter(repo => repo.topics.includes('ppwr'));
+    // Filter repositories with the "ppwr" tag (defensive against missing topics)
+    const filteredRepos = data.filter(repo => (repo.topics || []).includes('ppwr'));
 
     // Generate HTML for each repository
     const repoHTML = filteredRepos.map(repo => `

@@ -12,7 +12,7 @@
   <meta name="language" content="English">
   <meta name="author" content="Python Plumber">
   <link rel="canonical" href="https://pythonplumber.eu.org/" />
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
   <script type="importmap">
     {
@@ -24,34 +24,35 @@
   </script>
   <link rel="icon" href="/img/cropped.jpg">
   <link rel="icon" href="/img/512.gif" type="image/gif" >
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #000;
-      color: #E0E0E0; /* Light grey for readability */
-      font-family: 'Roboto', sans-serif; /* Modern readable font */
+      background-color: #050505;
+      color: #e4e4e4;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
     }
 
-    h1, h2 {
-      font-family: 'Orbitron', sans-serif; /* Modern-retro heading font */
+    h1,
+    h2 {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 8px;
-      font-weight: bold;
-      text-shadow: 0 0 10px rgba(255, 0, 0, 0.7); /* Subtle red glow */
+      color: #b4ffd0;
     }
 
     .hero {
-      background-color: rgba(0, 0, 0, 0.6); /* Black glass background */
-      backdrop-filter: blur(10px); /* Frosted glass effect */
-      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); /* Red glow effect */
-      padding: 80px 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(144, 238, 144, 0.12);
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.22);
+      padding: 96px 0;
       position: relative;
       margin-bottom: 10px;
-      overflow: hidden; /* Ensure content doesn't spill out */
+      overflow: hidden;
     }
 
     #threejs-container {
@@ -65,24 +66,16 @@
 
     .hero::before {
       content: "";
-      background: linear-gradient(45deg, #ff0000, #0000ff);
-      width: 100%;
-      height: 100%;
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: -40%;
+      background: radial-gradient(circle at 10% 0%, rgba(0, 255, 136, 0.2), transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(0, 160, 96, 0.3), transparent 60%);
       z-index: -1;
-      opacity: 0.5;
     }
 
     .hero h1 {
-      font-size: 48px;
-      margin-bottom: 20px;
-      color: #ff0000;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      font-weight: bold;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      font-size: 42px;
+      margin-bottom: 16px;
     }
 
     .container {
@@ -92,49 +85,43 @@
     }
 
     .hero p {
-      font-size: 20px;
-      line-height: 1.6;
-      margin-bottom: 30px;
-      text-align: center;
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #c4c4c4;
     }
 
     .about-me {
-      background-color: rgba(0, 0, 0, 0.6); /* Black glass background */
-      backdrop-filter: blur(10px); /* Frosted glass effect */
-      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-      box-shadow: 0 0 20px rgba(0, 0, 255, 0.3); /* Blue glow effect */
-      padding: 80px 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(144, 238, 144, 0.16);
+      box-shadow: 0 0 32px rgba(0, 255, 136, 0.18);
+      padding: 72px 0;
       position: relative;
-      margin-top: 10px; /* Add margin-top */
+      margin-top: 16px;
     }
 
     .about-me::before {
       content: "";
-      background: linear-gradient(45deg, #ff0000, #0000ff);
-      width: 100%;
-      height: 100%;
       position: absolute;
-      top: 0;
-      left: 0;
+      inset: -30%;
+      background: radial-gradient(circle at 0% 50%, rgba(0, 255, 136, 0.18), transparent 60%);
       z-index: -1;
-      opacity: 0.5;
     }
 
     .about-me h2 {
-      font-size: 48px;
-      margin-bottom: 20px;
-      color: #ff0000;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      font-weight: bold;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      font-size: 30px;
+      margin-bottom: 16px;
     }
 
     .about-me p {
-      font-size: 20px;
-      line-height: 1.6;
-      margin-bottom: 30px;
-      text-align: center;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 6px;
+      color: #b6b6b6;
     }
 
     .container {
@@ -149,99 +136,146 @@
       margin-bottom: 10px;
     }
 
-.form-container {
-      background-color: rgba(0, 0, 0, 0.6); /* Black glass background */
-      backdrop-filter: blur(10px); /* Frosted glass effect */
-      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); /* Green glow effect */
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 30px;
+    .form-container {
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 255, 136, 0.24);
+      box-shadow: 0 0 32px rgba(0, 255, 136, 0.26);
+      padding: 24px;
+      border-radius: 14px;
+      margin-top: 32px;
     }
 
     .navbar {
       position: fixed;
       top: 0;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.7); /* Translucent black background */
-      backdrop-filter: blur(10px); /* Frosted glass effect */
-      padding: 15px 0;
-      z-index: 1000; /* Ensure it's above other content */
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.5); /* Red glow for navbar */
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.7));
+      backdrop-filter: blur(18px);
+      padding: 14px 32px;
+      z-index: 1000;
+      box-shadow: 0 0 28px rgba(0, 0, 0, 0.7);
       display: flex;
       justify-content: center;
-      gap: 30px;
+      gap: 32px;
+      transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .navbar.scrolled {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
     }
 
     .navbar a {
-      color: #00ffff; /* Cyan color for links */
+      color: #b4ffd0;
       text-decoration: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.1em;
-      padding: 5px 10px;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      position: relative;
+      transition: color 0.2s ease;
     }
 
-    .navbar a:hover {
-      color: #fff;
-      text-shadow: 0 0 8px #00ffff; /* Cyan glow on hover */
+    .navbar a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #0aff88, #00c76b);
+      box-shadow: 0 0 12px rgba(10, 255, 136, 0.9);
+      transition: width 0.22s ease;
+    }
+
+    .navbar a:hover::after {
+      width: 100%;
+    }
+
+    .navbar a.active {
+      color: #0aff88;
+    }
+
+    .navbar a.active::after {
+      width: 100%;
     }
 
 .form-container label {
   display: block;
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9ce8c2;
 }
 
 .form-container input,
 .form-container textarea {
   width: 100%;
-  padding: 8px;
-  border: none;
-  background-color: #555;
-  color: #fff;
-  margin-bottom: 20px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(156, 232, 194, 0.5);
+  background-color: rgba(5, 15, 10, 0.95);
+  color: #e4e4e4;
+  margin-bottom: 18px;
+  font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.form-container input:focus,
+.form-container textarea:focus {
+  border-color: #0aff88;
+  box-shadow: 0 0 0 1px rgba(10, 255, 136, 0.8);
+  background-color: rgba(6, 20, 13, 1);
 }
 
 .form-container input[type="submit"] {
-  background-color: #ff0000;
-  color: #fff;
+  background: radial-gradient(circle at 0% 0%, #0aff88, #009955);
+  color: #020402;
   cursor: pointer;
-  border-radius: 20px; 
-  padding: 10px 20px;
+  border-radius: 999px;
+  padding: 11px 26px;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  box-shadow: 0 0 24px rgba(10, 255, 136, 0.7);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+}
+
+.form-container input[type="submit"]:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 0 32px rgba(10, 255, 136, 0.95);
 }
     
 .social-links {
-  background-color: rgba(0, 0, 0, 0.6); /* Black glass background */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-  box-shadow: 0 0 20px rgba(255, 255, 0, 0.3); /* Yellow glow effect */
-  padding: 80px 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(144, 238, 144, 0.16);
+  box-shadow: 0 0 36px rgba(0, 255, 136, 0.22);
+  padding: 72px 0 64px;
   position: relative;
-  margin-top: 10px;
+  margin-top: 18px;
 }
 
 .social-links::before {
   content: "";
-  background: linear-gradient(45deg, #ff0000, #0000ff);
-  width: 100%;
-  height: 100%;
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: -26%;
+  background: radial-gradient(circle at 100% 10%, rgba(0, 255, 136, 0.2), transparent 60%);
   z-index: -1;
-  opacity: 0.5;
 }
 
-
 .social-links h2 {
-  font-size: 48px;
+  font-size: 30px;
   margin-bottom: 20px;
-  color: #ff0000;
-  text-transform: uppercase;
-  letter-spacing: 8px;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .social-links ul {
@@ -256,46 +290,63 @@
 }
 
 .social-links a {
-  color: #fff;
+  color: #e4e4e4;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 0.95rem;
 }
 
 .repo-button {
-  background: #000000;
-  border: 3px solid #ffffff;
-  border-radius: 1000px;
-  padding: 2px 8px; /* Adjust the padding values as desired */
-  color: #ffffff;
+  background: transparent;
+  border: 1px solid rgba(0, 255, 136, 0.8);
+  border-radius: 999px;
+  padding: 8px 18px;
+  color: #b4ffd0;
   display: inline-block;
-  font: normal bold 16px/1 "Komika", cursive; /* Adjust the font size as desired */
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.45);
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .repo-button:hover {
-  background-color: #ff3333;
+  background: linear-gradient(90deg, #0aff88, #00c76b);
+  color: #020402;
+  transform: translateY(-1px);
+  box-shadow: 0 0 28px rgba(0, 255, 136, 0.9);
 }
 
-.small-button {
+.blog-button {
   display: inline-block;
-  padding: 6px 12px;
-  background-color: #ff0000;
-  color: #fff;
+  padding: 7px 16px;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 999px;
+  color: #b4ffd0;
   text-decoration: none;
-  font-size: 14px;
-  border-radius: 6px;
-  margin-top: 10px;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(0, 255, 136, 0.6);
+  box-shadow: 0 0 18px rgba(0, 255, 136, 0.38);
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-.small-button:hover {
-  background-color: #ff3333;
+.blog-button:hover {
+  background: radial-gradient(circle at 0% 0%, #0aff88, #007a44);
+  color: #020402;
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px rgba(0, 255, 136, 0.9);
 }
 
     .footer {
-      background-color: #000;
-      color: #fff;
-      padding: 20px;
-      font-size: 14px;
+      background-color: #020402;
+      color: #7a7a7a;
+      padding: 18px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
     #loading-overlay {
@@ -342,6 +393,13 @@
         opacity: 0;
         transform: translate(-50%, 20px);
       }
+    }
+
+    .hero,
+    .about-me,
+    .social-links,
+    #contact {
+      scroll-margin-top: 80px;
     }
   </style>
 </head>
@@ -496,6 +554,46 @@
         });
       });
     });
+
+    const sections = [
+      { id: 'hero', link: 'Home' },
+      { id: 'about-me', link: 'About Me' },
+      { id: 'social-links', link: 'Social Links' },
+      { id: 'contact', link: 'Contact' }
+    ];
+
+    function updateActiveNav() {
+      const fromTop = window.scrollY || window.pageYOffset;
+      const nav = document.querySelector('.navbar');
+      if (fromTop > 32) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+
+      const offset = 120;
+      let activeId = null;
+
+      for (const section of sections) {
+        const element = document.getElementById(section.id);
+        if (!element) continue;
+        const rect = element.getBoundingClientRect();
+        const top = rect.top + window.scrollY - offset;
+        if (fromTop >= top) {
+          activeId = section.id;
+        }
+      }
+
+      document.querySelectorAll('.navbar a').forEach(link => {
+        link.classList.remove('active');
+        if (activeId && link.getAttribute('href') === `#${activeId}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveNav);
+    window.addEventListener('load', updateActiveNav);
   </script>
 </body>
 

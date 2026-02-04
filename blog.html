@@ -9,10 +9,10 @@
     <meta name="language" content="English">
     <meta name="author" content="Python Plumber">
     <link rel="canonical" href="https://pythonplumber.eu.org/" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="/img/cropped.jpg">
     <link rel="icon" href="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a5/512.webp" type="image/webp"> 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #000;
@@ -23,14 +23,13 @@
             padding: 0;
         }
         h1 {
-            font-family: 'Orbitron', sans-serif; /* Modern-retro heading font */
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 8px;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7); /* Subtle red glow */
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #ff0000;
+            letter-spacing: 0.16em;
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 24px;
+            color: #b4ffd0;
         }
         .blog-list {
             display: flex;
@@ -41,22 +40,27 @@
         }
         .blog-box {
             width: 400px;
-            background-color: #333;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            transition: all 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(18px);
+            border-radius: 12px;
+            border: 1px solid rgba(144, 238, 144, 0.22);
+            box-shadow: 0 0 32px rgba(0, 255, 136, 0.26);
+            padding: 22px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
             cursor: pointer;
         }
         .blog-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 0 36px rgba(0, 255, 136, 0.4);
+            border-color: rgba(0, 255, 136, 0.64);
         }
         .blog-box h2 {
-            font-size: 24px;
+            font-size: 21px;
             margin-top: 0;
-            color: #ff0000;
+            color: #b4ffd0;
             margin-bottom: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
         .blog-box .date-created {
             font-style: italic;
@@ -71,23 +75,32 @@
         }
         .blog-box .read-more {
             display: inline-block;
-            color: #ff0000;
+            color: #0aff88;
             text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 0.75rem;
         }
         .pagination {
             margin-top: 20px;
         }
         .pagination button {
-            background-color: #ff0000;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: #d4f7e4;
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            border-radius: 999px;
+            padding: 7px 14px;
             margin: 0 4px;
             cursor: pointer;
+            box-shadow: 0 0 16px rgba(0, 255, 136, 0.4);
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
         .pagination button:hover {
-            background-color: #cc0000;
+            background-color: rgba(0, 255, 136, 0.92);
+            color: #020402;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
         }
         .pagination button:disabled {
             background-color: #888;
@@ -99,10 +112,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(8px);
         }
         .modal-content {
             position: relative;
@@ -110,16 +124,19 @@
             max-width: 800px;
             height: 80%;
             max-height: 600px;
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.92);
+            border-radius: 14px;
+            padding: 22px;
             overflow: auto;
+            border: 1px solid rgba(0, 255, 136, 0.38);
+            box-shadow: 0 0 36px rgba(0, 255, 136, 0.7);
+            color: #e4e4e4;
         }
         .modal-close {
             position: absolute;
             top: 10px;
             right: 10px;
-            color: #fff;
+            color: #0aff88;
             font-size: 24px;
             cursor: pointer;
         }
