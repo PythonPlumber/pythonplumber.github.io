@@ -55,13 +55,14 @@
       overflow: hidden;
     }
 
-    #threejs-container {
+    #threejs-ui-container {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: -2; /* Place it behind the hero content and the gradient overlay */
+      pointer-events: none; /* Allow clicks to pass through to underlying elements */
     }
 
     .hero::before {
@@ -416,7 +417,7 @@
   </div>
   
   <div class="hero">
-    <div id="threejs-container"></div>
+    <div id="threejs-ui-container"></div>
     <h1>Mario Python Plumber</h1>
     <p>Welcome to the whimsical world of Mario Python Plumber! Join Mario on a code-filled adventure to defeat Bowser using the power of Python programming. Prepare for a wild ride as you navigate through jumping turtles, flying mushrooms, and quirky programming challenges. Together, we'll save Princess Python and discover the hidden gems of the Python universe. Get ready to laugh, encounter unexpected glitches, and embrace the joy of coding. Grab your keyboard, don your plumber's hat, and let's dive into the magical realm of Python pipe dreams. With Mario's determination and Python's versatility, we'll conquer every coding obstacle with a smileHere's the continuation of the HTML code. So, jump in and get ready for a gaming experience that's as fun as it is educational! Happy coding</p>
     <div class="scroll-down"></div>
@@ -594,6 +595,13 @@
 
     window.addEventListener('scroll', updateActiveNav);
     window.addEventListener('load', updateActiveNav);
+  </script>
+  
+  <!-- Initialize 3D UI -->
+  <script type="module">
+    import ThreeJSUI from './threejs_ui.js';
+    const container = document.getElementById('threejs-ui-container');
+    const ui = new ThreeJSUI(container, '/img/dp.png');
   </script>
 </body>
 

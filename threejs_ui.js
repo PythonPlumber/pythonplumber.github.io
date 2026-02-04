@@ -18,16 +18,45 @@ class ThreeJSUI {
       antialias: true, 
       alpha: true,
       powerPreference: "high-performance"
+    dispose() {
+    this.scene.traverse(object => {
+      if (object.geometry) object.geometry.dispose();
+      if (object.material) {
+        if (Array.isArray(object.material)) {
+          object.material.forEach(material => material.dispose());
+        } else {
+          object.material.dispose();
+        }
+      }
     });
+    
+    this.renderer.dispose();
+    this.composer.dispose();
+    this.controls.dispose();
+    
+    // Remove event listeners
+    window.removeEventListener('resize', this.onWindowResize);
+    window.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener('keydown', this.onKeyDown);
+    this.container.removeEventListener('mousemove', this.onMouseMove);
+    this.container.removeEventListener('click', this.onMouseClick);
+    this.container.removeEventListener('touchstart', this.onTouchStart);
+    this.container.removeEventListener('touchmove', this.onTouchMove);
+  });
     this.clock = new THREE.Clock();
     this.mouse = new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
     this.interactiveObjects = [];
     this.particleSystems = [];
     this.glassPanels = [];
+    this.physicsObjects = [];
     this.frameRate = 60;
     this.frameDelay = 1000 / this.frameRate;
     this.lastTime = 0;
+    this.mouseVelocity = new THREE.Vector2();
+    this.lastMousePosition = new THREE.Vector2();
+    this.parallaxStrength = 0.5;
+    this.scrollOffset = 0;
     
     this.init();
   }
@@ -131,6 +160,13 @@ class ThreeJSUI {
     this.container.addEventListener('click', this.onMouseClick.bind(this));
     this.container.addEventListener('touchstart', this.onTouchStart.bind(this));
     this.container.addEventListener('touchmove', this.onTouchMove.bind(this));
+    window.addEventListener('scroll', this.onScroll.bind(this));
+    
+    // Add keyboard navigation for accessibility
+    document.addEventListener('keydown', this.onKeyDown.bind(this));
+    
+    // Initialize 3D model viewer
+    this.setup3DModelViewer();
   }
 
   createGlassUI() {
@@ -174,6 +210,7 @@ class ThreeJSUI {
     this.createFloatingParticles();
     this.createGlassParticles();
     this.createInteractiveParticles();
+    this.createAdvancedParticleSystem();
   }
 
   createFloatingParticles() {
@@ -455,10 +492,20 @@ class ThreeJSUI {
 
   onMouseMove(event) {
     const rect = this.container.getBoundingClientRect();
-    this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    const currentMouse = new THREE.Vector2(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1
+    );
+    
+    // Calculate mouse velocity for physics-based interactions
+    this.mouseVelocity.subVectors(currentMouse, this.lastMousePosition);
+    this.mouseVelocity.multiplyScalar(0.8); // Damping
+    
+    this.mouse.copy(currentMouse);
+    this.lastMousePosition.copy(currentMouse);
     
     this.checkIntersections();
+    this.updateParallaxEffect();
   }
 
   onTouchStart(event) {
@@ -629,6 +676,11 @@ class ThreeJSUI {
     this.particleSystems.forEach(particles => {
       if (particles.material.uniforms && particles.material.uniforms.time) {
         particles.material.uniforms.time.value += deltaTime;
+        
+        // Add mouse influence to advanced particles
+        if (particles.userData.isAdvancedParticles && particles.material.uniforms.mouseInfluence) {
+          particles.material.uniforms.mouseInfluence.value = this.mouseVelocity.length() * 10;
+        }
       }
       
       if (particles.userData.isClickParticles) {
@@ -686,6 +738,180 @@ class ThreeJSUI {
     }
   }
 
+  updateParallaxEffect() {
+    // Apply parallax scrolling based on mouse position and scroll offset
+    const parallaxX = this.mouse.x * this.parallaxStrength;
+    const parallaxY = (this.mouse.y + this.scrollOffset * 0.001) * this.parallaxStrength;
+    
+    this.glassPanels.forEach((panel, index) => {
+      const multiplier = (index + 1) * 0.2;
+      panel.position.x += (parallaxX * multiplier - panel.position.x) * 0.05;
+      panel.position.y += (parallaxY * multiplier - panel.position.y) * 0.05;
+    });
+  }
+
+  onScroll(event) {
+    this.scrollOffset = window.pageYOffset || document.documentElement.scrollTop;
+    this.updateParallaxEffect();
+  }
+
+  onKeyDown(event) {
+    // Accessibility: Keyboard navigation for interactive elements
+    switch(event.key) {
+      case 'Enter':
+      case ' ':
+        // Simulate click on focused element
+        if (this.interactiveObjects.length > 0) {
+          const focusedObject = this.interactiveObjects[0];
+          this.handleObjectClick(focusedObject);
+        }
+        break;
+      case 'ArrowUp':
+      case 'ArrowDown':
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        // Navigate between interactive elements
+        this.navigateInteractiveElements(event.key);
+        break;
+    }
+  }
+
+  navigateInteractiveElements(direction) {
+    if (this.interactiveObjects.length === 0) return;
+    
+    // Simple navigation logic - cycle through objects
+    let currentIndex = 0;
+    
+    switch(direction) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        currentIndex = (currentIndex + 1) % this.interactiveObjects.length;
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        currentIndex = (currentIndex - 1 + this.interactiveObjects.length) % this.interactiveObjects.length;
+        break;
+    }
+    
+    // Highlight the current object
+    this.interactiveObjects.forEach((obj, index) => {
+      if (index === currentIndex) {
+        this.applyObjectHover(obj);
+      } else {
+        this.resetObjectHover(obj);
+      }
+    });
+  }
+
+  createPhysicsBasedAnimation(object, targetPosition, duration = 1000) {
+    const startPosition = object.position.clone();
+    const startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const eased = this.easeInOutCubic(progress);
+      
+      object.position.lerpVectors(startPosition, targetPosition, eased);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    
+    animate();
+  }
+
+  easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  }
+
+  createAdvancedParticleSystem() {
+    // Create a more complex particle system with physics
+    const particleCount = 2000;
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+    
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 30;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 30;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
+      
+      velocities[i * 3] = (Math.random() - 0.5) * 0.02;
+      velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.02;
+      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.02;
+      
+      colors[i * 3] = 0.2 + Math.random() * 0.8;
+      colors[i * 3 + 1] = 0.8 + Math.random() * 0.2;
+      colors[i * 3 + 2] = 0.9 + Math.random() * 0.1;
+      
+      sizes[i] = Math.random() * 0.15 + 0.05;
+    }
+    
+    const particleGeometry = new THREE.BufferGeometry();
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particleGeometry.setAttribute('velocity', new THREE.BufferAttribute(velocities, 3));
+    particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    particleGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+    
+    const particleMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+        pixelRatio: { value: this.renderer.getPixelRatio() },
+        mouseInfluence: { value: 0.0 }
+      },
+      vertexShader: `
+        attribute float size;
+        attribute vec3 color;
+        attribute vec3 velocity;
+        varying vec3 vColor;
+        uniform float time;
+        uniform float pixelRatio;
+        uniform float mouseInfluence;
+        
+        void main() {
+          vColor = color;
+          vec3 pos = position;
+          
+          // Apply physics-based movement
+          pos += velocity * time * 10.0;
+          
+          // Add some turbulence
+          pos.x += sin(time * 0.5 + position.y * 0.1) * 0.5;
+          pos.y += cos(time * 0.3 + position.x * 0.1) * 0.3;
+          pos.z += sin(time * 0.7 + position.x * 0.05) * 0.4;
+          
+          vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+          gl_Position = projectionMatrix * mvPosition;
+          gl_PointSize = size * pixelRatio * (300.0 / -mvPosition.z);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        
+        void main() {
+          float dist = distance(gl_PointCoord, vec2(0.5));
+          if (dist > 0.5) discard;
+          
+          float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
+          gl_FragColor = vec4(vColor, alpha * 0.6);
+        }
+      `,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    particles.userData.isAdvancedParticles = true;
+    this.scene.add(particles);
+    this.particleSystems.push(particles);
+  }
+
   dispose() {
     this.scene.traverse(object => {
       if (object.geometry) object.geometry.dispose();
@@ -701,6 +927,15 @@ class ThreeJSUI {
     this.renderer.dispose();
     this.composer.dispose();
     this.controls.dispose();
+    
+    // Remove event listeners
+    window.removeEventListener('resize', this.onWindowResize);
+    window.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener('keydown', this.onKeyDown);
+    this.container.removeEventListener('mousemove', this.onMouseMove);
+    this.container.removeEventListener('click', this.onMouseClick);
+    this.container.removeEventListener('touchstart', this.onTouchStart);
+    this.container.removeEventListener('touchmove', this.onTouchMove);
   }
 }
 
