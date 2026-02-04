@@ -57,6 +57,7 @@ class ThreeJSUI {
     this.lastMousePosition = new THREE.Vector2();
     this.parallaxStrength = 0.5;
     this.scrollOffset = 0;
+    this.deviceOrientation = new THREE.Vector2();
     
     this.init();
   }
@@ -204,6 +205,49 @@ class ThreeJSUI {
     floatingPanel.rotation.x = -Math.PI / 8;
     this.scene.add(floatingPanel);
     this.glassPanels.push(floatingPanel);
+    
+    // Create floating spheres with physics
+    this.createFloatingSpheres();
+  }
+
+  createFloatingSpheres() {
+    const sphereCount = 8;
+    const sphereGeometry = new THREE.SphereGeometry(0.3, 16, 16);
+    
+    for (let i = 0; i < sphereCount; i++) {
+      const sphereMaterial = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color().setHSL(0.3 + Math.random() * 0.4, 0.8, 0.6),
+        metalness: 0.7,
+        roughness: 0.1,
+        transmission: 0.4,
+        thickness: 0.2,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05,
+        envMap: this.scene.environment,
+        envMapIntensity: 1.2,
+        transparent: true,
+        opacity: 0.8
+      });
+      
+      const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      sphere.position.set(
+        (Math.random() - 0.5) * 15,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 8
+      );
+      
+      sphere.userData.isFloatingSphere = true;
+      sphere.userData.originalY = sphere.position.y;
+      sphere.userData.floatSpeed = 0.5 + Math.random() * 0.5;
+      sphere.userData.floatAmplitude = 0.3 + Math.random() * 0.2;
+      sphere.userData.floatPhase = Math.random() * Math.PI * 2;
+      sphere.userData.parallaxDepth = 0.5 + Math.random() * 0.5;
+      sphere.castShadow = true;
+      sphere.receiveShadow = true;
+      
+      this.scene.add(sphere);
+      this.physicsObjects.push(sphere);
+    }
   }
 
   createParticleSystems() {
@@ -728,26 +772,169 @@ class ThreeJSUI {
       this.lastTime = timestamp - (elapsed % this.frameDelay);
       
       const deltaTime = this.clock.getDelta();
+      const currentTime = this.clock.getElapsedTime();
       
-      this.controls.update();
-      this.updateParticles(deltaTime);
-      this.updateGlassPanels(deltaTime);
-      this.updateInteractiveObjects(deltaTime);
+      // Update controls with optimized frequency
+      if (this.controls && this.controls.enabled) {
+        this.controls.update();
+      }
       
-      this.composer.render();
+      // Update particles with LOD based on performance
+      if (this.particleSystems.length > 0) {
+        this.updateParticles(deltaTime);
+      }
+      
+      // Update glass panels with optimized calculations
+      if (this.glassPanels.length > 0) {
+        this.updateGlassPanels(deltaTime);
+      }
+      
+      // Update interactive objects selectively
+      if (this.interactiveObjects.length > 0 && this.mouseVelocity.length() > 0.001) {
+        this.updateInteractiveObjects(deltaTime);
+      }
+      
+      // Update physics objects with frame rate independence
+      this.updatePhysicsObjects(deltaTime);
+      
+      // Update model viewer rotation
+      this.updateModelViewer(currentTime);
+      
+      // Apply parallax effects
+      this.updateParallaxEffect();
+      
+      // Render with post-processing
+      if (this.composer) {
+        this.composer.render(deltaTime);
+      }
+    }
+  }
+
+  updatePhysicsObjects(deltaTime) {
+    // Update physics-based objects with smooth animations
+    this.physicsObjects.forEach(obj => {
+      if (obj.userData.isModelGroup && obj.userData.isRotating) {
+        obj.rotation.y += obj.userData.rotationSpeed || 0.008;
+        
+        // Add subtle floating animation
+        const floatOffset = Math.sin(this.clock.getElapsedTime() * 0.5 + obj.position.x) * 0.1;
+        obj.position.y = obj.userData.originalY + floatOffset;
+      }
+      
+      // Update floating spheres
+      if (obj.userData.isFloatingSphere) {
+        const floatOffset = Math.sin(this.clock.getElapsedTime() * obj.userData.floatSpeed + obj.userData.floatPhase) * obj.userData.floatAmplitude;
+        obj.position.y = obj.userData.originalY + floatOffset;
+        obj.rotation.x += deltaTime * 0.5;
+        obj.rotation.y += deltaTime * 0.3;
+      }
+    });
+  }
+
+  updateModelViewer(currentTime) {
+    const modelGroup = this.scene.children.find(child => child.userData.isModelGroup);
+    if (modelGroup && modelGroup.userData.isRotating) {
+      // Smooth rotation with easing
+      const targetRotation = modelGroup.rotation.y + (modelGroup.userData.rotationSpeed || 0.008);
+      modelGroup.rotation.y += (targetRotation - modelGroup.rotation.y) * 0.95;
+      
+      // Individual model animations
+      modelGroup.children.forEach((child, index) => {
+        if (child.isMesh) {
+          // Individual rotation for each model
+          child.rotation.x = Math.sin(currentTime * 0.5 + index * Math.PI / 3) * 0.2;
+          child.rotation.z = Math.cos(currentTime * 0.3 + index * Math.PI / 4) * 0.1;
+          
+          // Subtle scale animation
+          const scale = 1 + Math.sin(currentTime * 0.8 + index) * 0.05;
+          child.scale.setScalar(scale);
+        }
+      });
     }
   }
 
   updateParallaxEffect() {
-    // Apply parallax scrolling based on mouse position and scroll offset
+    // Apply immersive parallax scrolling with multiple layers
     const parallaxX = this.mouse.x * this.parallaxStrength;
     const parallaxY = (this.mouse.y + this.scrollOffset * 0.001) * this.parallaxStrength;
     
+    // Calculate scroll-based parallax with easing
+    const scrollProgress = Math.min(this.scrollOffset / 1000, 1);
+    const easedScroll = this.easeInOutCubic(scrollProgress);
+    
+    // Apply parallax to glass panels with different speeds
     this.glassPanels.forEach((panel, index) => {
-      const multiplier = (index + 1) * 0.2;
-      panel.position.x += (parallaxX * multiplier - panel.position.x) * 0.05;
-      panel.position.y += (parallaxY * multiplier - panel.position.y) * 0.05;
+      const speedMultiplier = (index + 1) * 0.3;
+      const depth = panel.userData.parallaxDepth || 1;
+      
+      // Mouse-based parallax
+      panel.position.x += (parallaxX * speedMultiplier * depth - panel.position.x) * 0.08;
+      panel.position.y += (parallaxY * speedMultiplier * depth - panel.position.y) * 0.08;
+      
+      // Scroll-based parallax with rotation
+      const scrollRotation = easedScroll * 0.1 * depth;
+      panel.rotation.z = Math.sin(this.clock.getElapsedTime() * 0.5 + index) * 0.02 + scrollRotation;
+      
+      // Add floating effect based on scroll
+      panel.position.z = panel.userData.originalZ + Math.sin(this.clock.getElapsedTime() * 0.3 + index) * 0.1 + easedScroll * 0.5;
     });
+    
+    // Apply parallax to particle systems
+    this.particleSystems.forEach((particles, index) => {
+      if (particles.userData.isAdvancedParticles) {
+        const speedMultiplier = (index + 1) * 0.1;
+        particles.rotation.y += (parallaxX * speedMultiplier * 0.01);
+        particles.rotation.x += (parallaxY * speedMultiplier * 0.01);
+        
+        // Scroll-based particle movement
+        particles.position.y = Math.sin(this.clock.getElapsedTime() * 0.2 + index) * 0.5 - easedScroll * 2;
+      }
+    });
+    
+    // Apply parallax to interactive objects
+    this.interactiveObjects.forEach((obj, index) => {
+      if (obj.userData.isInteractiveButton) {
+        const speedMultiplier = (index + 1) * 0.15;
+        obj.position.x += (parallaxX * speedMultiplier - obj.position.x) * 0.06;
+        obj.position.y += (parallaxY * speedMultiplier - obj.position.y) * 0.06;
+        
+        // Add subtle breathing effect
+        const breathe = Math.sin(this.clock.getElapsedTime() * 2 + index) * 0.05;
+        obj.scale.setScalar(1 + breathe + easedScroll * 0.1);
+      }
+    });
+    
+    // Apply parallax to profile image
+    if (this.profileMesh) {
+      const profileParallaxX = parallaxX * 0.5;
+      const profileParallaxY = parallaxY * 0.5;
+      
+      this.profileMesh.position.x += (profileParallaxX - this.profileMesh.position.x) * 0.1;
+      this.profileMesh.position.y += (profileParallaxY - this.profileMesh.position.y) * 0.1;
+      
+      // Add rotation based on scroll
+      this.profileMesh.rotation.y = Math.sin(this.clock.getElapsedTime() * 0.8) * 0.1 + easedScroll * 0.2;
+    }
+    
+    // Apply parallax to model viewer
+    const modelViewer = this.scene.children.find(child => child.userData.isModelViewer);
+    if (modelViewer) {
+      const viewerParallaxX = parallaxX * 0.3;
+      const viewerParallaxY = parallaxY * 0.3;
+      
+      modelViewer.position.x += (viewerParallaxX - modelViewer.position.x) * 0.04;
+      modelViewer.position.y += (viewerParallaxY - modelViewer.position.y) * 0.04;
+      
+      // Add subtle tilt based on scroll
+      modelViewer.rotation.x = Math.sin(this.clock.getElapsedTime() * 0.4) * 0.05 - easedScroll * 0.1;
+    }
+    
+    // Update camera position for immersive effect
+    this.camera.position.x += (parallaxX * 0.1 - this.camera.position.x) * 0.05;
+    this.camera.position.y += (parallaxY * 0.1 - this.camera.position.y) * 0.05;
+    
+    // Add camera rotation for depth
+    this.camera.rotation.z = Math.sin(this.clock.getElapsedTime() * 0.3) * 0.02 + easedScroll * 0.05;
   }
 
   onScroll(event) {
@@ -826,6 +1013,203 @@ class ThreeJSUI {
 
   easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  }
+
+  setup3DModelViewer() {
+    // Create a 3D model viewer area with glass aesthetic
+    const viewerGeometry = new THREE.PlaneGeometry(8, 6);
+    const viewerMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x1a1a1a,
+      metalness: 0.1,
+      roughness: 0.05,
+      transmission: 0.9,
+      thickness: 0.4,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.02,
+      transparent: true,
+      opacity: 0.85,
+      envMap: this.scene.environment,
+      envMapIntensity: 1.8,
+      ior: 1.5
+    });
+    
+    const viewerMesh = new THREE.Mesh(viewerGeometry, viewerMaterial);
+    viewerMesh.position.set(6, 0, -3);
+    viewerMesh.rotation.y = -Math.PI / 4;
+    viewerMesh.userData.isModelViewer = true;
+    viewerMesh.userData.interactive = true;
+    viewerMesh.castShadow = true;
+    viewerMesh.receiveShadow = true;
+    
+    this.scene.add(viewerMesh);
+    this.interactiveObjects.push(viewerMesh);
+    
+    // Add sample 3D models to the viewer
+    this.createSampleModels(viewerMesh);
+    this.createViewerControls(viewerMesh);
+  }
+
+  createSampleModels(viewerBase) {
+    // Create a rotating display of geometric models
+    const modelGroup = new THREE.Group();
+    
+    // Torus Knot
+    const torusGeometry = new THREE.TorusKnotGeometry(0.6, 0.2, 100, 16);
+    const torusMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x00ff88,
+      metalness: 0.9,
+      roughness: 0.1,
+      envMap: this.scene.environment,
+      envMapIntensity: 2.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05
+    });
+    const torusKnot = new THREE.Mesh(torusGeometry, torusMaterial);
+    torusKnot.position.set(-3, 0, 0);
+    torusKnot.castShadow = true;
+    modelGroup.add(torusKnot);
+    
+    // Icosahedron
+    const icoGeometry = new THREE.IcosahedronGeometry(0.7, 1);
+    const icoMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x88ff00,
+      metalness: 0.8,
+      roughness: 0.2,
+      transmission: 0.3,
+      thickness: 0.5,
+      envMap: this.scene.environment,
+      envMapIntensity: 1.5
+    });
+    const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
+    icosahedron.position.set(0, 0, 0);
+    icosahedron.castShadow = true;
+    modelGroup.add(icosahedron);
+    
+    // Octahedron
+    const octaGeometry = new THREE.OctahedronGeometry(0.8);
+    const octaMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xff8800,
+      metalness: 0.7,
+      roughness: 0.15,
+      envMap: this.scene.environment,
+      envMapIntensity: 1.3,
+      clearcoat: 0.8,
+      clearcoatRoughness: 0.1
+    });
+    const octahedron = new THREE.Mesh(octaGeometry, octaMaterial);
+    octahedron.position.set(3, 0, 0);
+    octahedron.castShadow = true;
+    modelGroup.add(octahedron);
+    
+    modelGroup.position.copy(viewerBase.position);
+    modelGroup.position.z += 1;
+    modelGroup.userData.isModelGroup = true;
+    modelGroup.userData.rotationSpeed = 0.008;
+    modelGroup.userData.isRotating = true;
+    
+    this.scene.add(modelGroup);
+    this.physicsObjects.push(modelGroup);
+  }
+
+  createViewerControls(viewerBase) {
+    // Create interactive control buttons for the model viewer
+    const buttonGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.15, 16);
+    const buttonMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x333333,
+      metalness: 0.8,
+      roughness: 0.2,
+      envMap: this.scene.environment,
+      envMapIntensity: 1.0,
+      clearcoat: 0.9,
+      clearcoatRoughness: 0.1
+    });
+    
+    // Rotate left button
+    const rotateLeftButton = new THREE.Mesh(buttonGeometry, buttonMaterial.clone());
+    rotateLeftButton.position.set(-1.5, -2, 0.2);
+    rotateLeftButton.userData.isControlButton = true;
+    rotateLeftButton.userData.controlType = 'rotateLeft';
+    rotateLeftButton.userData.interactive = true;
+    viewerBase.add(rotateLeftButton);
+    this.interactiveObjects.push(rotateLeftButton);
+    
+    // Rotate right button
+    const rotateRightButton = new THREE.Mesh(buttonGeometry, buttonMaterial.clone());
+    rotateRightButton.position.set(1.5, -2, 0.2);
+    rotateRightButton.userData.isControlButton = true;
+    rotateRightButton.userData.controlType = 'rotateRight';
+    rotateRightButton.userData.interactive = true;
+    viewerBase.add(rotateRightButton);
+    this.interactiveObjects.push(rotateRightButton);
+    
+    // Play/Pause button
+    const playPauseButton = new THREE.Mesh(buttonGeometry, buttonMaterial.clone());
+    playPauseButton.position.set(0, -2, 0.2);
+    playPauseButton.userData.isControlButton = true;
+    playPauseButton.userData.controlType = 'toggleRotation';
+    playPauseButton.userData.interactive = true;
+    viewerBase.add(playPauseButton);
+    this.interactiveObjects.push(playPauseButton);
+    
+    // Add visual indicators to buttons
+    this.addButtonIcons(rotateLeftButton, '←');
+    this.addButtonIcons(rotateRightButton, '→');
+    this.addButtonIcons(playPauseButton, '⏸');
+  }
+
+  addButtonIcons(button, icon) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const context = canvas.getContext('2d');
+    
+    context.fillStyle = 'rgba(0, 255, 136, 0.8)';
+    context.font = 'bold 32px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(icon, 32, 32);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    
+    const iconMaterial = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending
+    });
+    
+    const iconGeometry = new THREE.PlaneGeometry(0.4, 0.4);
+    const iconMesh = new THREE.Mesh(iconGeometry, iconMaterial);
+    iconMesh.position.set(0, 0, 0.08);
+    button.add(iconMesh);
+  }
+
+  handleViewerControl(controlType) {
+    const modelGroup = this.scene.children.find(child => child.userData.isModelGroup);
+    if (!modelGroup) return;
+    
+    switch(controlType) {
+      case 'rotateLeft':
+        modelGroup.userData.rotationSpeed = -0.02;
+        modelGroup.userData.isRotating = true;
+        break;
+      case 'rotateRight':
+        modelGroup.userData.rotationSpeed = 0.02;
+        modelGroup.userData.isRotating = true;
+        break;
+      case 'toggleRotation':
+        modelGroup.userData.isRotating = !modelGroup.userData.isRotating;
+        if (modelGroup.userData.isRotating) {
+          modelGroup.userData.rotationSpeed = 0.008;
+        } else {
+          modelGroup.userData.rotationSpeed = 0;
+        }
+        break;
+    }
+    
+    // Add visual feedback
+    this.createClickParticles(modelGroup.position);
   }
 
   createAdvancedParticleSystem() {
