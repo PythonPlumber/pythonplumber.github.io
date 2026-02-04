@@ -1,0 +1,20 @@
+{
+  "name": "Mario Python Plumber",
+  "short_name": "PythonPlumber",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "icons": [
+    {
+      "src": "/img/cropped.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/img/dp.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

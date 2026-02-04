@@ -250,6 +250,56 @@ class ThreeJSUI {
     }
   }
 
+  // Enhanced particle system for glass UI interactions
+  createGlassCardParticles(x, y, cardIndex = 0) {
+    const particleCount = 25;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+    
+    const color = new THREE.Color();
+    const hue = 0.3 + (cardIndex * 0.1) % 0.4; // Different hues for different cards
+    
+    for (let i = 0; i < particleCount; i++) {
+      // Convert screen coordinates to world coordinates
+      const worldPos = new THREE.Vector3(x, y, 0.5);
+      worldPos.unproject(this.camera);
+      
+      positions[i * 3] = worldPos.x + (Math.random() - 0.5) * 2;
+      positions[i * 3 + 1] = worldPos.y + (Math.random() - 0.5) * 2;
+      positions[i * 3 + 2] = worldPos.z + (Math.random() - 0.5) * 2;
+      
+      color.setHSL(hue, 0.8, 0.6 + Math.random() * 0.3);
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+      
+      sizes[i] = Math.random() * 0.1 + 0.05;
+    }
+    
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+    
+    const material = new THREE.PointsMaterial({
+      size: 0.1,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.8,
+      sizeAttenuation: true,
+      blending: THREE.AdditiveBlending
+    });
+    
+    const particles = new THREE.Points(geometry, material);
+    particles.userData.isGlassCardParticles = true;
+    particles.userData.startTime = this.clock.getElapsedTime();
+    particles.userData.duration = 2.0; // 2 seconds lifetime
+    
+    this.scene.add(particles);
+    this.particleSystems.push(particles);
+  }
+
   createParticleSystems() {
     this.createFloatingParticles();
     this.createGlassParticles();
