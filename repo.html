@@ -26,6 +26,32 @@ body {
   padding: 0;
 }
 
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 48px);
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+}
+
+.page-header {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.page-header a {
+  color: #b4ffd0;
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid rgba(144, 238, 144, 0.35);
+  border-radius: 999px;
+  padding: 6px 16px;
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.3);
+}
+
 .footer {
   background-color: #020402;
   color: #7a7a7a;
@@ -102,7 +128,7 @@ body {
 
 .projects h2 {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 32px;
+  font-size: clamp(1.8rem, 2vw + 1.2rem, 2.6rem);
   margin-bottom: 24px;
   color: #b4ffd0;
   text-transform: uppercase;
@@ -125,7 +151,8 @@ body {
   padding: 22px;
   border-radius: 12px;
   text-align: center;
-  width: 340px;
+  width: min(100%, 360px);
+  flex: 1 1 280px;
   overflow: hidden;
   border: 1px solid rgba(144, 238, 144, 0.22);
   box-shadow: 0 0 32px rgba(0, 255, 136, 0.26);
@@ -144,8 +171,8 @@ body {
 }
 
 .projects .repo-description {
-  font-size: 16px;
-  line-height: 1.4;
+  font-size: 0.98rem;
+  line-height: 1.6;
   margin-bottom: 10px;
 }
 
@@ -176,17 +203,40 @@ body {
   margin-top: 30px;
   color: #fff;
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .projects {
+    padding: 64px 0;
+  }
+
+  .projects .repo-item {
+    padding: 18px;
+  }
+
+  .projects .repo-name {
+    font-size: 20px;
+  }
+}
   </style>
 </head>
 <body>
   <div id="loading-overlay">
     <div class="spinner"></div>
   </div>
-  
-  <div class="projects">
-    <h2>Projects</h2>
-    <div class="repo-list" id="repo-list"></div>
-  </div>
+
+  <main class="page">
+    <div class="page-header">
+      <a href="index.html">Back to Portfolio</a>
+      <h2>Projects</h2>
+    </div>
+    <div class="projects">
+      <div class="repo-list" id="repo-list"></div>
+    </div>
+  </main>
 
   <div class="footer">
     &copy; 2023 Mario Python Plumber. All rights reserved.
@@ -196,24 +246,26 @@ body {
 const fetchRepositories = async () => {
   try {
     const response = await fetch('https://api.github.com/users/PythonPlumber/repos');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
     const data = await response.json();
     const repoList = document.getElementById('repo-list');
 
-    // Filter repositories with the "ppwr" tag (defensive against missing topics)
-    const filteredRepos = data.filter(repo => (repo.topics || []).includes('ppwr'));
+    const taggedRepos = data.filter(repo => (repo.topics || []).includes('ppwr'));
+    const reposToShow = taggedRepos.length ? taggedRepos : data;
+    reposToShow.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
-    // Generate HTML for each repository
-    const repoHTML = filteredRepos.map(repo => `
+    const repoHTML = reposToShow.map(repo => `
       <div class="repo-item">
         <h3 class="repo-name">${repo.name}</h3>
-        <p class="repo-description">${repo.description}</p>
-        <span class="repo-language">${repo.language}</span>
-        <a class="repo-link" href="${repo.html_url}" target="_blank">View Repo</a>
+        <p class="repo-description">${repo.description || 'No description yet.'}</p>
+        <span class="repo-language">${repo.language || 'Multi-language'}</span>
+        <a class="repo-link" href="${repo.html_url}" target="_blank" rel="noopener">View Repo</a>
       </div>
     `).join('');
 
-    // Append the HTML to the repo list container
-    repoList.innerHTML = repoHTML;
+    repoList.innerHTML = repoHTML || '<p class="loading-message">No repositories available.</p>';
   } catch (error) {
     const repoList = document.getElementById('repo-list');
     repoList.innerHTML = '<p class="loading-message">Failed to fetch repositories.</p>';

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Main Page</title>
     <meta name="description" content="A man who love GNU/Linux penguin lives in sri lanka! ">
     <meta name="keywords" content="python, plumber, my web, github, zly, github.com/PythonPlumber, Python Plumber, python plumber">
@@ -16,18 +18,41 @@
     <style>
         body {
             background-color: #000;
-            color: #E0E0E0; /* Light grey for readability */
-            font-family: 'Roboto', sans-serif; /* Modern readable font */
+            color: #E0E0E0;
+            font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
+        }
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: clamp(24px, 4vw, 48px);
+            display: grid;
+            gap: clamp(20px, 3vw, 32px);
+        }
+        .page-header {
+            display: grid;
+            gap: 12px;
+            justify-items: center;
+        }
+        .page-header a {
+            color: #b4ffd0;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            border: 1px solid rgba(144, 238, 144, 0.35);
+            border-radius: 999px;
+            padding: 6px 16px;
+            box-shadow: 0 0 16px rgba(0, 255, 136, 0.3);
         }
         h1 {
             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.16em;
             font-weight: 700;
-            font-size: 32px;
+            font-size: clamp(1.8rem, 2vw + 1.2rem, 2.6rem);
             margin-bottom: 24px;
             color: #b4ffd0;
         }
@@ -36,10 +61,11 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            padding: 20px;
+            padding: 0;
         }
         .blog-box {
-            width: 400px;
+            width: min(100%, 420px);
+            flex: 1 1 280px;
             background-color: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(18px);
             border-radius: 12px;
@@ -71,7 +97,7 @@
             margin-bottom: 20px;
             color: #ccc;
             text-align: left;
-            font-family: monospace;
+            font-family: 'Roboto', sans-serif;
         }
         .blog-box .read-more {
             display: inline-block;
@@ -83,6 +109,10 @@
         }
         .pagination {
             margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
         }
         .pagination button {
             background-color: rgba(0, 0, 0, 0.85);
@@ -121,9 +151,9 @@
         .modal-content {
             position: relative;
             width: 80%;
-            max-width: 800px;
+            max-width: min(800px, 90vw);
             height: 80%;
-            max-height: 600px;
+            max-height: min(600px, 90vh);
             background-color: rgba(0, 0, 0, 0.92);
             border-radius: 14px;
             padding: 22px;
@@ -146,12 +176,32 @@
       padding: 20px;
       font-size: 14px;
     }
+
+    @media (max-width: 640px) {
+        .page {
+            padding: 24px 16px;
+        }
+        .blog-box {
+            padding: 18px;
+        }
+        .blog-box h2 {
+            font-size: 18px;
+        }
+        .blog-box .excerpt {
+            font-size: 0.92rem;
+        }
+    }
     </style>
 </head>
 <body>
-    <h1>My Blogs</h1>
-    <div class="blog-list" id="blogList"></div>
-    <div class="pagination" id="pagination"></div>
+    <main class="page">
+        <div class="page-header">
+            <a href="index.html">Back to Portfolio</a>
+            <h1>My Blogs</h1>
+        </div>
+        <div class="blog-list" id="blogList"></div>
+        <div class="pagination" id="pagination"></div>
+    </main>
 
     
   <div class="footer">
@@ -208,11 +258,14 @@
 
         var currentBlogs = blogFiles.slice(startIndex, endIndex);
 
-        currentBlogs.forEach((blog, index) => {
-            var fileIndex = startIndex + index;
-
+        currentBlogs.forEach((blog) => {
             fetch('blogsmd/' + blog)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load blog');
+                    }
+                    return response.text();
+                })
                 .then(markdown => {
                     var { title, file } = extractMetadataFromMarkdown(markdown);
                     var excerpt = getExcerptFromMarkdown(markdown, 40);
@@ -229,10 +282,10 @@
 
                     var readMoreLink = document.createElement('a');
                     readMoreLink.className = 'read-more';
-                    readMoreLink.href = 'javascript:void(0)';
+                    readMoreLink.href = '#';
                     readMoreLink.textContent = 'Read More';
                     readMoreLink.addEventListener('click', function() {
-                        openMarkdownPage(file);
+                        openMarkdownPage(file || blog, title || 'Blog');
                     });
 
                     blogBox.appendChild(titleElement);
@@ -241,16 +294,23 @@
 
                     blogList.appendChild(blogBox);
                 })
-                .catch(error => console.error(error));
+                .catch(() => {
+                    var blogList = document.getElementById('blogList');
+                    var errorBox = document.createElement('div');
+                    errorBox.className = 'blog-box';
+                    errorBox.textContent = 'Unable to load this post.';
+                    blogList.appendChild(errorBox);
+                });
         });
 
         generatePagination();
     }
 
     // Function to open the Markdown content in an iframe using the Docsify web API
-    function openMarkdownPage(file) {
+    function openMarkdownPage(file, title) {
         var apiUrl = 'https://docsify-this.net';
-        var url = `${apiUrl}?basePath=https://raw.githubusercontent.com/PythonPlumber/pythonplumber.github.io/main/${file}`;
+        var normalizedFile = file.includes('/') ? file.split('/').pop() : file;
+        var url = `${apiUrl}?basePath=https://raw.githubusercontent.com/PythonPlumber/pythonplumber.github.io/main/blogsmd/${normalizedFile}`;
 
         var modal = document.createElement('div');
         modal.className = 'modal';
@@ -266,7 +326,7 @@
         });
 
         var titleElement = document.createElement('h2');
-        titleElement.textContent = file.replace('.md', '');
+        titleElement.textContent = title;
 
         var iframe = document.createElement('iframe');
         iframe.src = url;

@@ -32,6 +32,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background-color: #050505;
       color: #e4e4e4;
@@ -928,7 +932,7 @@
     }
 
     .hero h1 {
-      font-size: 42px;
+      font-size: clamp(2rem, 2vw + 1.6rem, 3.4rem);
       margin-bottom: 16px;
     }
 
@@ -939,13 +943,13 @@
     }
 
     .hero p {
-      font-size: 18px;
-      line-height: 1.7;
+      font-size: clamp(1rem, 0.7vw + 0.9rem, 1.2rem);
+      line-height: 1.8;
       margin-bottom: 32px;
       max-width: 720px;
       margin-left: auto;
       margin-right: auto;
-      color: #c4c4c4;
+      color: var(--text-muted);
     }
 
     .about-me {
@@ -1316,7 +1320,6 @@
     <div class="nav-group">
       <a href="#hero" class="nav-link">Home</a>
       <a href="#about-me" class="nav-link">About Me</a>
-      <a href="#system" class="nav-link">Design System</a>
       <a href="#insights" class="nav-link">Insights</a>
       <a href="#social-links" class="nav-link">Social Links</a>
       <a href="#contact" class="nav-link">Contact</a>
@@ -1339,10 +1342,10 @@
           <span class="chip">3D</span>
         </div>
         <h1>Mario Python Plumber</h1>
-        <p>Welcome to the whimsical world of Mario Python Plumber! Join Mario on a code-filled adventure to defeat Bowser using the power of Python programming. Prepare for a wild ride as you navigate through jumping turtles, flying mushrooms, and quirky programming challenges. Together, we'll save Princess Python and discover the hidden gems of the Python universe. Get ready to laugh, encounter unexpected glitches, and embrace the joy of coding. Grab your keyboard, don your plumber's hat, and let's dive into the magical realm of Python pipe dreams. With Mario's determination and Python's versatility, we'll conquer every coding obstacle with a smileHere's the continuation of the HTML code. So, jump in and get ready for a gaming experience that's as fun as it is educational! Happy coding</p>
+        <p>PythonPlumber is my portfolio showcasing projects, experiments, and real-time builds. Explore my latest work, browse the blog, and reach out for collaborations.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#system">Explore System</a>
-          <a class="btn btn-ghost" href="#contact">Start a Project</a>
+          <a class="btn btn-primary" href="repo.html">View Projects</a>
+          <a class="btn btn-ghost" href="blog.html">Read the Blog</a>
         </div>
       </div>
       <div class="scroll-down"></div>
@@ -1372,36 +1375,6 @@
           <p>Email: mario.yellow.bea@proton.me</p>
           <p>GitHub: PythonPlumber</p>
           <p>Website: pythonplumber.eu.org</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="system">
-      <div class="section-header">
-        <span class="section-kicker">Design System</span>
-        <h2>Atomic Components</h2>
-        <p>Token-driven system with composable components, variants, and responsive behaviors.</p>
-      </div>
-      <div class="grid grid-3">
-        <div class="card">
-          <div class="card-title">Buttons</div>
-          <div class="hero-actions">
-            <button class="btn btn-primary" type="button">Primary</button>
-            <button class="btn btn-ghost" type="button">Ghost</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title">Inputs</div>
-          <input class="input" type="text" placeholder="Search or command">
-          <input class="input" type="email" placeholder="Email address">
-        </div>
-        <div class="card">
-          <div class="card-title">Chips</div>
-          <div class="section-tags">
-            <span class="chip">Glass</span>
-            <span class="chip">Motion</span>
-            <span class="chip">Scale</span>
-          </div>
         </div>
       </div>
     </section>
@@ -1443,20 +1416,20 @@
       </div>
       <ul>
         <li>
-          <a href="https://github.com/PythonPlumber" target="_blank">
+          <a href="https://github.com/PythonPlumber" target="_blank" rel="noopener">
             <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="Github" loading="lazy" decoding="async">
           </a>
         </li>
         <li>
-          <a href="https://dev.to/PythonPlumber" target="_blank">
+          <a href="https://dev.to/PythonPlumber" target="_blank" rel="noopener">
             <img src="https://img.shields.io/badge/dev.to-0A0A0A?style=for-the-badge&logo=devdotto&logoColor=white" alt="dev.to" loading="lazy" decoding="async">
           </a>
         </li>
       </ul>
-      <a href="https://blog.pythonplumber.club" class="repo-button" target="_blank">Visit My Best Projects</a>
+      <a href="repo.html" class="repo-button">Visit My Best Projects</a>
       <h3>Check Out My Blog</h3>
       <p>Explore my latest articles on programming, technology, and more!</p>
-      <a href="https://pythonplumber.eu.org/blog" target="_blank" class="blog-button">Visit My Blogs</a>
+      <a href="blog.html" class="blog-button">Visit My Blogs</a>
     </section>
     
     <section class="section container" id="contact">
@@ -1577,7 +1550,7 @@
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js');
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
       });
     }
 
@@ -1734,7 +1707,6 @@
     const sections = [
       { id: 'hero', link: 'Home' },
       { id: 'about-me', link: 'About Me' },
-      { id: 'system', link: 'Design System' },
       { id: 'insights', link: 'Insights' },
       { id: 'social-links', link: 'Social Links' },
       { id: 'contact', link: 'Contact' }
