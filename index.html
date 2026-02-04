@@ -1238,6 +1238,50 @@
   filter: brightness(1.1);
   box-shadow: 0 0 32px rgba(10, 255, 136, 0.95);
 }
+
+.field-error {
+  display: block;
+  min-height: 18px;
+  margin-top: -10px;
+  margin-bottom: 14px;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: #ff7b7b;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.field-error.active {
+  opacity: 1;
+}
+
+.input-invalid {
+  border-color: rgba(255, 123, 123, 0.8);
+  box-shadow: 0 0 0 1px rgba(255, 123, 123, 0.6);
+}
+
+.form-status {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(144, 238, 144, 0.2);
+  color: #bfffd8;
+  min-height: 20px;
+}
+
+.form-status.error {
+  border-color: rgba(255, 123, 123, 0.6);
+  color: #ffb6b6;
+}
+
+.form-status.success {
+  border-color: rgba(10, 255, 136, 0.6);
+  color: #b6ffd7;
+}
     
 .social-links {
   background-color: rgba(0, 0, 0, 0.75);
@@ -1365,9 +1409,10 @@
       justify-items: center;
       padding: 20px;
       border-radius: 18px;
-      background: rgba(0, 0, 0, 0.7);
+      background: radial-gradient(circle at 20% 20%, rgba(10, 255, 136, 0.18), rgba(0, 0, 0, 0.8) 55%);
       border: 1px solid rgba(144, 238, 144, 0.2);
       box-shadow: 0 0 30px rgba(0, 255, 136, 0.35);
+      animation: loader-pulse 2.8s ease-in-out infinite;
     }
 
     .loader-canvas {
@@ -1375,6 +1420,7 @@
       height: 140px;
       border-radius: 16px;
       overflow: hidden;
+      background: radial-gradient(circle at 50% 50%, rgba(10, 255, 136, 0.2), rgba(0, 0, 0, 0.8));
     }
 
     .loader-fallback {
@@ -1421,6 +1467,21 @@
     @keyframes loader-spin {
       to {
         transform: rotate(360deg);
+      }
+    }
+
+    @keyframes loader-pulse {
+      0% {
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.25);
+        transform: translateY(0);
+      }
+      50% {
+        box-shadow: 0 0 50px rgba(0, 255, 136, 0.55);
+        transform: translateY(-2px);
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.25);
+        transform: translateY(0);
       }
     }
 
@@ -1577,7 +1638,7 @@
           <textarea class="input" id="message" name="message" rows="4" maxlength="800" required></textarea>
           <span class="field-error" id="message-error"></span>
 
-          <label for="captcha">Verification:</label>
+          <label for="captcha" id="captcha-label">Verification:</label>
           <input class="input" type="text" id="captcha" name="captcha" maxlength="20" autocomplete="off" required>
           <span class="field-error" id="captcha-error"></span>
 
@@ -1594,70 +1655,363 @@
     &copy; 2023 Mario Python Plumber. All rights reserved.<br>
   </div>
   <script>
-    // JavaScript code to start and hide the loading animation after 5 seconds
-    window.addEventListener('load', function() {
-      const loadingOverlay = document.getElementById('loading-overlay');
-      const spinner = document.querySelector('.spinner');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const loaderCanvasHost = document.getElementById('loader-canvas');
+    const loaderFallback = document.getElementById('loader-fallback');
+    const loaderText = document.getElementById('loader-text');
+    const loaderState = { start: performance.now(), progress: 0, loaded: false };
 
-      // Show the loading overlay and start the spinner animation
-      setTimeout(function() {
-        loadingOverlay.style.display = 'flex';
-        spinner.style.animation = 'spinner-rotate 1s linear infinite';
-      }, 1700); // 1.7-second delay (1700 milliseconds)
-
-      // Hide the loading overlay after a delay
-      setTimeout(function() {
-        loadingOverlay.style.display = 'none';
-      }, 4000); // 4-second delay (4000 milliseconds)
-    });
-
-    // JavaScript code for email validity checking
-    const emailInput = document.getElementById('email');
-    const emailValidation = document.getElementById('email-validation');
-
-    emailInput.addEventListener('input', function(event) {
-      const email = event.target.value;
-      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (regex.test(email)) {
-        emailValidation.textContent = 'Email is valid.';
-        emailValidation.style.color = 'green';
-      } else {
-        emailValidation.textContent = 'Please enter a valid email address.';
-        emailValidation.style.color = 'red';
+    const initLoaderCanvas = function() {
+      if (!loaderCanvasHost) return null;
+      const canvas = document.createElement('canvas');
+      const size = 140;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = size * ratio;
+      canvas.height = size * ratio;
+      canvas.style.width = `${size}px`;
+      canvas.style.height = `${size}px`;
+      loaderCanvasHost.innerHTML = '';
+      loaderCanvasHost.appendChild(canvas);
+      const context = canvas.getContext('2d');
+      if (!context) {
+        loaderFallback.style.display = 'block';
+        return null;
       }
+      context.scale(ratio, ratio);
+      return { canvas, context, size };
+    };
+
+    const loaderCanvas = initLoaderCanvas();
+    const loaderOrbs = Array.from({ length: 24 }).map(() => ({
+      radius: 24 + Math.random() * 32,
+      speed: 0.6 + Math.random() * 1.4,
+      size: 3 + Math.random() * 3.5,
+      offset: Math.random() * Math.PI * 2
+    }));
+
+    const renderLoader = function(time) {
+      if (!loaderCanvas) return;
+      const { context, size } = loaderCanvas;
+      context.clearRect(0, 0, size, size);
+      const center = size / 2;
+      const glow = context.createRadialGradient(center, center, 10, center, center, 70);
+      glow.addColorStop(0, 'rgba(10,255,136,0.35)');
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      context.fillStyle = glow;
+      context.fillRect(0, 0, size, size);
+
+      loaderOrbs.forEach((orb, index) => {
+        const angle = time * 0.001 * orb.speed + orb.offset;
+        const x = center + Math.cos(angle) * orb.radius;
+        const y = center + Math.sin(angle) * orb.radius;
+        const pulse = 0.6 + 0.4 * Math.sin(time * 0.002 + index);
+        context.beginPath();
+        context.fillStyle = `rgba(10,255,136,${0.35 + pulse * 0.4})`;
+        context.arc(x, y, orb.size * pulse, 0, Math.PI * 2);
+        context.fill();
+      });
+
+      const ringProgress = Math.min(loaderState.progress / 100, 1);
+      context.beginPath();
+      context.strokeStyle = 'rgba(10,255,136,0.8)';
+      context.lineWidth = 4;
+      context.arc(center, center, 50, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ringProgress);
+      context.stroke();
+    };
+
+    const animateLoader = function(time) {
+      const elapsed = time - loaderState.start;
+      const target = loaderState.loaded ? 100 : 90;
+      loaderState.progress = Math.min(target, loaderState.progress + (target - loaderState.progress) * 0.04);
+      if (loaderText) {
+        loaderText.textContent = `Loading ${Math.round(loaderState.progress)}%`;
+      }
+      renderLoader(time);
+      if (!loaderState.loaded || elapsed < 1200) {
+        requestAnimationFrame(animateLoader);
+      }
+    };
+
+    if (loadingOverlay) {
+      loadingOverlay.style.display = 'flex';
+      requestAnimationFrame(animateLoader);
+    }
+
+    window.addEventListener('load', function() {
+      loaderState.loaded = true;
+      const finish = function() {
+        if (loadingOverlay) {
+          loadingOverlay.style.display = 'none';
+        }
+      };
+      setTimeout(finish, 500);
     });
 
-    // JavaScript code for GitHub username validation
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
     const githubInput = document.getElementById('github');
-    const githubValidation = document.getElementById('github-validation');
+    const messageInput = document.getElementById('message');
+    const captchaInput = document.getElementById('captcha');
+    const captchaLabel = document.getElementById('captcha-label');
+    const hpInput = document.getElementById('website');
+    const submitButton = document.getElementById('submit-button');
+    const statusEl = document.getElementById('form-status');
+    const form = document.getElementById('contact-form');
 
-    githubInput.addEventListener('input', function(event) {
-      const username = event.target.value;
-      if (username.trim() !== '') {
-        fetch(`https://api.github.com/users/${username}`)
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const phoneError = document.getElementById('phone-error');
+    const githubError = document.getElementById('github-error');
+    const messageError = document.getElementById('message-error');
+    const captchaError = document.getElementById('captcha-error');
+
+    let captchaAnswer = 0;
+    let githubTimeout;
+
+    const setStatus = function(message, type) {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.classList.remove('error', 'success');
+      if (type) statusEl.classList.add(type);
+    };
+
+    const setFieldError = function(input, errorEl, message) {
+      if (!errorEl || !input) return;
+      if (message) {
+        errorEl.textContent = message;
+        errorEl.classList.add('active');
+        input.classList.add('input-invalid');
+      } else {
+        errorEl.textContent = '';
+        errorEl.classList.remove('active');
+        input.classList.remove('input-invalid');
+      }
+    };
+
+    const setCaptcha = function() {
+      const a = Math.floor(3 + Math.random() * 7);
+      const b = Math.floor(3 + Math.random() * 7);
+      captchaAnswer = a + b;
+      if (captchaLabel) {
+        captchaLabel.textContent = `Verification: ${a} + ${b} = ?`;
+      }
+    };
+
+    const validateName = function() {
+      const value = (nameInput?.value || '').trim();
+      if (value.length < 2) return 'Enter at least 2 characters.';
+      if (value.length > 60) return 'Keep your name under 60 characters.';
+      return '';
+    };
+
+    const validateEmail = function() {
+      const value = (emailInput?.value || '').trim();
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!regex.test(value)) return 'Enter a valid email address.';
+      return '';
+    };
+
+    const normalizePhone = function(value) {
+      const trimmed = value.replace(/[^\d+]/g, '');
+      const hasPlus = trimmed.startsWith('+');
+      const digits = trimmed.replace(/[^\d]/g, '');
+      const cleaned = hasPlus ? `+${digits}` : digits;
+      return cleaned.slice(0, 16);
+    };
+
+    const formatPhone = function(value) {
+      const cleaned = normalizePhone(value);
+      const digits = cleaned.replace('+', '');
+      const parts = [];
+      let index = 0;
+      while (index < digits.length) {
+        const size = index === 0 ? 3 : 4;
+        parts.push(digits.slice(index, index + size));
+        index += size;
+      }
+      return cleaned.startsWith('+') ? `+${parts.join(' ')}` : parts.join(' ');
+    };
+
+    const validatePhone = function() {
+      const digits = normalizePhone(phoneInput?.value || '').replace('+', '');
+      if (digits.length < 7) return 'Enter a phone number with 7+ digits.';
+      if (digits.length > 15) return 'Use 15 digits or fewer.';
+      return '';
+    };
+
+    const validateMessage = function() {
+      const value = (messageInput?.value || '').trim();
+      if (value.length < 10) return 'Tell me a bit more about the project.';
+      if (value.length > 800) return 'Keep your message under 800 characters.';
+      return '';
+    };
+
+    const validateCaptcha = function() {
+      const value = (captchaInput?.value || '').trim();
+      if (!value) return 'Answer the verification question.';
+      if (parseInt(value, 10) !== captchaAnswer) return 'Verification answer is incorrect.';
+      return '';
+    };
+
+    const validateGithub = function() {
+      const value = (githubInput?.value || '').trim();
+      if (!value) {
+        setFieldError(githubInput, githubError, '');
+        return;
+      }
+      setFieldError(githubInput, githubError, 'Checking GitHub username...');
+      fetch(`https://api.github.com/users/${value}`)
+        .then(response => {
+          if (response.ok) {
+            setFieldError(githubInput, githubError, '');
+          } else {
+            setFieldError(githubInput, githubError, 'GitHub username not found.');
+          }
+        })
+        .catch(() => {
+          setFieldError(githubInput, githubError, 'Unable to verify GitHub username.');
+        });
+    };
+
+    const runValidation = function() {
+      const nameMessage = validateName();
+      const emailMessage = validateEmail();
+      const phoneMessage = validatePhone();
+      const messageMessage = validateMessage();
+      const captchaMessage = validateCaptcha();
+      setFieldError(nameInput, nameError, nameMessage);
+      setFieldError(emailInput, emailError, emailMessage);
+      setFieldError(phoneInput, phoneError, phoneMessage);
+      setFieldError(messageInput, messageError, messageMessage);
+      setFieldError(captchaInput, captchaError, captchaMessage);
+      return !nameMessage && !emailMessage && !phoneMessage && !messageMessage && !captchaMessage;
+    };
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function(event) {
+        const formatted = formatPhone(event.target.value);
+        event.target.value = formatted;
+        setFieldError(phoneInput, phoneError, validatePhone());
+      });
+    }
+
+    if (nameInput) {
+      nameInput.addEventListener('input', function() {
+        setFieldError(nameInput, nameError, validateName());
+      });
+    }
+
+    if (emailInput) {
+      emailInput.addEventListener('input', function() {
+        setFieldError(emailInput, emailError, validateEmail());
+      });
+    }
+
+    if (messageInput) {
+      messageInput.addEventListener('input', function() {
+        setFieldError(messageInput, messageError, validateMessage());
+      });
+    }
+
+    if (captchaInput) {
+      captchaInput.addEventListener('input', function() {
+        setFieldError(captchaInput, captchaError, validateCaptcha());
+      });
+    }
+
+    if (githubInput) {
+      githubInput.addEventListener('input', function() {
+        clearTimeout(githubTimeout);
+        githubTimeout = setTimeout(validateGithub, 500);
+      });
+    }
+
+    const checkRateLimit = function() {
+      const now = Date.now();
+      const lastSubmit = parseInt(localStorage.getItem('contact_last_submit') || '0', 10);
+      const windowStart = parseInt(localStorage.getItem('contact_window_start') || '0', 10);
+      const windowCount = parseInt(localStorage.getItem('contact_window_count') || '0', 10);
+      if (now - lastSubmit < 45000) {
+        return 'Please wait a bit before sending another message.';
+      }
+      if (!windowStart || now - windowStart > 10 * 60 * 1000) {
+        localStorage.setItem('contact_window_start', `${now}`);
+        localStorage.setItem('contact_window_count', '0');
+        return '';
+      }
+      if (windowCount >= 3) {
+        return 'Message limit reached. Try again in a few minutes.';
+      }
+      return '';
+    };
+
+    const recordSubmission = function() {
+      const now = Date.now();
+      const windowStart = parseInt(localStorage.getItem('contact_window_start') || '0', 10);
+      const windowCount = parseInt(localStorage.getItem('contact_window_count') || '0', 10);
+      localStorage.setItem('contact_last_submit', `${now}`);
+      if (!windowStart || now - windowStart > 10 * 60 * 1000) {
+        localStorage.setItem('contact_window_start', `${now}`);
+        localStorage.setItem('contact_window_count', '1');
+      } else {
+        localStorage.setItem('contact_window_count', `${windowCount + 1}`);
+      }
+    };
+
+    if (form) {
+      setCaptcha();
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (hpInput && hpInput.value.trim()) {
+          setStatus('Submission blocked.', 'error');
+          return;
+        }
+        const rateLimitMessage = checkRateLimit();
+        if (rateLimitMessage) {
+          setStatus(rateLimitMessage, 'error');
+          return;
+        }
+        const isValid = runValidation();
+        if (!isValid) {
+          setStatus('Please fix the highlighted fields.', 'error');
+          return;
+        }
+        if (submitButton) submitButton.disabled = true;
+        setStatus('Sending message...', '');
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' }
+        })
           .then(response => {
             if (response.ok) {
-              githubValidation.textContent= 'GitHub username is valid.';
-              githubValidation.style.color = 'green';
+              recordSubmission();
+              form.reset();
+              setCaptcha();
+              setStatus('Message sent successfully.', 'success');
+              setFieldError(nameInput, nameError, '');
+              setFieldError(emailInput, emailError, '');
+              setFieldError(phoneInput, phoneError, '');
+              setFieldError(messageInput, messageError, '');
+              setFieldError(captchaInput, captchaError, '');
+              setFieldError(githubInput, githubError, '');
             } else {
-              githubValidation.textContent = 'GitHub username does not exist.';
-              githubValidation.style.color = 'red';
+              setStatus('Message failed. Please retry.', 'error');
             }
           })
-          .catch(error => {
-            githubValidation.textContent = 'Failed to validate GitHub username.';
-            githubValidation.style.color = 'red';
+          .catch(() => {
+            setStatus('Network error. Please retry.', 'error');
+          })
+          .finally(() => {
+            if (submitButton) submitButton.disabled = false;
           });
-      } else {
-        githubValidation.textContent = '';
-      }
-    });
+      });
+    }
 
-    // JavaScript code to hide scroll-down animation when user starts scrolling
     window.addEventListener('scroll', function() {
       const scrollAnimation = document.querySelector('.scroll-down');
-      scrollAnimation.style.display = 'none';
+      if (scrollAnimation) scrollAnimation.style.display = 'none';
     });
 
     const themeToggle = document.querySelector('.theme-toggle');
