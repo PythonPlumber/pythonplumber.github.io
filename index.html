@@ -29,32 +29,10 @@
   </script>
   <link rel="icon" href="/img/cropped.jpg">
   <link rel="icon" href="/img/512.gif" type="image/gif" >
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js" defer></script>
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: #050505;
-      color: #e4e4e4;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-
-    h1,
-    h2 {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #b4ffd0;
-    }
-
-    /* Advanced Glassmorphism System */
+    /* Enhanced Inline Styles - Critical Design System Overrides */
     :root {
       --glass-bg: rgba(10, 10, 10, 0.25);
       --glass-border: rgba(144, 238, 144, 0.15);
@@ -576,43 +554,760 @@
       }
     }
 
-    @media (min-width: 1200px) {
-      .navbar {
-        padding: 18px 48px;
+        /* Modern About Me Section Styles */
+    .about-me {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Profile Header */
+    .about-profile {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .profile-avatar {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar-glow {
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(circle, rgba(10, 255, 136, 0.3), transparent 70%);
+      border-radius: 50%;
+      animation: avatarPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes avatarPulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .avatar-frame {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(10, 255, 136, 0.2), rgba(0, 199, 107, 0.1));
+      border: 2px solid rgba(10, 255, 136, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(10, 255, 136, 0.2);
+    }
+
+    .avatar-initial {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin: 12px 0;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .profile-title {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+
+    .profile-location {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .profile-location svg {
+      stroke: var(--primary-glow);
+    }
+
+    /* Bio Section */
+    .about-bio {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .bio-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Skills Section */
+    .about-skills {
+      text-align: center;
+    }
+
+    .skills-title {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .skill-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: left;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10, 255, 136, 0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .skill-item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(10, 255, 136, 0.3);
+      box-shadow: 0 12px 32px rgba(0, 255, 136, 0.15);
+    }
+
+    .skill-item:hover::before {
+      opacity: 1;
+    }
+
+    .skill-name {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .skill-progress {
+      width: 100%;
+      height: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .skill-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+      border-radius: 999px;
+      width: 0%;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-bar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: skillShine 2s ease-in-out infinite;
+    }
+
+    @keyframes skillShine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Stats Section */
+    .about-stats {
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    .stats-title {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 24px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .stat-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 24px 16px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10, 255, 136, 0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-4px) scale(1.05);
+      border-color: rgba(10, 255, 136, 0.3);
+      box-shadow: 0 12px 32px rgba(0, 255, 136, 0.15);
+    }
+
+    .stat-item:hover::before {
+      opacity: 1;
+    }
+
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary-glow);
+      margin-bottom: 8px;
+      font-variant-numeric: tabular-nums;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Enhanced Card Interactions */
+    .about-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .about-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(10, 255, 136, 0.3), transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.4s ease;
+      pointer-events: none;
+    }
+
+    .about-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      border-color: rgba(10, 255, 136, 0.4);
+      box-shadow: 0 20px 48px rgba(0, 255, 136, 0.2);
+    }
+
+    .about-card:hover::after {
+      width: 200px;
+      height: 200px;
+    }
+
+    .about-card:active {
+      transform: translateY(-8px) scale(0.98);
+      transition: transform 0.1s ease;
+    }
+
+    /* Card Ripple Effect */
+    .card-ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(10, 255, 136, 0.6), rgba(0, 199, 107, 0.2), transparent);
+      transform: scale(0);
+      animation: ripple-animation 0.6s ease-out;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @keyframes ripple-animation {
+      to {
+        transform: scale(4);
+        opacity: 0;
       }
     }
 
-    @media (max-width: 640px) {
-      .page {
-        padding-top: 100px;
+    /* Mobile Responsive for Enhanced Elements */
+    @media (max-width: 768px) {
+      .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
       }
 
-      .navbar {
-        gap: 14px;
-        padding: 14px 12px;
-        align-items: stretch;
+      .skill-item {
+        padding: 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .stat-item {
+        padding: 20px 12px;
+      }
+
+      .stat-number {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skill-item {
+        padding: 14px;
+      }
+
+      .stat-item {
+        padding: 16px;
+      }
+    }
+
+    /* Info Cards Grid */
+    .about-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .about-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(10, 255, 136, 0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .about-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(10, 255, 136, 0.3);
+      box-shadow: 0 16px 40px rgba(0, 255, 136, 0.15);
+    }
+
+    .about-card:hover::before {
+      opacity: 1;
+    }
+
+    .about-card .card-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, rgba(10, 255, 136, 0.15), rgba(0, 199, 107, 0.1));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-glow);
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-card h4 {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* CTA Section */
+    .about-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .about-profile {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .avatar-frame {
+        width: 100px;
+        height: 100px;
+      }
+
+      .avatar-initial {
+        font-size: 40px;
+      }
+
+      .profile-name {
+        font-size: 1.8rem;
+      }
+
+      .bio-text {
+        font-size: 1rem;
+      }
+
+      .about-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .about-card {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .about-container {
+        gap: 32px;
+      }
+
+      .skills-grid {
+        gap: 8px;
+      }
+
+      .skill-tag {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+      }
+
+      .about-cta {
         flex-direction: column;
       }
 
-      .navbar a {
-        font-size: 0.78rem;
-        letter-spacing: 0.1em;
-      }
-
-      .nav-group {
-        justify-content: flex-start;
-        overflow: visible;
-        flex-wrap: wrap;
-        row-gap: 8px;
-        padding-bottom: 0;
-      }
-
-      .hero {
-        padding: 56px 0;
-      }
-
-      .btn {
+      .about-cta .btn {
         width: 100%;
+      }
+    }
+
+    /* Entry Animations */
+    .about-profile,
+    .about-bio,
+    .about-skills,
+    .about-cards-grid,
+    .about-cta {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: aboutFadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    .about-profile { animation-delay: 0.1s; }
+    .about-bio { animation-delay: 0.2s; }
+    .about-skills { animation-delay: 0.3s; }
+    .about-cards-grid { animation-delay: 0.4s; }
+    .about-cta { animation-delay: 0.5s; }
+
+    @keyframes aboutFadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Parallax Scroll Effects */
+    .parallax-element {
+      transition: transform 0.1s ease-out;
+      will-change: transform;
+    }
+
+    .parallax-slow {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .parallax-medium {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .parallax-fast {
+      transform: translate3d(0, 0, 0);
+    }
+
+    /* Mouse Follower Elements */
+    .mouse-follower {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, rgba(10, 255, 136, 0.8), rgba(0, 199, 107, 0.4));
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease-out;
+      mix-blend-mode: screen;
+      opacity: 0;
+    }
+
+    .mouse-follower.active {
+      opacity: 1;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: rgba(10, 255, 136, 0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9997;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s ease-out, opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    /* 3D Tilt Cards */
+    .tilt-card {
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease-out;
+      will-change: transform;
+    }
+
+    .tilt-card:hover {
+      transform: perspective(1000px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) translateZ(10px);
+    }
+
+    /* Floating Animated Orbs */
+    .floating-orb {
+      position: fixed;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(10, 255, 136, 0.4), rgba(0, 199, 107, 0.1));
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 1;
+      animation: float-orb 20s infinite ease-in-out;
+    }
+
+    .orb-1 {
+      width: 200px;
+      height: 200px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+      animation-duration: 25s;
+    }
+
+    .orb-2 {
+      width: 150px;
+      height: 150px;
+      top: 60%;
+      right: 15%;
+      animation-delay: 5s;
+      animation-duration: 30s;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 199, 107, 0.3), rgba(10, 255, 136, 0.08));
+    }
+
+    .orb-3 {
+      width: 120px;
+      height: 120px;
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 10s;
+      animation-duration: 22s;
+      background: radial-gradient(circle at 30% 30%, rgba(180, 255, 208, 0.2), rgba(10, 255, 136, 0.05));
+    }
+
+    @keyframes float-orb {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      25% {
+        transform: translate(100px, -50px) scale(1.1);
+      }
+      50% {
+        transform: translate(-80px, 100px) scale(0.9);
+      }
+      75% {
+        transform: translate(50px, 80px) scale(1.05);
+      }
+    }
+
+    /* Ripple Effect on Click */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(10, 255, 136, 0.6), rgba(0, 199, 107, 0.2), transparent);
+      transform: scale(0);
+      animation: ripple-animation 1s ease-out;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    @keyframes ripple-animation {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Enhanced 3D Effects for Interactive Elements */
+    .hero,
+    .about-me,
+    .form-container,
+    .glass-card,
+    .card,
+    .stat-card {
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    }
+
+    .hero:hover {
+      transform: perspective(1000px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) translateZ(5px);
+    }
+
+    .about-me:hover {
+      transform: perspective(1000px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) translateZ(3px);
+    }
+
+    /* Enhanced Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .navbar {
+        top: 12px;
+        padding: 10px 16px;
+        gap: 4px;
+      }
+
+      .navbar a {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+      }
+
+      .floating-orb {
+        filter: blur(60px);
+      }
+
+      .orb-1 {
+        width: 120px;
+        height: 120px;
+      }
+
+      .orb-2 {
+        width: 100px;
+        height: 100px;
+      }
+
+      .orb-3 {
+        width: 80px;
+        height: 80px;
+      }
+
+      .mouse-follower,
+      .cursor-trail {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar {
+        top: 8px;
+        padding: 8px 12px;
+      }
+
+      .navbar a {
+        font-size: 0.65rem;
+        padding: 5px 10px;
+      }
+    }
+
+    /* Performance Optimizations */
+    @media (prefers-reduced-motion: reduce) {
+      .parallax-element,
+      .tilt-card,
+      .floating-orb,
+      .mouse-follower,
+      .cursor-trail {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
       }
     }
 
@@ -1144,70 +1839,109 @@
       outline: none;
     }
 
+    /* Modern Floating Pill Navbar */
     .navbar {
       position: fixed;
-      top: 0;
-      width: 100%;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0.7));
-      backdrop-filter: blur(18px);
-      padding: 14px 32px;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 10, 10, 0.25);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(144, 238, 144, 0.15);
+      border-radius: 999px;
+      padding: 12px 24px;
       z-index: 1000;
-      box-shadow: 0 0 28px rgba(0, 0, 0, 0.7);
+      box-shadow: 
+        0 8px 32px rgba(0, 255, 136, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-      transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+      gap: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: calc(100vw - 40px);
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .navbar::-webkit-scrollbar {
+      display: none;
     }
 
     .navbar.scrolled {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+      top: 16px;
+      background: rgba(10, 10, 10, 0.35);
+      backdrop-filter: blur(28px) saturate(200%);
+      -webkit-backdrop-filter: blur(28px) saturate(200%);
+      border-color: rgba(144, 238, 144, 0.25);
+      box-shadow: 
+        0 12px 48px rgba(0, 255, 136, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transform: translateX(-50%) scale(0.95);
+    }
+
+    .navbar:hover {
+      background: rgba(15, 15, 15, 0.3);
+      border-color: rgba(144, 238, 144, 0.2);
+      box-shadow: 
+        0 16px 64px rgba(0, 255, 136, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    .navbar.scrolled:hover {
+      transform: translateX(-50%) translateY(-2px) scale(0.95);
+    }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+      justify-content: center;
     }
 
     .navbar a {
-      color: #b4ffd0;
+      color: var(--text-secondary);
       text-decoration: none;
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 8px 12px;
+      padding: 8px 16px;
       position: relative;
-      transition: color 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 999px;
       white-space: nowrap;
+      background: transparent;
+      border: 1px solid transparent;
     }
 
-    .navbar a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #0aff88, #00c76b);
-      box-shadow: 0 0 12px rgba(10, 255, 136, 0.9);
-      transition: width 0.22s ease;
-    }
-
-    .navbar a:hover::after {
-      width: 100%;
+    .navbar a:hover {
+      color: var(--primary-glow);
+      background: rgba(10, 255, 136, 0.08);
+      border-color: rgba(10, 255, 136, 0.2);
+      transform: translateY(-1px);
     }
 
     .navbar a.active {
-      color: #0aff88;
+      color: var(--primary-glow);
+      background: linear-gradient(135deg, rgba(10, 255, 136, 0.15), rgba(0, 199, 107, 0.1));
+      border-color: rgba(10, 255, 136, 0.3);
+      box-shadow: 0 0 16px rgba(10, 255, 136, 0.2);
     }
 
-    .navbar a.active::after {
-      width: 100%;
+    .navbar a::after {
+      display: none;
     }
 
     .navbar a:focus-visible,
     .repo-button:focus-visible,
     .blog-button:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(10, 255, 136, 0.4);
+      box-shadow: 0 0 0 2px rgba(10, 255, 136, 0.4);
     }
 
 .form-container label {
@@ -1416,57 +2150,1128 @@
       text-transform: uppercase;
     }
 
+    /* Enhanced Space Background */
+    .space-background {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 30%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 70%, rgba(0, 200, 100, 0.03) 0%, transparent 50%),
+                  linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .planet {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: planetOrbit 60s linear infinite;
+    }
+
+    .planet-1 {
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle at 30% 30%, #00ff88, #00aa55);
+      top: 15%;
+      left: 10%;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+      animation-delay: 0s;
+    }
+
+    .planet-2 {
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle at 40% 40%, #00cc66, #008844);
+      top: 60%;
+      right: 20%;
+      box-shadow: 0 0 15px rgba(0, 204, 102, 0.4);
+      animation-delay: 15s;
+    }
+
+    .planet-3 {
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at 35% 35%, #00ffaa, #00cc77);
+      bottom: 20%;
+      left: 70%;
+      box-shadow: 0 0 25px rgba(0, 255, 170, 0.6);
+      animation-delay: 30s;
+    }
+
+    .planet-4 {
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle at 45% 45%, #00dd99, #00aa66);
+      top: 30%;
+      right: 60%;
+      box-shadow: 0 0 10px rgba(0, 221, 153, 0.3);
+      animation-delay: 45s;
+    }
+
+    @keyframes planetOrbit {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(20px, -10px) rotate(90deg); }
+      50% { transform: translate(0, -20px) rotate(180deg); }
+      75% { transform: translate(-20px, -10px) rotate(270deg); }
+    }
+
+    /* Enhanced Nebula Effects */
+    .nebula {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: nebulaPulse 8s ease-in-out infinite;
+    }
+
+    .nebula {
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 200px;
+      background: radial-gradient(ellipse at center, rgba(0, 255, 136, 0.2), transparent 70%);
+      transform: translate(-50%, -50%);
+    }
+
+    .nebula-2 {
+      top: 20%;
+      right: 30%;
+      width: 250px;
+      height: 180px;
+      background: radial-gradient(ellipse at center, rgba(0, 200, 100, 0.15), transparent 60%);
+      transform: translate(50%, -50%);
+      animation-delay: 2s;
+    }
+
+    .nebula-3 {
+      bottom: 30%;
+      left: 25%;
+      width: 200px;
+      height: 150px;
+      background: radial-gradient(ellipse at center, rgba(100, 255, 200, 0.1), transparent 70%);
+      transform: translate(-50%, 50%);
+      animation-delay: 4s;
+    }
+
+    @keyframes nebulaPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(1.1); }
+    }
+
+    /* Enhanced Stars */
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .stars-layer-2 {
+      z-index: 1;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    .shooting-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .shooting-star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: linear-gradient(90deg, white, transparent);
+      border-radius: 50%;
+      animation: shootingStarMove 3s linear infinite;
+    }
+
+    @keyframes shootingStarMove {
+      0% {
+        transform: translate(-100px, 0) rotate(45deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(100vw + 100px), 100vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* Enhanced Crash Effects */
+    .crash-impact {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.6), rgba(0, 200, 100, 0.3), transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9994;
+    }
+
+    .crash-active {
+      animation: crashImpactBurst 2.5s ease-out forwards;
+    }
+
+    @keyframes crashImpactBurst {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      30% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Fire Explosion */
+    .fire-explosion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, 
+        rgba(255, 100, 0, 0.9) 0%, 
+        rgba(255, 50, 0, 0.6) 30%, 
+        rgba(200, 0, 0, 0.3) 60%, 
+        transparent 100%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9993;
+    }
+
+    .fire-active {
+      animation: fireExplosionBurst 3s ease-out forwards;
+    }
+
+    @keyframes fireExplosionBurst {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      20% {
+        transform: translate(-50%, -50%) scale(2.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Smoke Plume */
+    .smoke-plume {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, 
+        rgba(50, 50, 50, 0.8) 0%, 
+        rgba(30, 30, 30, 0.4) 50%, 
+        transparent 100%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9992;
+    }
+
+    .smoke-active {
+      animation: smokePlumeRise 4s ease-out forwards;
+    }
+
+    @keyframes smokePlumeRise {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      25% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0.9;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(2) translateY(-50px);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(3) translateY(-150px);
+        opacity: 0;
+      }
+    }
+
+    /* Debris Field */
+    .debris-field {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, 
+        rgba(100, 100, 100, 0.6) 0%, 
+        rgba(50, 50, 50, 0.3) 50%, 
+        transparent 100%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9991;
+    }
+
+    .debris-active {
+      animation: debrisFieldScatter 3.5s ease-out forwards;
+    }
+
+    @keyframes debrisFieldScatter {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      30% {
+        transform: translate(-50%, -50%) scale(1.8) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Secondary Explosion */
+    .secondary-explosion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, 
+        rgba(255, 200, 0, 0.8) 0%, 
+        rgba(255, 150, 0, 0.4) 40%, 
+        transparent 100%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9990;
+    }
+
+    .secondary-active {
+      animation: secondaryExplosionBurst 2s ease-out 0.5s forwards;
+    }
+
+    @keyframes secondaryExplosionBurst {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Final Impact */
+    .final-impact {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, 
+        rgba(255, 255, 255, 0.9) 0%, 
+        rgba(200, 200, 200, 0.5) 20%, 
+        rgba(100, 100, 100, 0.2) 50%, 
+        transparent 100%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9989;
+    }
+
+    .final-active {
+      animation: finalImpactBurst 4s ease-out 1s forwards;
+    }
+
+    @keyframes finalImpactBurst {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      20% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+    }
+
+    .landing-effect {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 255, 136, 0.4), rgba(0, 200, 100, 0.2), transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9995;
+    }
+
+    .landing-active {
+      animation: landingBurst 2s ease-out forwards;
+    }
+
+    @keyframes landingBurst {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+    }
+
+    /* Enhanced UFO Design */
+    .ufo {
+      width: 140px;
+      height: 80px;
+      position: relative;
+      animation: ufoFloat 4s ease-in-out infinite;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .ufo-dome {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 30px;
+      background: linear-gradient(135deg, 
+        rgba(0, 255, 200, 0.9) 0%, 
+        rgba(0, 200, 150, 0.7) 50%, 
+        rgba(0, 150, 100, 0.5) 100%);
+      border-radius: 50px 50px 10px 10px;
+      box-shadow: 
+        0 0 20px rgba(0, 255, 200, 0.8),
+        inset 0 0 15px rgba(255, 255, 255, 0.3);
+      animation: domePulse 3s ease-in-out infinite;
+    }
+
+    .ufo-body {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 40px;
+      background: linear-gradient(135deg, 
+        rgba(20, 20, 20, 0.95) 0%, 
+        rgba(40, 40, 40, 0.85) 50%, 
+        rgba(30, 30, 30, 0.9) 100%);
+      border-radius: 60px 60px 20px 20px;
+      box-shadow: 
+        0 0 15px rgba(0, 255, 136, 0.6),
+        inset 0 0 10px rgba(0, 200, 150, 0.2);
+    }
+
+    .ufo-rim {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 20px;
+      background: linear-gradient(90deg, 
+        rgba(0, 255, 100, 0.8) 0%, 
+        rgba(0, 200, 80, 0.6) 25%, 
+        rgba(0, 180, 60, 0.4) 50%, 
+        rgba(0, 160, 40, 0.2) 75%, 
+        rgba(0, 140, 20, 0.1) 100%);
+      border-radius: 65px 65px 15px 15px;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+    }
+
+    .ufo-lights {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+    }
+
+    .ufo-light {
+      border-radius: 50%;
+      animation: lightBlink 1.5s ease-in-out infinite;
+    }
+
+    .primary-light {
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle, 
+        rgba(255, 255, 255, 0.9), 
+        rgba(0, 255, 200, 0.8));
+      box-shadow: 0 0 10px rgba(0, 255, 200, 0.8);
+      animation-delay: 0s;
+    }
+
+    .secondary-light {
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, 
+        rgba(0, 200, 255, 0.8), 
+        rgba(0, 150, 200, 0.6));
+      box-shadow: 0 0 8px rgba(0, 200, 255, 0.6);
+      animation-delay: 0.3s;
+    }
+
+    .tertiary-light {
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, 
+        rgba(255, 100, 200, 0.7), 
+        rgba(200, 50, 150, 0.5));
+      box-shadow: 0 0 6px rgba(255, 100, 200, 0.5);
+      animation-delay: 0.6s;
+    }
+
+    .navigation-light {
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, 
+        rgba(100, 255, 100, 0.9), 
+        rgba(0, 255, 100, 0.7));
+      box-shadow: 0 0 8px rgba(100, 255, 100, 0.7);
+      animation: navigationRotate 2s linear infinite;
+    }
+
+    @keyframes navigationRotate {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(180deg); }
+    }
+
+    /* UFO Engines */
+    .ufo-engines {
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 30px;
+    }
+
+    .engine {
+      width: 15px;
+      height: 8px;
+      background: linear-gradient(90deg, 
+        rgba(0, 255, 136, 0.9) 0%, 
+        rgba(0, 200, 100, 0.6) 100%);
+      border-radius: 50%;
+      animation: engineGlow 0.8s ease-in-out infinite;
+    }
+
+    .engine-left {
+      animation-delay: 0s;
+    }
+
+    .engine-right {
+      animation-delay: 0.2s;
+    }
+
+    .engine-center {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes engineGlow {
+      0%, 100% { 
+        opacity: 0.6; 
+        box-shadow: 0 0 5px rgba(0, 255, 136, 0.4);
+      }
+      50% { 
+        opacity: 1; 
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
+      }
+    }
+
+    /* UFO Antenna */
+    .ufo-antenna {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 25px;
+      background: linear-gradient(180deg, 
+        rgba(0, 255, 200, 0.8) 0%, 
+        rgba(0, 200, 150, 0.5) 100%);
+      border-radius: 2px;
+      animation: antennaSway 4s ease-in-out infinite;
+    }
+
+    @keyframes antennaSway {
+      0%, 100% { transform: translateX(-50%) rotate(-3deg); }
+      50% { transform: translateX(-50%) rotate(3deg); }
+    }
+
+    /* UFO Trail */
+    .ufo-trail {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, 
+        rgba(0, 255, 136, 0.3) 0%, 
+        transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .trail-active {
+      animation: trailFollow 1s ease-out infinite;
+    }
+
+    @keyframes trailFollow {
+      0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0.4);
+        opacity: 0;
+      }
+    }
+
+    @keyframes domePulse {
+      0%, 100% { 
+        opacity: 0.9; 
+        box-shadow: 0 0 20px rgba(0, 255, 200, 0.8);
+      }
+      50% { 
+        opacity: 1; 
+        box-shadow: 0 0 30px rgba(0, 255, 200, 1);
+      }
+    }
     #loading-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(10px);
+      background: radial-gradient(ellipse at center, rgba(10, 255, 136, 0.1) 0%, transparent 70%),
+                  linear-gradient(180deg, #0a0a0a 0%, #050505 50%, #0a0a0a 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 9999;
-    }
-
-    .loader-shell {
-      width: min(220px, 70vw);
-      display: grid;
-      gap: 16px;
-      align-items: center;
-      justify-items: center;
-      padding: 20px;
-      border-radius: 18px;
-      background: radial-gradient(circle at 20% 20%, rgba(10, 255, 136, 0.18), rgba(0, 0, 0, 0.8) 55%);
-      border: 1px solid rgba(144, 238, 144, 0.2);
-      box-shadow: 0 0 30px rgba(0, 255, 136, 0.35);
-      animation: loader-pulse 2.8s ease-in-out infinite;
-    }
-
-    .loader-canvas {
-      width: 140px;
-      height: 140px;
-      border-radius: 16px;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 50%, rgba(10, 255, 136, 0.2), rgba(0, 0, 0, 0.8));
     }
 
-    .loader-fallback {
+    .ufo-container {
+      position: relative;
+      animation: ufoFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes ufoFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
+    }
+
+    .ufo {
       width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 8px solid rgba(0, 255, 136, 0.15);
-      border-top-color: rgba(0, 255, 136, 0.85);
-      animation: loader-spin 1s linear infinite;
-      display: none;
+      height: 60px;
+      background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(40, 40, 40, 0.7));
+      border-radius: 50px;
+      position: relative;
+      box-shadow: 
+        0 0 60px rgba(10, 255, 136, 0.4),
+        0 0 100px rgba(0, 199, 107, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+      animation: ufoGlow 2s ease-in-out infinite alternate;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    @keyframes ufoGlow {
+      from { box-shadow: 0 0 60px rgba(10, 255, 136, 0.4), 0 0 100px rgba(0, 199, 107, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.1); }
+      to { box-shadow: 0 0 80px rgba(10, 255, 136, 0.6), 0 0 120px rgba(0, 199, 107, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.2); }
+    }
+
+    .ufo::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 20px;
+      background: linear-gradient(90deg, rgba(10, 255, 136, 0.8), rgba(0, 199, 107, 0.6));
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(10, 255, 136, 0.6);
+    }
+
+    .ufo-lights {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+
+    .ufo-light {
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(10, 255, 136, 0.7));
+      border-radius: 50%;
+      animation: lightBlink 1.5s ease-in-out infinite;
+    }
+
+    .ufo-light:nth-child(2) { animation-delay: 0.3s; }
+    .ufo-light:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes lightBlink {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* UFO Shield */
+    .ufo-shield {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: -20px;
+      bottom: -20px;
+      border: 2px solid rgba(0, 200, 255, 0.6);
+      border-radius: 50%;
+      opacity: 0;
+      transition: all 0.3s ease;
+      animation: shieldPulse 2s ease-in-out infinite;
+    }
+
+    .shield-active {
+      opacity: 1;
+    }
+
+    @keyframes shieldPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+
+    /* UFO Weapons */
+    .ufo-laser {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      height: 0;
+      background: linear-gradient(180deg, rgba(255, 0, 0, 0.9), rgba(255, 100, 0, 0.7));
+      transform: translateX(-50%);
+      transition: all 0.2s ease;
+      opacity: 0;
+    }
+
+    .laser-firing {
+      height: 150px;
+      opacity: 1;
+      animation: laserPulse 0.3s ease-in-out infinite;
+    }
+
+    @keyframes laserPulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    /* Enemy Fighter Jets */
+    .enemy-fighter {
+      position: absolute;
+      width: 40px;
+      height: 30px;
+      background: linear-gradient(135deg, rgba(255, 50, 50, 0.8), rgba(200, 0, 0, 0.6));
+      clip-path: polygon(0% 50%, 30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%);
+      opacity: 0;
+      transition: all 0.5s ease;
+    }
+
+    .enemy-active {
+      opacity: 1;
+      animation: fighterAttack 4s ease-in-out infinite;
+    }
+
+    @keyframes fighterAttack {
+      0% { transform: translate(100px, -50px) rotate(0deg); }
+      25% { transform: translate(0px, 20px) rotate(90deg); }
+      50% { transform: translate(-100px, -50px) rotate(180deg); }
+      75% { transform: translate(0px, -120px) rotate(270deg); }
+      100% { transform: translate(100px, -50px) rotate(360deg); }
+    }
+
+    /* Enemy Lasers */
+    .enemy-laser {
+      position: absolute;
+      width: 2px;
+      height: 60px;
+      background: linear-gradient(180deg, rgba(255, 0, 0, 0.9), rgba(255, 100, 0, 0.7));
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .enemy-laser-firing {
+      opacity: 1;
+      animation: enemyLaserPulse 0.4s ease-in-out infinite;
+    }
+
+    @keyframes enemyLaserPulse {
+      0%, 100% { opacity: 0.7; transform: scaleY(0.8); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* Scanning Beam */
+    .scanning-beam {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      background: linear-gradient(180deg, 
+        rgba(10, 255, 136, 0.8) 0%, 
+        rgba(0, 199, 107, 0.4) 50%, 
+        transparent 100%);
+      clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .loading-scanning .scanning-beam {
+      width: 100px;
+      height: 300px;
+      opacity: 0.9;
+      animation: beamSweep 2s ease-in-out infinite;
+    }
+
+    @keyframes beamSweep {
+      0%, 100% { 
+        transform: translateX(-50%) rotate(-15deg);
+        opacity: 0.7;
+      }
+      50% { 
+        transform: translateX(-50%) rotate(15deg);
+        opacity: 1;
+      }
+    }
+
+    /* Tractor Beam */
+    .tractor-beam {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      background: linear-gradient(180deg, 
+        rgba(10, 255, 136, 0.6) 0%, 
+        rgba(0, 199, 107, 0.3) 50%, 
+        transparent 100%);
+      clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .loading-descending .tractor-beam {
+      width: 120px;
+      height: 200px;
+      opacity: 0.8;
+      animation: beamPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes beamPulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    /* Battle Effects */
+    .damage-flash {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(255, 0, 0, 0.4), transparent 70%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9997;
+    }
+
+    .damage-active {
+      opacity: 1;
+      animation: damageFlash 0.5s ease-in-out;
+    }
+
+    @keyframes damageFlash {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    .explosion-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, rgba(255, 200, 100, 0.9), rgba(255, 100, 50, 0.6));
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+    }
+
+    .smoke-particle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, rgba(100, 100, 100, 0.8), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    .loading-crashing {
+      animation: screenShake 0.5s ease-in-out;
+    }
+
+    @keyframes screenShake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    /* Loading Text */
     .loader-text {
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
       color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-scanning .loader-text,
+    .loading-descending .loader-text,
+    .loading-battle .loader-text {
+      opacity: 1;
+      animation: textGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes textGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(10, 255, 136, 0.5); }
+      50% { text-shadow: 0 0 20px rgba(10, 255, 136, 0.8); }
+    }
+
+    /* Stars Background */
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* UFO Hover Effect */
+    .loading-hovering .ufo {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 
+        0 0 80px rgba(10, 255, 136, 0.8),
+        0 0 140px rgba(0, 199, 107, 0.4),
+        inset 0 0 40px rgba(255, 255, 255, 0.3);
+    }
+
+    .loading-hovering .tractor-beam {
+      width: 140px;
+      height: 240px;
+      opacity: 1;
+    }
+
+    /* Crash Animation */
+    .loading-crashing #loading-overlay {
+      animation: crashLanding 2s ease-in forwards;
+    }
+
+    @keyframes crashLanding {
+      0% {
+        background: radial-gradient(ellipse at center, rgba(10, 255, 136, 0.1) 0%, transparent 70%),
+                    linear-gradient(180deg, #0a0a0a 0%, #050505 50%, #0a0a0a 100%);
+      }
+      50% {
+        background: radial-gradient(ellipse at center, rgba(255, 100, 50, 0.3) 0%, transparent 70%),
+                    linear-gradient(180deg, #0a0a0a 0%, #050505 50%, #0a0a0a 100%);
+      }
+      100% {
+        background: transparent;
+        transform: scale(0) rotate(720deg);
+      }
+    }
+
+    .loading-crashing .ufo-container {
+      animation: ufoCrash 2s ease-in forwards;
+    }
+
+    @keyframes ufoCrash {
+      0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      30% {
+        transform: translateY(30vh) scale(1.2) rotate(180deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) scale(0.1) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* UFO Ascent Animation */
+    @keyframes ufoAscent {
+      0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-30vh) scale(0.8) rotate(180deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-60vh) scale(0.6) rotate(360deg);
+        opacity: 0.6;
+      }
+    }
+
+    /* UFO Descent Animation */
+    @keyframes ufoDescent {
+      0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+      50% {
+        transform: translateY(20vh) scale(1.1) rotate(90deg);
+      }
+      100% {
+        transform: translateY(40vh) scale(0.8) rotate(180deg);
+      }
+    }
+
+    /* Power Descent Animation */
+    @keyframes powerDescent {
+      0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      25% {
+        transform: translateY(-10vh) scale(1.2) rotate(-45deg);
+        opacity: 0.9;
+      }
+      50% {
+        transform: translateY(-20vh) scale(1.3) rotate(-90deg);
+        opacity: 0.8;
+      }
+      75% {
+        transform: translateY(-30vh) scale(1.1) rotate(-135deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-40vh) scale(0.9) rotate(-180deg);
+        opacity: 0.6;
+      }
+    }
+
+    /* Additional Animations */
+    @keyframes zoomEffect {
+      0% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+      50% {
+        transform: scale(1.5);
+        filter: brightness(1.5) saturate(1.2);
+      }
+      100% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+    }
+
+    @keyframes highSpeedEscape {
+      0% {
+        transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-100px) translateX(-200px) scale(0.8) rotate(-90deg);
+      }
+      50% {
+        transform: translateY(-200px) translateX(-400px) scale(0.6) rotate(-180deg);
+      }
+      75% {
+        transform: translateY(-300px) translateX(-600px) scale(0.4) rotate(-270deg);
+      }
+      100% {
+        transform: translateY(-400px) translateX(-800px) scale(0.2) rotate(-360deg);
+      }
     }
 
     .scroll-down {
@@ -1536,11 +3341,71 @@
   </nav>
 
   <div id="loading-overlay">
-    <div class="loader-shell" role="status" aria-live="polite">
-      <div class="loader-canvas" id="loader-canvas"></div>
-      <div class="loader-fallback" id="loader-fallback"></div>
-      <div class="loader-text" id="loader-text">Loading 0%</div>
+    <!-- Enhanced Space Background -->
+    <div class="space-background">
+      <div class="planet planet-1"></div>
+      <div class="planet planet-2"></div>
+      <div class="planet planet-3"></div>
+      <div class="planet planet-4"></div>
+      <div class="nebula"></div>
+      <div class="nebula nebula-2"></div>
+      <div class="nebula nebula-3"></div>
     </div>
+    
+    <!-- Enhanced Stars Background -->
+    <div class="stars" id="stars-container"></div>
+    <div class="stars stars-layer-2" id="stars-layer-2"></div>
+    <div class="shooting-stars" id="shooting-stars"></div>
+    
+    <!-- Enhanced UFO Container -->
+    <div class="ufo-container">
+      <div class="ufo-shield" id="ufo-shield"></div>
+      <div class="ufo">
+        <!-- Enhanced UFO Body -->
+        <div class="ufo-dome"></div>
+        <div class="ufo-body"></div>
+        <div class="ufo-rim"></div>
+        
+        <!-- Enhanced Light Systems -->
+        <div class="ufo-lights">
+          <div class="ufo-light primary-light"></div>
+          <div class="ufo-light secondary-light"></div>
+          <div class="ufo-light tertiary-light"></div>
+          <div class="ufo-light navigation-light"></div>
+        </div>
+        
+        <!-- UFO Engine Effects -->
+        <div class="ufo-engines">
+          <div class="engine engine-left"></div>
+          <div class="engine engine-right"></div>
+          <div class="engine engine-center"></div>
+        </div>
+        
+        <!-- UFO Antenna -->
+        <div class="ufo-antenna"></div>
+      </div>
+      <div class="ufo-laser" id="ufo-laser"></div>
+      <div class="scanning-beam"></div>
+      <div class="tractor-beam"></div>
+      
+      <!-- UFO Trail Effect -->
+      <div class="ufo-trail" id="ufo-trail"></div>
+    </div>
+    
+    <!-- Enhanced Landing Effects -->
+    <div class="damage-flash" id="damage-flash"></div>
+    <div class="landing-effect" id="landing-effect"></div>
+    <div class="crash-impact" id="crash-impact"></div>
+    
+    <!-- Enhanced Crash Effects -->
+    <div class="fire-explosion" id="fire-explosion"></div>
+    <div class="smoke-plume" id="smoke-plume"></div>
+    <div class="debris-field" id="debris-field"></div>
+    <div class="secondary-explosion" id="secondary-explosion"></div>
+    <div class="final-impact" id="final-impact"></div>
+    
+    <!-- Loading Text -->
+    <div class="loader-text" id="loader-text">Initializing Systems</div>
   </div>
   
   <main class="page" id="main">
@@ -1559,29 +3424,170 @@
     </section>
 
     <section class="about-me section" id="about-me">
-      <div class="section-header">
-        <span class="section-kicker">Profile</span>
-        <h2>About Me</h2>
-        <p>Enterprise-grade workflows with a playful spirit, focused on modern UI, performance, and accessibility.</p>
-      </div>
-      <div class="grid grid-2">
-        <div class="glass-card threejs-interactive">
-          <h3>Location</h3>
-          <p>Sri Lanka - Crafting code from the beautiful island nation</p>
+      <div class="about-container">
+        <!-- Profile Header -->
+        <div class="about-profile">
+          <div class="profile-avatar">
+            <div class="avatar-glow"></div>
+            <div class="avatar-frame">
+              <span class="avatar-initial">M</span>
+            </div>
+          </div>
+          <div class="profile-info">
+            <span class="section-kicker">Hello, I'm</span>
+            <h2 class="profile-name">Mario Python Plumber</h2>
+            <p class="profile-title">Teenage Programmer • Open Source Enthusiast • Linux Lover</p>
+            <div class="profile-location">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Sri Lanka</span>
+            </div>
+          </div>
         </div>
-        <div class="glass-card threejs-interactive">
-          <h3>Technology Stack</h3>
-          <p>Linux enthusiast passionate about open-source development</p>
+
+        <!-- Bio Section -->
+        <div class="about-bio">
+          <p class="bio-text">
+            A passionate teenage programmer crafting digital experiences from the beautiful island nation of Sri Lanka. 
+            I believe in the power of open-source software and the freedom that Linux brings to developers worldwide.
+          </p>
+          <p class="bio-text">
+            My journey in tech started with curiosity and grew into a deep love for building things that make a difference. 
+            From Python scripts to full-stack applications, I enjoy solving problems and learning new technologies every day.
+          </p>
         </div>
-        <div class="glass-card threejs-interactive">
-          <h3>Role</h3>
-          <p>Teenage Programmer exploring the endless possibilities of code</p>
+
+        <!-- Skills Section -->
+        <div class="about-skills">
+          <h3 class="skills-title">Tech Stack</h3>
+          <div class="skills-grid">
+            <div class="skill-item">
+              <span class="skill-name">Python</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="90"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Linux</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="85"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">JavaScript</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="80"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">HTML/CSS</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="75"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Git</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="82"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Open Source</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="88"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Bash</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="70"></div>
+              </div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Web Dev</span>
+              <div class="skill-progress">
+                <div class="skill-bar" data-skill="78"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="glass-card threejs-interactive">
-          <h3>Contact</h3>
-          <p>Email: mario.yellow.bea@proton.me</p>
-          <p>GitHub: PythonPlumber</p>
-          <p>Website: pythonplumber.eu.org</p>
+
+        <!-- Stats Section -->
+        <div class="about-stats">
+          <h3 class="stats-title">Quick Stats</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number" data-target="3">0</div>
+              <div class="stat-label">Years Coding</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-target="50">0</div>
+              <div class="stat-label">Projects Built</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-target="1000">0</div>
+              <div class="stat-label">Hours Learning</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-target="12">0</div>
+              <div class="stat-label">Tech Stack</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Cards Grid -->
+        <div class="about-cards-grid">
+          <div class="about-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5"></path>
+                <path d="M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+            <h4>Experience</h4>
+            <p>Building projects and learning through hands-on experimentation with modern technologies.</p>
+          </div>
+
+          <div class="about-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+            </div>
+            <h4>Open Source</h4>
+            <p>Active contributor to the open-source community. Sharing knowledge and collaborating globally.</p>
+          </div>
+
+          <div class="about-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+              </svg>
+            </div>
+            <h4>Philosophy</h4>
+            <p>Linux enthusiast advocating for free software, privacy, and user freedom in technology.</p>
+          </div>
+
+          <div class="about-card">
+            <div class="card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <h4>Contact</h4>
+            <p>mario.yellow.bea@proton.me<br>github.com/PythonPlumber</p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="about-cta">
+          <a href="#contact" class="btn btn-primary">Let's Work Together</a>
+          <a href="repo.html" class="btn btn-ghost">View My Projects</a>
         </div>
       </div>
     </section>
@@ -1684,96 +3690,705 @@
     &copy; 2023 Mario Python Plumber. All rights reserved.<br>
   </div>
   <script>
-    const loadingOverlay = document.getElementById('loading-overlay');
-    const loaderCanvasHost = document.getElementById('loader-canvas');
-    const loaderFallback = document.getElementById('loader-fallback');
-    const loaderText = document.getElementById('loader-text');
-    const loaderState = { start: performance.now(), progress: 0, loaded: false };
-
-    const initLoaderCanvas = function() {
-      if (!loaderCanvasHost) return null;
-      const canvas = document.createElement('canvas');
-      const size = 140;
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = size * ratio;
-      canvas.height = size * ratio;
-      canvas.style.width = `${size}px`;
-      canvas.style.height = `${size}px`;
-      loaderCanvasHost.innerHTML = '';
-      loaderCanvasHost.appendChild(canvas);
-      const context = canvas.getContext('2d');
-      if (!context) {
-        loaderFallback.style.display = 'block';
-        return null;
+    // Enhanced UFO Landing Sequence
+    class UFOLoader {
+      constructor() {
+        this.overlay = document.getElementById('loading-overlay');
+        this.starsContainer = document.getElementById('stars-container');
+        this.starsLayer2 = document.getElementById('stars-layer-2');
+        this.shootingStars = document.getElementById('shooting-stars');
+        this.loaderText = document.getElementById('loader-text');
+        this.ufoShield = document.getElementById('ufo-shield');
+        this.ufoLaser = document.getElementById('ufo-laser');
+        this.ufoTrail = document.getElementById('ufo-trail');
+        this.damageFlash = document.getElementById('damage-flash');
+        this.landingEffect = document.getElementById('landing-effect');
+        this.crashImpact = document.getElementById('crash-impact');
+        
+        this.progress = 0;
+        this.loaded = false;
+        this.startTime = performance.now();
+        this.ufoHealth = 100;
+        
+        this.init();
       }
-      context.scale(ratio, ratio);
-      return { canvas, context, size };
-    };
 
-    const loaderCanvas = initLoaderCanvas();
-    const loaderOrbs = Array.from({ length: 24 }).map(() => ({
-      radius: 24 + Math.random() * 32,
-      speed: 0.6 + Math.random() * 1.4,
-      size: 3 + Math.random() * 3.5,
-      offset: Math.random() * Math.PI * 2
-    }));
-
-    const renderLoader = function(time) {
-      if (!loaderCanvas) return;
-      const { context, size } = loaderCanvas;
-      context.clearRect(0, 0, size, size);
-      const center = size / 2;
-      const glow = context.createRadialGradient(center, center, 10, center, center, 70);
-      glow.addColorStop(0, 'rgba(10,255,136,0.35)');
-      glow.addColorStop(1, 'rgba(0,0,0,0)');
-      context.fillStyle = glow;
-      context.fillRect(0, 0, size, size);
-
-      loaderOrbs.forEach((orb, index) => {
-        const angle = time * 0.001 * orb.speed + orb.offset;
-        const x = center + Math.cos(angle) * orb.radius;
-        const y = center + Math.sin(angle) * orb.radius;
-        const pulse = 0.6 + 0.4 * Math.sin(time * 0.002 + index);
-        context.beginPath();
-        context.fillStyle = `rgba(10,255,136,${0.35 + pulse * 0.4})`;
-        context.arc(x, y, orb.size * pulse, 0, Math.PI * 2);
-        context.fill();
-      });
-
-      const ringProgress = Math.min(loaderState.progress / 100, 1);
-      context.beginPath();
-      context.strokeStyle = 'rgba(10,255,136,0.8)';
-      context.lineWidth = 4;
-      context.arc(center, center, 50, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ringProgress);
-      context.stroke();
-    };
-
-    const animateLoader = function(time) {
-      const elapsed = time - loaderState.start;
-      const target = loaderState.loaded ? 100 : 90;
-      loaderState.progress = Math.min(target, loaderState.progress + (target - loaderState.progress) * 0.04);
-      if (loaderText) {
-        loaderText.textContent = `Loading ${Math.round(loaderState.progress)}%`;
+      init() {
+        this.createStars();
+        this.createShootingStars();
+        this.startEnhancedLandingSequence();
       }
-      renderLoader(time);
-      if (!loaderState.loaded || elapsed < 1200) {
-        requestAnimationFrame(animateLoader);
-      }
-    };
 
-    if (loadingOverlay) {
-      loadingOverlay.style.display = 'flex';
-      requestAnimationFrame(animateLoader);
+      createStars() {
+        // Create first star layer
+        const starCount1 = 250;
+        for (let i = 0; i < starCount1; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.top = `${Math.random() * 100}%`;
+          star.style.animationDelay = `${Math.random() * 3}s`;
+          star.style.animationDuration = `${2 + Math.random() * 2}s`;
+          star.style.width = `${1 + Math.random() * 3}px`;
+          star.style.height = star.style.width;
+          this.starsContainer.appendChild(star);
+        }
+
+        // Create second star layer
+        const starCount2 = 150;
+        for (let i = 0; i < starCount2; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.top = `${Math.random() * 100}%`;
+          star.style.animationDelay = `${Math.random() * 3}s`;
+          star.style.animationDuration = `${1 + Math.random() * 2}s`;
+          star.style.width = `${1 + Math.random() * 2}px`;
+          star.style.height = star.style.width;
+          this.starsLayer2.appendChild(star);
+        }
+      }
+
+      createShootingStars() {
+        const shootingStarCount = 8;
+        for (let i = 0; i < shootingStarCount; i++) {
+          const shootingStar = document.createElement('div');
+          shootingStar.className = 'shooting-star';
+          shootingStar.style.left = `${Math.random() * 100}%`;
+          shootingStar.style.top = `${Math.random() * 60}%`;
+          shootingStar.style.animationDelay = `${Math.random() * 6}s`;
+          shootingStar.style.animationDuration = `${4 + Math.random() * 3}s`;
+          this.shootingStars.appendChild(shootingStar);
+        }
+      }
+
+      startEnhancedLandingSequence() {
+        // Phase 1: Enhanced UFO exploration (0-3s)
+        setTimeout(() => {
+          this.overlay.classList.add('loading-hovering');
+          this.ufoTrail.classList.add('trail-active');
+          this.updateText('Exploring Space');
+          this.activateExplorationEffects();
+        }, 500);
+
+        // Phase 2: Enhanced scanning (3-5s)
+        setTimeout(() => {
+          this.updateText('Advanced Scanning');
+          this.activateEnhancedScanning();
+        }, 3000);
+
+        // Phase 3: Power descent with engines (5-7s)
+        setTimeout(() => {
+          this.updateText('Power Descent');
+          this.startPowerDescent();
+        }, 5000);
+
+        // Phase 4: Emergency landing (7-9s)
+        setTimeout(() => {
+          this.updateText('Emergency Landing');
+          this.finalApproach();
+        }, 7000);
+
+        // Phase 5: Crash landing (9-11s)
+        setTimeout(() => {
+          this.updateText('Crash Landing');
+          this.initiateCrashLanding();
+        }, 9000);
+      }
+
+      activateExplorationEffects() {
+        // Add exploration lights and effects
+        this.createExplorationParticles();
+        this.activateUFOLights();
+      }
+
+      createExplorationParticles() {
+        const particleCount = 30;
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'exploration-particle';
+          particle.style.background = `radial-gradient(circle, 
+            rgba(0, 255, 136, 0.6), 
+            rgba(0, 200, 100, 0.3))`;
+          particle.style.width = `${2 + Math.random() * 3}px`;
+          particle.style.height = particle.style.width;
+          particle.style.left = `${40 + Math.random() * 20}%`;
+          particle.style.top = `${40 + Math.random() * 20}%`;
+          particle.style.borderRadius = '50%';
+          particle.style.opacity = '0';
+          particle.style.transition = 'all 2s ease-in-out';
+          
+          this.overlay.appendChild(particle);
+          
+          setTimeout(() => {
+            particle.style.opacity = '0.8';
+            particle.style.transform = `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(1.5)`;
+          }, 100);
+          
+          setTimeout(() => {
+            particle.style.opacity = '0';
+            particle.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0)`;
+          }, 1500);
+          
+          setTimeout(() => particle.remove(), 2000);
+        }
+      }
+
+      activateUFOLights() {
+        const ufoLights = this.overlay.querySelectorAll('.ufo-light');
+        ufoLights.forEach((light, index) => {
+          setTimeout(() => {
+            light.style.animation = `lightBlink ${0.5 + Math.random() * 1}s ease-in-out infinite`;
+            light.style.boxShadow = `0 0 ${15 + Math.random() * 10}px rgba(0, 255, 136, ${0.6 + Math.random() * 0.4})`;
+          }, index * 200);
+        });
+      }
+
+      activateEnhancedScanning() {
+        this.overlay.classList.add('loading-scanning');
+        this.ufoShield.classList.add('shield-active');
+        
+        // Create scanning effects
+        this.createScanningParticles();
+        this.activateScanningBeam();
+        this.rotateUFODuringScan();
+        
+        setTimeout(() => {
+          this.overlay.classList.remove('loading-scanning');
+          this.ufoShield.classList.remove('shield-active');
+        }, 2000);
+      }
+
+      createScanningParticles() {
+        const particleCount = 20;
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'scanning-particle';
+          particle.style.background = `radial-gradient(circle, 
+            rgba(0, 255, 200, 0.8), 
+            rgba(0, 200, 150, 0.4))`;
+          particle.style.width = `${3 + Math.random() * 5}px`;
+          particle.style.height = particle.style.width;
+          particle.style.left = `${30 + Math.random() * 40}%`;
+          particle.style.top = `${30 + Math.random() * 40}%`;
+          particle.style.borderRadius = '50%';
+          particle.style.opacity = '0';
+          particle.style.transition = 'all 1.5s ease-in-out';
+          
+          this.overlay.appendChild(particle);
+          
+          setTimeout(() => {
+            particle.style.opacity = '0.9';
+            particle.style.transform = `translate(-50%, -50%) scale(1.2)`;
+          }, 200 + i * 100);
+          
+          setTimeout(() => {
+            particle.style.opacity = '0';
+            particle.style.transform = `translate(-50%, -50%) scale(0)`;
+          }, 1200 + i * 100);
+          
+          setTimeout(() => particle.remove(), 2000);
+        }
+      }
+
+      activateScanningBeam() {
+        const scanningBeam = this.overlay.querySelector('.scanning-beam');
+        if (scanningBeam) {
+          scanningBeam.style.animation = 'beamSweep 1s ease-in-out infinite';
+        }
+      }
+
+      rotateUFODuringScan() {
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        ufoContainer.style.animation = 'ufoScanRotation 2s linear infinite';
+      }
+
+      startPowerDescent() {
+        this.overlay.classList.add('loading-descending');
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        ufoContainer.style.animation = 'powerDescent 2s ease-in-out forwards';
+        
+        // Add descent effects
+        this.createDescentEffects();
+        this.activateDescentEngines();
+      }
+
+      createDescentEffects() {
+        const effectCount = 25;
+        for (let i = 0; i < effectCount; i++) {
+          const effect = document.createElement('div');
+          effect.className = 'descent-particle';
+          effect.style.background = `radial-gradient(circle, 
+            rgba(0, 255, 136, 0.7), 
+            rgba(0, 200, 100, 0.3))`;
+          effect.style.width = `${4 + Math.random() * 8}px`;
+          effect.style.height = effect.style.width;
+          effect.style.left = `${35 + Math.random() * 30}%`;
+          effect.style.top = `${35 + Math.random() * 30}%`;
+          effect.style.borderRadius = '50%';
+          effect.style.opacity = '0';
+          effect.style.transition = 'all 2s ease-out';
+          
+          this.overlay.appendChild(effect);
+          
+          setTimeout(() => {
+            effect.style.opacity = '0.8';
+            effect.style.transform = `translate(-50%, -50%) scale(1.5)`;
+          }, 200 + i * 50);
+          
+          setTimeout(() => {
+            effect.style.opacity = '0';
+            effect.style.transform = `translate(-50%, -50%) scale(0) translateY(100px)`;
+          }, 1500 + i * 50);
+          
+          setTimeout(() => effect.remove(), 2000);
+        }
+      }
+
+      activateDescentEngines() {
+        const engines = this.overlay.querySelectorAll('.engine');
+        engines.forEach((engine, index) => {
+          setTimeout(() => {
+            engine.style.animation = `enginePulse ${0.3 + Math.random() * 0.3}s ease-in-out infinite`;
+            engine.style.boxShadow = `0 0 ${20 + Math.random() * 15}px rgba(0, 255, 136, ${0.8 + Math.random() * 0.2})`;
+          }, index * 100);
+        });
+      }
+
+      finalApproach() {
+        this.damageFlash.classList.add('damage-active');
+        this.ufoTrail.classList.remove('trail-active');
+        setTimeout(() => {
+          this.damageFlash.classList.remove('damage-active');
+        }, 500);
+      }
+
+      initiateCrashLanding() {
+        this.landingEffect.classList.add('landing-active');
+        this.crashImpact.classList.add('crash-active');
+        this.overlay.classList.add('loading-crashing');
+        
+        // Move UFO to top of screen first
+        this.moveUFOToTop();
+        
+        // Multi-stage explosion sequence
+        setTimeout(() => {
+          this.createInitialImpact();
+        }, 800);
+        
+        setTimeout(() => {
+          this.createFireExplosion();
+        }, 1000);
+        
+        setTimeout(() => {
+          this.createSmokePlume();
+        }, 1300);
+        
+        setTimeout(() => {
+          this.createDebrisField();
+        }, 1600);
+        
+        setTimeout(() => {
+          this.createSecondaryExplosion();
+        }, 2000);
+        
+        setTimeout(() => {
+          this.createFinalImpact();
+        }, 2800);
+        
+        setTimeout(() => {
+          this.overlay.style.display = 'none';
+          this.cleanup();
+        }, 5800);
+      }
+
+      moveUFOToTop() {
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        ufoContainer.style.animation = 'ufoAscent 1.5s ease-in-out forwards';
+        
+        // Add ascent effects
+        this.createAscentEffects();
+        this.activateEmergencyLights();
+      }
+
+      createAscentEffects() {
+        const effectCount = 35;
+        for (let i = 0; i < effectCount; i++) {
+          const effect = document.createElement('div');
+          effect.className = 'ascent-particle';
+          effect.style.background = `radial-gradient(circle, 
+            rgba(255, 100, 0, 0.8), 
+            rgba(255, 200, 100, 0.4))`;
+          effect.style.width = `${3 + Math.random() * 7}px`;
+          effect.style.height = effect.style.width;
+          effect.style.left = `${30 + Math.random() * 40}%`;
+          effect.style.top = `${30 + Math.random() * 40}%`;
+          effect.style.borderRadius = '50%';
+          effect.style.opacity = '0';
+          effect.style.transition = 'all 1.5s ease-out';
+          
+          this.overlay.appendChild(effect);
+          
+          setTimeout(() => {
+            effect.style.opacity = '0.9';
+            effect.style.transform = `translate(-50%, -50%) scale(1.8)`;
+          }, 100 + i * 30);
+          
+          setTimeout(() => {
+            effect.style.opacity = '0';
+            effect.style.transform = `translate(-50%, -50%) scale(0) translateY(-150px)`;
+          }, 1000 + i * 30);
+          
+          setTimeout(() => effect.remove(), 1500);
+        }
+      }
+
+      activateEmergencyLights() {
+        const ufoLights = this.overlay.querySelectorAll('.ufo-light');
+        ufoLights.forEach((light, index) => {
+          setTimeout(() => {
+            light.style.animation = `emergencyBlink ${0.2 + Math.random() * 0.2}s ease-in-out infinite`;
+            light.style.boxShadow = `0 0 ${25 + Math.random() * 15}px rgba(255, 100, 0, ${0.9 + Math.random() * 0.1})`;
+          }, index * 50);
+        });
+      }
+
+      createInitialImpact() {
+        const impact = document.getElementById('fire-explosion');
+        impact.classList.add('fire-active');
+        
+        // Position impact at UFO location
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        const ufoRect = ufoContainer.getBoundingClientRect();
+        const overlayRect = this.overlay.getBoundingClientRect();
+        
+        impact.style.left = `${ufoRect.left - overlayRect.left + ufoRect.width / 2}px`;
+        impact.style.top = `${ufoRect.top - overlayRect.top + ufoRect.height / 2}px`;
+        impact.style.transform = 'translate(-50%, -50%) scale(0)';
+        
+        // Create initial spark particles
+        this.createSparkParticles();
+      }
+
+      createFireExplosion() {
+        const fire = document.getElementById('smoke-plume');
+        fire.classList.add('smoke-active');
+        
+        // Position fire at UFO location
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        const ufoRect = ufoContainer.getBoundingClientRect();
+        const overlayRect = this.overlay.getBoundingClientRect();
+        
+        fire.style.left = `${ufoRect.left - overlayRect.left + ufoRect.width / 2}px`;
+        fire.style.top = `${ufoRect.top - overlayRect.top + ufoRect.height / 2}px`;
+        fire.style.transform = 'translate(-50%, -50%) scale(0)';
+        
+        // Create fire particles
+        this.createFireParticles();
+      }
+
+      createSmokePlume() {
+        const smoke = document.getElementById('debris-field');
+        smoke.classList.add('debris-active');
+        
+        // Position smoke at UFO location
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        const ufoRect = ufoContainer.getBoundingClientRect();
+        const overlayRect = this.overlay.getBoundingClientRect();
+        
+        smoke.style.left = `${ufoRect.left - overlayRect.left + ufoRect.width / 2}px`;
+        smoke.style.top = `${ufoRect.top - overlayRect.top + ufoRect.height / 2}px`;
+        smoke.style.transform = 'translate(-50%, -50%) scale(0)';
+        
+        // Create smoke particles
+        this.createSmokeParticles();
+      }
+
+      createDebrisField() {
+        const debris = document.getElementById('secondary-explosion');
+        debris.classList.add('secondary-active');
+        
+        // Position debris at UFO location
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        const ufoRect = ufoContainer.getBoundingClientRect();
+        const overlayRect = this.overlay.getBoundingClientRect();
+        
+        debris.style.left = `${ufoRect.left - overlayRect.left + ufoRect.width / 2}px`;
+        debris.style.top = `${ufoRect.top - overlayRect.top + ufoRect.height / 2}px`;
+        debris.style.transform = 'translate(-50%, -50%) scale(0)';
+        
+        // Create debris pieces
+        this.createDebrisPieces();
+      }
+
+      createSecondaryExplosion() {
+        const secondary = document.getElementById('final-impact');
+        secondary.classList.add('final-active');
+        
+        // Position secondary explosion at UFO location
+        const ufoContainer = this.overlay.querySelector('.ufo-container');
+        const ufoRect = ufoContainer.getBoundingClientRect();
+        const overlayRect = this.overlay.getBoundingClientRect();
+        
+        secondary.style.left = `${ufoRect.left - overlayRect.left + ufoRect.width / 2}px`;
+        secondary.style.top = `${ufoRect.top - overlayRect.top + ufoRect.height / 2}px`;
+        secondary.style.transform = 'translate(-50%, -50%) scale(0)';
+        
+        // Create secondary explosion particles
+        this.createSecondaryParticles();
+      }
+
+      createFinalImpact() {
+        // Create final shockwave at UFO location
+        this.createMassiveShockwave();
+        
+        // Add zoom effect to hero section
+        this.addHeroZoomEffect();
+        
+        // Screen shake effect
+        this.createScreenShake();
+      }
+
+      addHeroZoomEffect() {
+        const heroSection = document.getElementById('hero');
+        if (heroSection) {
+          heroSection.style.animation = 'heroZoomIn 2s ease-out forwards';
+        }
+      }
+
+      createSparkParticles() {
+        const sparkCount = 50;
+        for (let i = 0; i < sparkCount; i++) {
+          const spark = document.createElement('div');
+          spark.className = 'explosion-particle';
+          spark.style.background = `radial-gradient(circle, rgba(255, 255, 100, 0.9), transparent 70%)`;
+          spark.style.width = `${2 + Math.random() * 4}px`;
+          spark.style.height = spark.style.width;
+          
+          // Position relative to UFO
+          spark.style.left = '50%';
+          spark.style.top = '50%';
+          
+          const angle = (Math.PI * 2 * i) / sparkCount;
+          const velocity = 200 + Math.random() * 400;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity;
+          
+          spark.style.transform = `translate(-50%, -50%)`;
+          spark.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          
+          // Add to impact container instead of overlay
+          const impactContainer = document.getElementById('fire-explosion');
+          impactContainer.appendChild(spark);
+          
+          setTimeout(() => {
+            spark.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
+            spark.style.opacity = '0';
+          }, 50);
+          
+          setTimeout(() => spark.remove(), 1500);
+        }
+      }
+
+      createFireParticles() {
+        const fireCount = 80;
+        for (let i = 0; i < fireCount; i++) {
+          const fire = document.createElement('div');
+          fire.className = 'explosion-particle';
+          fire.style.background = `radial-gradient(circle, 
+            rgba(255, ${100 + Math.random() * 100}, 0, 0.9), 
+            rgba(255, ${50 + Math.random() * 50}, 0, 0.4))`;
+          fire.style.width = `${5 + Math.random() * 15}px`;
+          fire.style.height = fire.style.width;
+          
+          // Position relative to UFO
+          fire.style.left = '50%';
+          fire.style.top = '50%';
+          
+          const angle = (Math.PI * 2 * i) / fireCount;
+          const velocity = 100 + Math.random() * 600;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity;
+          
+          fire.style.transform = `translate(-50%, -50%)`;
+          fire.style.transition = 'all 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          
+          // Add to fire container instead of overlay
+          const fireContainer = document.getElementById('smoke-plume');
+          fireContainer.appendChild(fire);
+          
+          setTimeout(() => {
+            fire.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
+            fire.style.opacity = '0';
+          }, 50);
+          
+          setTimeout(() => fire.remove(), 2500);
+        }
+      }
+
+      createSmokeParticles() {
+        const smokeCount = 100;
+        for (let i = 0; i < smokeCount; i++) {
+          const smoke = document.createElement('div');
+          smoke.className = 'smoke-particle';
+          smoke.style.background = `radial-gradient(circle, 
+            rgba(${50 + Math.random() * 50}, ${50 + Math.random() * 50}, ${50 + Math.random() * 50}, 0.6), 
+            transparent 70%)`;
+          smoke.style.width = `${10 + Math.random() * 20}px`;
+          smoke.style.height = smoke.style.width;
+          smoke.style.transform = `translate(-50%, -50%) scale(0.5) rotate(${Math.random() * 360}deg)`;
+          smoke.style.opacity = '0';
+          smoke.style.transition = 'all 5s ease-out';
+          
+          // Add to smoke container instead of overlay
+          const smokeContainer = document.getElementById('debris-field');
+          smokeContainer.appendChild(smoke);
+          
+          setTimeout(() => {
+            smoke.style.transform = `translate(-50%, -50%) scale(${2 + Math.random() * 3}) translateY(-300px) rotate(${Math.random() * 720}deg)`;
+            smoke.style.opacity = '0.8';
+          }, 100);
+          
+          setTimeout(() => smoke.remove(), 5000);
+        }
+      }
+
+      createDebrisPieces() {
+        const debrisCount = 60;
+        for (let i = 0; i < debrisCount; i++) {
+          const debris = document.createElement('div');
+          debris.className = 'smoke-particle';
+          debris.style.background = `linear-gradient(135deg, 
+            rgba(${100 + Math.random() * 100}, ${100 + Math.random() * 100}, ${100 + Math.random() * 100}, 0.8), 
+            rgba(${50 + Math.random() * 50}, ${50 + Math.random() * 50}, ${50 + Math.random() * 50}, 0.4))`;
+          debris.style.width = `${5 + Math.random() * 25}px`;
+          debris.style.height = debris.style.width;
+          debris.style.borderRadius = `${Math.random() * 50}%`;
+          debris.style.transform = `translate(-50%, -50%) scale(0.5) rotate(${Math.random() * 360}deg)`;
+          debris.style.opacity = '0';
+          debris.style.transition = 'all 4s ease-out';
+          
+          // Add to debris container instead of overlay
+          const debrisContainer = document.getElementById('secondary-explosion');
+          debrisContainer.appendChild(debris);
+          
+          setTimeout(() => {
+            debris.style.transform = `translate(-50%, -50%) scale(${0.5 + Math.random() * 1.5}) translateY(-250px) rotate(${Math.random() * 1080}deg)`;
+            debris.style.opacity = '0.9';
+          }, 100);
+          
+          setTimeout(() => debris.remove(), 4000);
+        }
+      }
+
+      createSecondaryParticles() {
+        const particleCount = 40;
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'explosion-particle';
+          particle.style.background = `radial-gradient(circle, 
+            rgba(255, ${150 + Math.random() * 100}, 0, 0.8), 
+            rgba(255, ${50 + Math.random() * 100}, 0, 0.3))`;
+          particle.style.width = `${3 + Math.random() * 10}px`;
+          particle.style.height = particle.style.width;
+          
+          // Position relative to UFO
+          particle.style.left = '50%';
+          particle.style.top = '50%';
+          
+          const angle = (Math.PI * 2 * i) / particleCount;
+          const velocity = 50 + Math.random() * 300;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity;
+          
+          particle.style.transform = `translate(-50%, -50%)`;
+          particle.style.transition = 'all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+          
+          // Add to secondary container instead of overlay
+          const secondaryContainer = document.getElementById('final-impact');
+          secondaryContainer.appendChild(particle);
+          
+          setTimeout(() => {
+            particle.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
+            particle.style.opacity = '0';
+          }, 50);
+          
+          setTimeout(() => particle.remove(), 2000);
+        }
+      }
+
+      createMassiveShockwave() {
+        const shockwave = document.createElement('div');
+        shockwave.style.position = 'absolute';
+        shockwave.style.top = '50%';
+        shockwave.style.left = '50%';
+        shockwave.style.width = '1200px';
+        shockwave.style.height = '1200px';
+        shockwave.style.border = '8px solid rgba(0, 255, 136, 0.4)';
+        shockwave.style.borderRadius = '50%';
+        shockwave.style.transform = 'translate(-50%, -50%) scale(0)';
+        shockwave.style.opacity = '0';
+        shockwave.style.transition = 'all 3s ease-out';
+        
+        this.overlay.appendChild(shockwave);
+        
+        setTimeout(() => {
+          shockwave.style.transform = 'translate(-50%, -50%) scale(4)';
+          shockwave.style.opacity = '1';
+        }, 100);
+        
+        setTimeout(() => {
+          shockwave.style.transform = 'translate(-50%, -50%) scale(0)';
+          shockwave.style.opacity = '0';
+        }, 3000);
+        
+        setTimeout(() => shockwave.remove(), 3500);
+      }
+
+      createScreenShake() {
+        this.overlay.style.animation = 'screenShake 0.8s ease-in-out';
+        setTimeout(() => {
+          this.overlay.style.animation = '';
+        }, 800);
+      }
+
+      updateText(text) {
+        if (this.loaderText) {
+          this.loaderText.textContent = text;
+        }
+      }
+
+      cleanup() {
+        this.overlay = null;
+        this.starsContainer = null;
+        this.starsLayer2 = null;
+        this.shootingStars = null;
+        this.loaderText = null;
+        this.ufoShield = null;
+        this.ufoLaser = null;
+        this.ufoTrail = null;
+        this.damageFlash = null;
+        this.landingEffect = null;
+        this.crashImpact = null;
+      }
     }
 
+    // Initialize UFO loader
+    let ufoLoader;
+    
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+      loadingOverlay.style.display = 'flex';
+      ufoLoader = new UFOLoader();
+    }
+
+    // Complete loading when page is ready
     window.addEventListener('load', function() {
-      loaderState.loaded = true;
-      const finish = function() {
-        if (loadingOverlay) {
-          loadingOverlay.style.display = 'none';
-        }
-      };
-      setTimeout(finish, 500);
+      if (ufoLoader) {
+        setTimeout(() => {
+          ufoLoader.initiateCrashLanding();
+        }, 11000); // Allow user to see full enhanced landing sequence
+      }
     });
 
     const nameInput = document.getElementById('name');
@@ -2214,6 +4829,340 @@
   </script>
   <script src="threejs_scene.js" type="module"></script>
   <script>
+    // Modern Interactive Effects System
+    class InteractiveEffects {
+      constructor() {
+        this.initMouseFollower();
+        this.initParallax();
+        this.init3DTilt();
+        this.initRippleEffect();
+        this.initFloatingOrbs();
+        this.initNavbarScroll();
+      }
+
+      // Mouse Follower Elements
+      initMouseFollower() {
+        if (window.matchMedia('(max-width: 768px)').matches) return;
+
+        const follower = document.createElement('div');
+        follower.className = 'mouse-follower';
+        document.body.appendChild(follower);
+
+        const trail = document.createElement('div');
+        trail.className = 'cursor-trail';
+        document.body.appendChild(trail);
+
+        let mouseX = 0, mouseY = 0;
+        let followerX = 0, followerY = 0;
+        let trailX = 0, trailY = 0;
+        let isActive = false;
+
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          isActive = true;
+
+          follower.classList.add('active');
+          trail.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+          isActive = false;
+          follower.classList.remove('active');
+          trail.style.opacity = '0';
+        });
+
+        const animate = () => {
+          if (isActive) {
+            followerX += (mouseX - followerX) * 0.15;
+            followerY += (mouseY - followerY) * 0.15;
+            follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+
+            trailX += (mouseX - trailX) * 0.08;
+            trailY += (mouseY - trailY) * 0.08;
+            trail.style.transform = `translate(${trailX}px, ${trailY}px)`;
+          }
+          requestAnimationFrame(animate);
+        };
+        animate();
+      }
+
+      // Parallax Scroll Effects
+      initParallax() {
+        const parallaxElements = document.querySelectorAll('.parallax-slow, .parallax-medium, .parallax-fast');
+        
+        const handleScroll = () => {
+          const scrolled = window.pageYOffset;
+          const rate = scrolled * -0.5;
+
+          parallaxElements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            const elementTop = rect.top + window.scrollY;
+            const elementHeight = rect.height;
+            const windowHeight = window.innerHeight;
+            
+            if (elementTop < scrolled + windowHeight && elementTop + elementHeight > scrolled) {
+              const speed = element.classList.contains('parallax-slow') ? 0.2 : 
+                           element.classList.contains('parallax-medium') ? 0.5 : 0.8;
+              const yPos = -(scrolled - elementTop) * speed;
+              
+              element.style.transform = `translate3d(0, ${yPos}px, 0)`;
+            }
+          });
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Add parallax classes to elements
+        document.querySelector('.hero')?.classList.add('parallax-slow');
+        document.querySelector('.about-me')?.classList.add('parallax-medium');
+        document.querySelector('.form-container')?.classList.add('parallax-fast');
+      }
+
+      // 3D Tilt Cards Effect
+      init3DTilt() {
+        const tiltCards = document.querySelectorAll('.hero, .about-me, .form-container, .glass-card, .card, .stat-card');
+        
+        tiltCards.forEach(card => {
+          card.classList.add('tilt-card');
+          
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+            
+            card.style.setProperty('--tilt-x', `${rotateY}deg`);
+            card.style.setProperty('--tilt-y', `${rotateX}deg`);
+          });
+
+          card.addEventListener('mouseleave', () => {
+            card.style.setProperty('--tilt-x', '0deg');
+            card.style.setProperty('--tilt-y', '0deg');
+          });
+        });
+      }
+
+      // Ripple Effect on Click
+      initRippleEffect() {
+        const hero = document.querySelector('.hero');
+        if (!hero) return;
+
+        hero.addEventListener('click', (e) => {
+          const rect = hero.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const ripple = document.createElement('div');
+          ripple.className = 'ripple';
+          ripple.style.width = '100px';
+          ripple.style.height = '100px';
+          ripple.style.left = `${x - 50}px`;
+          ripple.style.top = `${y - 50}px`;
+          
+          hero.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 1000);
+        });
+      }
+
+      // Floating Animated Orbs
+      initFloatingOrbs() {
+        const orbs = [
+          { class: 'orb-1', delay: 0 },
+          { class: 'orb-2', delay: 5000 },
+          { class: 'orb-3', delay: 10000 }
+        ];
+
+        orbs.forEach(orb => {
+          const element = document.createElement('div');
+          element.className = `floating-orb ${orb.class}`;
+          document.body.appendChild(element);
+          
+          // Add interactive hover effect
+          element.addEventListener('mousemove', (e) => {
+            const rect = element.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            
+            const moveX = (x - 0.5) * 30;
+            const moveY = (y - 0.5) * 30;
+            
+            element.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
+          });
+
+          element.addEventListener('mouseleave', () => {
+            element.style.transform = '';
+          });
+        });
+      }
+
+      // Enhanced Navbar Scroll Effect
+      initNavbarScroll() {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+
+        let lastScroll = 0;
+        let ticking = false;
+
+        const updateNavbar = () => {
+          const currentScroll = window.pageYOffset;
+          
+          if (currentScroll > 50) {
+            navbar.classList.add('scrolled');
+          } else {
+            navbar.classList.remove('scrolled');
+          }
+
+          lastScroll = currentScroll;
+          ticking = false;
+        };
+
+        const onScroll = () => {
+          if (!ticking) {
+            requestAnimationFrame(updateNavbar);
+            ticking = true;
+          }
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+    }
+
+    // Enhanced About Me Interactions
+    class AboutMeInteractions {
+      constructor() {
+        this.initSkillBars();
+        this.initAnimatedCounters();
+        this.initCardInteractions();
+      }
+
+      // Animated Skill Bars
+      initSkillBars() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const skillBar = entry.target;
+              const skillLevel = skillBar.dataset.skill;
+              
+              setTimeout(() => {
+                skillBar.style.width = `${skillLevel}%`;
+              }, 200);
+              
+              observer.unobserve(skillBar);
+            }
+          });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.skill-bar').forEach(bar => {
+          observer.observe(bar);
+        });
+      }
+
+      // Animated Counters
+      initAnimatedCounters() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const counter = entry.target;
+              const target = parseInt(counter.dataset.target);
+              this.animateCounter(counter, target);
+              observer.unobserve(counter);
+            }
+          });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-number').forEach(counter => {
+          observer.observe(counter);
+        });
+      }
+
+      animateCounter(element, target) {
+        const duration = 2000;
+        const start = performance.now();
+        const startValue = 0;
+
+        const updateCounter = (currentTime) => {
+          const elapsed = currentTime - start;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          // Easing function for smooth animation
+          const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+          const currentValue = Math.floor(startValue + (target - startValue) * easeOutQuart);
+          
+          element.textContent = currentValue.toLocaleString();
+          
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          }
+        };
+
+        requestAnimationFrame(updateCounter);
+      }
+
+      // Enhanced Card Interactions
+      initCardInteractions() {
+        const cards = document.querySelectorAll('.about-card');
+        
+        cards.forEach(card => {
+          // Add ripple effect on click
+          card.addEventListener('click', (e) => {
+            this.createRipple(card, e);
+          });
+
+          // Add tilt effect on mouse move
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5;
+            const rotateY = ((x - centerX) / centerX) * 5;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+          });
+
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0deg)';
+          });
+        });
+      }
+
+      createRipple(element, event) {
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        
+        const ripple = document.createElement('div');
+        ripple.className = 'card-ripple';
+        ripple.style.width = '20px';
+        ripple.style.height = '20px';
+        ripple.style.left = `${x - 10}px`;
+        ripple.style.top = `${y - 10}px`;
+        
+        element.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      }
+    }
+
+    // Initialize all interactive effects when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      new InteractiveEffects();
+      new AboutMeInteractions();
+    });
+  </script>
+
+    <script>
     document.querySelectorAll('.navbar a').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -2299,6 +5248,7 @@
         nextElement.scrollIntoView({ behavior: 'smooth' });
       }
     }, { passive: true });
+  </script>
   </script>
   
 </body>
